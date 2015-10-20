@@ -28,20 +28,20 @@ bool cGame::Init()
 	glEnable(GL_ALPHA_TEST);
 
 	//Scene initialization
-	res = Data.LoadImage(IMG_BLOCKS,"blocks.png",GL_RGBA);
+	res = Data.LoadImage(IMG_BLOCKS,"res/WorldTiles.png",GL_RGB);
 	if(!res) return false;
 	res = Scene.LoadLevel(1);
 	if(!res) return false;
 
-	//Player initialization
-	res = Data.LoadImage(IMG_PLAYER,"bub.png",GL_RGBA);
-	if(!res) return false;
+	////Player initialization
+	//res = Data.LoadImage(IMG_PLAYER,"bub.png",GL_RGBA);
+	//if(!res) return false;
 
-	//Show player
-	Player.SetWidthHeight(32,32);
-	Player.SetTile(4,1);
-	Player.SetWidthHeight(32,32);
-	Player.SetState(STATE_LOOKRIGHT);
+	////Show player
+	//Player.SetWidthHeight(32,32);
+	//Player.SetTile(4,1);
+	//Player.SetWidthHeight(32,32);
+	//Player.SetState(STATE_LOOKRIGHT);
 
 	return res;
 }
