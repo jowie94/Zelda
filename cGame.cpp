@@ -1,5 +1,8 @@
 #include "cGame.h"
 #include "Globals.h"
+#include <Windows.h>
+#include <time.h>
+
 
 
 cGame::cGame(void)
@@ -33,6 +36,8 @@ bool cGame::Init()
 	//Player initialization
 	res = Data.LoadImage(IMG_PLAYER,"bub.png",GL_RGBA);
 	if(!res) return false;
+
+	//Show player
 	Player.SetWidthHeight(32,32);
 	Player.SetTile(4,1);
 	Player.SetWidthHeight(32,32);
@@ -43,11 +48,14 @@ bool cGame::Init()
 
 bool cGame::Loop()
 {
+	time_t start = time(NULL);
 	bool res=true;
 
 	res = Process();
 	if(res) Render();
 
+	time_t end = time(NULL);
+	Sleep(15 - (end - start));
 	return res;
 }
 
