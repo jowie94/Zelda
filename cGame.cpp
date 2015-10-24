@@ -21,7 +21,7 @@ bool cGame::Init()
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(0,GAME_WIDTH/2,0,GAME_HEIGHT/2,0,1);
+	glOrtho(0,GAME_WIDTH/2.5,0,GAME_HEIGHT/2.5,0,1);
 	glMatrixMode(GL_MODELVIEW);
 	
 	glAlphaFunc(GL_GREATER, 0.05f);
@@ -34,14 +34,14 @@ bool cGame::Init()
 	if(!res) return false;
 
 	////Player initialization
-	//res = Data.LoadImage(IMG_PLAYER,"bub.png",GL_RGBA);
-	//if(!res) return false;
+	res = Data.LoadImage(IMG_PLAYER,"bub.png",GL_RGBA);
+	if(!res) return false;
 
 	////Show player
-	//Player.SetWidthHeight(32,32);
-	//Player.SetTile(4,1);
-	//Player.SetWidthHeight(32,32);
-	//Player.SetState(STATE_LOOKRIGHT);
+	Player.SetWidthHeight(32,32);
+	Player.SetTile(4,1);
+	Player.SetWidthHeight(32,32);
+	Player.SetState(STATE_LOOKRIGHT);
 
 	return res;
 }
