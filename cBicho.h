@@ -4,14 +4,18 @@
 #include "Globals.h"
 
 #define FRAME_DELAY		8
-#define STEP_LENGTH		2
+#define STEP_LENGTH		1
 #define JUMP_HEIGHT		96
 #define JUMP_STEP		4
 
 #define STATE_LOOKLEFT		0
 #define STATE_LOOKRIGHT		1
-#define STATE_WALKLEFT		2
-#define STATE_WALKRIGHT		3
+#define STATE_LOOKUP		2
+#define STATE_LOOKDOWN		3
+#define STATE_WALKLEFT		4
+#define STATE_WALKRIGHT		5
+#define STATE_WALKUP		6
+#define STATE_WALKDOWN		7
 
 class cRect
 {
@@ -36,13 +40,14 @@ public:
 
 	bool Collides(cRect *rc);
 	bool CollidesMapWall(int *map,bool right);
-	bool CollidesMapFloor(int *map);
+	bool CollidesMapFloor(int *map, bool up);
 	void GetArea(cRect *rc);
 	void DrawRect(int tex_id,float xo,float yo,float xf,float yf);
 
 	void MoveRight(int *map);
 	void MoveLeft(int *map);
-	void Jump(int *map);
+	void MoveUp(int* map);
+	void MoveDown(int* map);
 	void Stop();
 	void Logic(int *map);
 
