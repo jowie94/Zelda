@@ -1,22 +1,8 @@
 
 #include "cPlayer.h"
 
-cPlayer::cPlayer()
-{
-	onAttack = false;
-}
+cPlayer::cPlayer(){}
 cPlayer::~cPlayer(){}
-
-void cPlayer::Attack(Weapon weapon)
-{
-	Stop();
-	switch (weapon)
-	{
-	case SWORD:
-		onAttack = true;
-		break;
-	}
-}
 
 void cPlayer::Draw(int tex_id)
 {	

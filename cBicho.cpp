@@ -221,7 +221,7 @@ void cBicho::Die() {}
 
 void cBicho::Logic(int *map)
 {
-	if (life <= 0 && !isDead)
+	if (life <= 0 && !isDead())
 		Die();
 }
 void cBicho::NextFrame(int max)
