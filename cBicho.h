@@ -28,6 +28,7 @@ class cBicho
 {
 public:
 	cBicho(void);
+	cBicho(float life);
 	cBicho(int x,int y,int w,int h);
 	~cBicho(void);
 
@@ -44,15 +45,24 @@ public:
 	void GetArea(cRect *rc);
 	void DrawRect(int tex_id,float xo,float yo,float xf,float yf);
 
+	void  SetLife(float life);
+	void  DecrementLife(float amount);
+	float GetLife() const;
+
+	void  SetDamage(float damage);
+	float GetDamage();
+
 	void MoveRight(int *map);
 	void MoveLeft(int *map);
 	void MoveUp(int* map);
 	void MoveDown(int* map);
 	void Stop();
+	void Die(); // Used for begining the "Bicho" dying process. Once dead animation is finished isDied() will return true.
 	void Logic(int *map);
 
 	int  GetState();
 	void SetState(int s);
+	bool isDead();
 
 	void NextFrame(int max);
 	int  GetFrame();
@@ -61,10 +71,10 @@ private:
 	int x,y;
 	int w,h;
 	int state;
-
-	bool jumping;
-	int jump_alfa;
-	int jump_y;
-
+	
 	int seq,delay;
+
+	float life; // Current amount of life the "Bicho" has.
+
+	float damage; // Damage that causes the "Bicho" on colision.
 };

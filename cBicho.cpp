@@ -2,13 +2,19 @@
 #include "cScene.h"
 #include "Globals.h"
 
-cBicho::cBicho(void)
+cBicho::cBicho(void) : cBicho(0)
 {
 	seq=0;
 	delay=0;
-
-	jumping = false;
 }
+
+cBicho::cBicho(float life)
+{
+	seq = 0;
+	delay = 0;
+	this->life = life;
+}
+
 cBicho::~cBicho(void){}
 
 cBicho::cBicho(int posx,int posy,int width,int height)
@@ -139,6 +145,31 @@ void cBicho::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 	glDisable(GL_TEXTURE_2D);
 }
 
+void cBicho::SetLife(float life)
+{
+	this->life = life;
+}
+
+void cBicho::DecrementLife(float amount)
+{
+	this->life -= amount;
+}
+
+float cBicho::GetLife() const
+{
+	return this->life;
+}
+
+void cBicho::SetDamage(float damage)
+{
+	this->damage = damage;
+}
+
+float cBicho::GetDamage()
+{
+	return this->damage;
+}
+
 void cBicho::MoveLeft(int *map)
 {
 	int xaux = x;
@@ -186,9 +217,12 @@ void cBicho::Stop()
 	}
 }
 
+void cBicho::Die() {}
+
 void cBicho::Logic(int *map)
 {
-	
+	if (life <= 0 && !isDead)
+		Die();
 }
 void cBicho::NextFrame(int max)
 {
@@ -211,4 +245,10 @@ int cBicho::GetState()
 void cBicho::SetState(int s)
 {
 	state = s;
+}
+
+bool cBicho::isDead()
+{
+	// 8 is a dummy value, it refers that if the dead animation is on frame 8 then it is dead.
+	return (this->life == 0) && (GetFrame() == 8);
 }
