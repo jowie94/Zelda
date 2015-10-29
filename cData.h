@@ -9,6 +9,7 @@
 //Image identifiers
 #define IMG_BLOCKS	0
 #define IMG_PLAYER	1
+#define IMG_WEAPONS 2
 /*
 #define IMG_ENEMY1	2
 #define IMG_ENEMY2	3

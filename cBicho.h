@@ -1,7 +1,7 @@
 #pragma once
 
-#include "cTexture.h"
 #include "Globals.h"
+#include "cTexture.h"
 
 #define FRAME_DELAY		8
 #define STEP_LENGTH		1
@@ -17,6 +17,9 @@
 #define STATE_WALKUP		6
 #define STATE_WALKDOWN		7
 
+
+class cWeapon; // Forward declaration to avoid circular dependency (Weird compiler stuff)
+
 class cRect
 {
 public:
@@ -30,7 +33,7 @@ public:
 	cBicho(void);
 	cBicho(float life);
 	cBicho(int x,int y,int w,int h);
-	~cBicho(void);
+	virtual ~cBicho(void);
 
 	void SetPosition(int x,int y);
 	void GetPosition(int *x,int *y);
@@ -58,15 +61,24 @@ public:
 	void MoveDown(int* map);
 	void Stop();
 	void Die(); // Used for begining the "Bicho" dying process. Once dead animation is finished isDied() will return true.
-	void Logic(int *map);
+	virtual void Logic(int *map);
 
+	void AddWeapon(int id, cWeapon* weapon);
+	cWeapon* GetWeapon(int id);
+	bool GetWeapon(int id, cWeapon& weapon);
+	void GetActiveWeapons(std::list<cWeapon*>& weapons);
 	int  GetState();
 	void SetState(int s);
 	bool isDead();
 
 	void NextFrame(int max);
 	int  GetFrame();
-	
+
+	void SetFramesToDie(int frames);
+	int GetFramesToDie();
+protected:
+	void ActivateWeapon(cWeapon* weapon);
+
 private:
 	int x,y;
 	int w,h;
@@ -75,6 +87,10 @@ private:
 	int seq,delay;
 
 	float life; // Current amount of life the "Bicho" has.
+	int frames_to_die;
 
 	float damage; // Damage that causes the "Bicho" on colision.
+
+	std::map<int, cWeapon*> weapons; // Available weapons for "Bicho"
+	std::list<cWeapon*> active_weapons; // Weapons currently active on screen
 };

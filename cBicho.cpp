@@ -1,17 +1,14 @@
 #include "cBicho.h"
 #include "cScene.h"
-#include "Globals.h"
+#include "cWeapon.h"
 
-cBicho::cBicho(void) : cBicho(0)
-{
-	seq=0;
-	delay=0;
-}
+cBicho::cBicho(void) : cBicho(0) {}
 
 cBicho::cBicho(float life)
 {
 	seq = 0;
 	delay = 0;
+	frames_to_die = 8; // Dummy value
 	this->life = life;
 }
 
@@ -223,7 +220,56 @@ void cBicho::Logic(int *map)
 {
 	if (life <= 0 && !isDead())
 		Die();
+	else if (!isDead())
+	{
+		// Execute logic for all weapons
+		for (auto it = active_weapons.begin(); it != active_weapons.end(); ++it)
+		{
+			cWeapon* w = *it;
+			w->Logic(map);
+
+			// If the weapon is "dead" remove from the active weapons list
+			if (w->isDead()) {
+				it = active_weapons.erase(it);
+				if (it == active_weapons.end())
+					break;
+			}
+		}
+	} else
+	{
+		seq = 0;
+		delay = 0;
+	}
 }
+
+void cBicho::AddWeapon(int id, cWeapon* weapon)
+{
+	weapon->SetLife(0);
+	weapons.insert_or_assign(id, weapon);
+}
+
+bool cBicho::GetWeapon(int id, cWeapon& weapon)
+{
+	auto it = weapons.find(id);
+	if (it == weapons.end())
+		return false;
+	weapon = *it->second;
+	return true;
+}
+
+void cBicho::GetActiveWeapons(std::list<cWeapon*>& weapons)
+{
+	weapons = this->active_weapons;
+}
+
+cWeapon* cBicho::GetWeapon(int id)
+{
+	auto it = weapons.find(id);
+	if (it == weapons.end())
+		return nullptr;
+	return it->second;
+}
+
 void cBicho::NextFrame(int max)
 {
 	delay++;
@@ -238,6 +284,22 @@ int cBicho::GetFrame()
 {
 	return seq;
 }
+
+void cBicho::SetFramesToDie(int frames)
+{
+	frames_to_die = frames;
+}
+
+int cBicho::GetFramesToDie()
+{
+	return frames_to_die;
+}
+
+void cBicho::ActivateWeapon(cWeapon* weapon)
+{
+	active_weapons.push_back(weapon);
+}
+
 int cBicho::GetState()
 {
 	return state;
@@ -249,6 +311,5 @@ void cBicho::SetState(int s)
 
 bool cBicho::isDead()
 {
-	// 8 is a dummy value, it refers that if the dead animation is on frame 8 then it is dead.
-	return (this->life == 0) && (GetFrame() == 8);
+	return (this->life <= 0) && (this->frames_to_die >= seq);
 }

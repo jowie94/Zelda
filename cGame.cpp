@@ -2,7 +2,7 @@
 #include "Globals.h"
 #include <Windows.h>
 #include <time.h>
-
+#include "wSword.h"
 
 
 cGame::cGame(void)
@@ -37,11 +37,19 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_PLAYER,"res/link.png",GL_RGBA);
 	if(!res) return false;
 
+	res = Data.LoadImage(IMG_WEAPONS, "res/weapons.png", GL_RGBA);
+	if (!res) return false;
+
 	////Show player
 	Player.SetWidthHeight(16,16);
 	Player.SetTile(6,5);
 	Player.SetWidthHeight(16,16);
 	Player.SetState(STATE_LOOKDOWN);
+	wSword* sw = new wSword(1);
+	sw->SetTexture(Data.GetID(IMG_WEAPONS));
+
+	Player.AddWeapon(SWORD, sw);
+	Player.SetAWeapon(SWORD);
 
 	return res;
 }
@@ -63,10 +71,14 @@ void cGame::Finalize()
 {
 }
 
+bool pressed_a = false;
+
 //Input
 void cGame::ReadKeyboard(unsigned char key, int x, int y, bool press)
 {
 	keys[key] = press;
+	if (key == 'a' && !press)
+		pressed_a = false;
 }
 
 void cGame::ReadMouse(int button, int state, int x, int y)
@@ -80,7 +92,11 @@ bool cGame::Process()
 	
 	//Process Input
 	if(keys[27])	res=false;
-	
+	if (keys['a'] && !pressed_a)
+	{
+		pressed_a = true;
+		Player.AAttack();
+	}
 	else if (keys[GLUT_KEY_UP])		Player.MoveUp(Scene.GetMap());
 	else if (keys[GLUT_KEY_DOWN])	Player.MoveDown(Scene.GetMap());
 	else if (keys[GLUT_KEY_LEFT])	Player.MoveLeft(Scene.GetMap());
