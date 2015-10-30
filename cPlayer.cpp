@@ -28,6 +28,30 @@ void cPlayer::SetAWeapon(Weapon weapon)
 }
 
 
+void cPlayer::MoveRight(int* map)
+{
+	if (!attacking)
+		cBicho::MoveRight(map);
+}
+
+void cPlayer::MoveLeft(int* map)
+{
+	if (!attacking)
+		cBicho::MoveLeft(map);
+}
+
+void cPlayer::MoveUp(int* map)
+{
+	if (!attacking)
+		cBicho::MoveUp(map);
+}
+
+void cPlayer::MoveDown(int* map)
+{
+	if (!attacking)
+		cBicho::MoveDown(map);
+}
+
 void cPlayer::Draw(int tex_id)
 {	
 	float xo,yo,xf,yf;

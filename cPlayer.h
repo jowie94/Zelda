@@ -24,6 +24,11 @@ public:
 
 	void Draw(int tex_id);
 
+	void MoveRight(int *map);
+	void MoveLeft(int *map);
+	void MoveUp(int* map);
+	void MoveDown(int* map);
+
 	void Logic(int* map) override;
 
 private:
