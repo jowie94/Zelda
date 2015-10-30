@@ -17,7 +17,7 @@ void cPlayer::AAttack()
 		int x, y, w, h;
 		GetPosition(&x, &y);
 		GetWidthHeight(&w, &h);
-		aWeapon->SetPosition(x+w, y+h);
+		aWeapon->SetPosition(x, y);
 		aWeapon->Attack(GetLife() == INITIAL_LIFE, GetState());
 	}
 }
