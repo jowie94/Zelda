@@ -46,7 +46,7 @@ void cPlayer::Draw(int tex_id)
 		case STATE_LOOKLEFT:    xo = yo = 0.25f;
 			break;
 		//4
-		case STATE_LOOKRIGHT:	xo = 0.75f; yo = 0.25f;
+		case STATE_LOOKRIGHT:	xo = 0.75f; yo = 0.5f;
 								break;
 		case STATE_LOOKUP:		xo = 0.5f; yo = 0.25f;
 								break;
