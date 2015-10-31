@@ -7,6 +7,9 @@
 #define GAME_WIDTH	640
 #define GAME_HEIGHT 480
 
+#define STATE_PLAYING	 2
+#define STATE_TRANSITION 3
+
 class cGame
 {
 public:
@@ -25,9 +28,13 @@ public:
 	//Output
 	void Render();
 
+	void StartTransition();
 private:
 	unsigned char keys[256];
 	cScene Scene;
 	cPlayer Player;
 	cData Data;
+	int state = STATE_PLAYING;
+	int transition_num;
+	int direction_transition;
 };

@@ -107,3 +107,7 @@ void cPlayer::Logic(int* map)
 	if (!isDead())
 		attacking = !aWeapon->isDead();
 }
+
+int cPlayer::getDirectionTransition() {
+	return direction_transition;
+}

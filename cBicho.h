@@ -16,6 +16,7 @@
 #define STATE_WALKRIGHT		5
 #define STATE_WALKUP		6
 #define STATE_WALKDOWN		7
+#define STATE_DOOR			8
 
 
 class cWeapon; // Forward declaration to avoid circular dependency (Weird compiler stuff)

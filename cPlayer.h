@@ -7,6 +7,15 @@
 
 #define INITIAL_LIFE		3.f
 
+#define PLAYER_DOOR			4
+
+#define TRANSITION_RIGHT    1
+#define TRANSITION_LEFT		2
+#define TRANSITION_TOP		3
+#define TRANSITION_BOTTOM   4
+#define TRANSITION_INSIDE   5
+
+
 enum Weapon
 {
 	SWORD
@@ -30,9 +39,11 @@ public:
 	void MoveDown(int* map);
 
 	void Logic(int* map) override;
+	int getDirectionTransition();
 
 private:
 	cWeapon* aWeapon; // Weapon assigned to button A
 
 	bool attacking;
+	int direction_transition;
 };

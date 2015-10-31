@@ -59,7 +59,8 @@ bool cGame::Loop()
 	time_t start = time(NULL);
 	bool res=true;
 
-	res = Process();
+	if(state != STATE_TRANSITION)
+		res = Process();
 	if(res) Render();
 
 	time_t end = time(NULL);
@@ -102,10 +103,21 @@ bool cGame::Process()
 	else if (keys[GLUT_KEY_LEFT])	Player.MoveLeft(Scene.GetMap());
 	else if (keys[GLUT_KEY_RIGHT])	Player.MoveRight(Scene.GetMap());
 	else Player.Stop();
-	
-	
+
+
 	//Game Logic
 	Player.Logic(Scene.GetMap());
+
+	int player_state = Player.GetState();
+	
+	switch(player_state)
+	{
+		case STATE_DOOR:
+			cGame::StartTransition();
+			break;
+		default:
+			break;
+	}
 
 	return res;
 }
@@ -117,8 +129,22 @@ void cGame::Render()
 	
 	glLoadIdentity();
 
-	Scene.Draw(Data.GetID(IMG_BLOCKS));
-	Player.Draw(Data.GetID(IMG_PLAYER));
+	switch (state)
+	{
+		case STATE_TRANSITION:
+			//Scene.DrawTransition(0, 0, direction_transition, transition_num);
+			break;
+		default:
+			Scene.Draw(Data.GetID(IMG_BLOCKS));
+			Player.Draw(Data.GetID(IMG_PLAYER));
+			break;
+	}
 
 	glutSwapBuffers();
+}
+
+void cGame::StartTransition() {
+	state = STATE_TRANSITION;
+	direction_transition = Player.getDirectionTransition();
+	transition_num = 0;
 }
