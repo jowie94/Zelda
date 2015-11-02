@@ -32,24 +32,52 @@ void cPlayer::MoveRight(int* map)
 {
 	if (!attacking)
 		cBicho::MoveRight(map);
+	int x_aux;
+	int y_aux;
+	GetPosition(&x_aux, &y_aux);
+	if (x_aux == 240) {
+		SetState(STATE_DOOR);
+		direction_transition = TRANSITION_RIGHT;
+	}
 }
 
 void cPlayer::MoveLeft(int* map)
 {
 	if (!attacking)
 		cBicho::MoveLeft(map);
+	int x_aux;
+	int y_aux;
+	GetPosition(&x_aux, &y_aux);
+	if (x_aux == 0) {
+		SetState(STATE_DOOR);
+		direction_transition = TRANSITION_LEFT;
+	}
 }
 
 void cPlayer::MoveUp(int* map)
 {
 	if (!attacking)
 		cBicho::MoveUp(map);
+	int x_aux;
+	int y_aux;
+	GetPosition(&x_aux, &y_aux);
+	if (y_aux == 160) {
+		SetState(STATE_DOOR);
+		direction_transition = TRANSITION_TOP;
+	}
 }
 
 void cPlayer::MoveDown(int* map)
 {
 	if (!attacking)
 		cBicho::MoveDown(map);
+	int x_aux;
+	int y_aux;
+	GetPosition(&x_aux, &y_aux);
+	if (y_aux == 0) {
+		SetState(STATE_DOOR);
+		direction_transition = TRANSITION_BOTTOM;
+	}
 }
 
 void cPlayer::Draw(int tex_id)
@@ -68,7 +96,7 @@ void cPlayer::Draw(int tex_id)
 	{
 		//1
 		case STATE_LOOKLEFT:    xo = yo = 0.25f;
-			break;
+								break;
 		//4
 		case STATE_LOOKRIGHT:	xo = 0.75f; yo = 0.5f;
 								break;

@@ -23,9 +23,19 @@ public:
 
 	bool LoadLevel(int level);
 	void Draw(int tex_id);
+	bool InitTransition(int direction_transition);
+	bool TransitionIsPosible(int direction_transition);
+	bool TransitionFinished(bool vertical, int transition_num);
+	void UpdateMap(void);
+	void DrawTransition(int direction_transition, int transition_num);
 	int *GetMap();
 
 private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene
 	int id_DL;								//actual level display list
+	int transition_list[6];					//The first position(0) will empty.
+
+	int map_transition[SCENE_WIDTH * SCENE_HEIGHT];
+	int id_TL;								//transition level
+	int new_transition_list[6];					//The first position(0) will empty.
 };

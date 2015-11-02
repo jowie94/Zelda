@@ -50,7 +50,7 @@ bool cGame::Init()
 
 	Player.AddWeapon(SWORD, sw);
 	Player.SetAWeapon(SWORD);
-
+	
 	return res;
 }
 
@@ -110,14 +110,30 @@ bool cGame::Process()
 
 	int player_state = Player.GetState();
 	
-	switch(player_state)
-	{
-		case STATE_DOOR:
-			cGame::StartTransition();
-			break;
-		default:
-			break;
+	if (player_state == STATE_DOOR) {
+		int dir = Player.getDirectionTransition();
+		if(Scene.TransitionIsPosible(dir))
+			res = cGame::StartTransition();
+		else {
+			switch (dir)
+			{
+			case TRANSITION_BOTTOM:
+				Player.SetState(STATE_WALKDOWN);
+				break;
+			case TRANSITION_TOP:
+				Player.SetState(STATE_WALKUP);
+				break;
+			case TRANSITION_RIGHT:
+				Player.SetState(STATE_WALKRIGHT );
+				break;
+			case TRANSITION_LEFT:
+				Player.SetState(STATE_WALKLEFT);
+				break;
+			}
+			
+		}
 	}
+			
 
 	return res;
 }
@@ -129,10 +145,20 @@ void cGame::Render()
 	
 	glLoadIdentity();
 
+	bool vertical = true;
+
 	switch (state)
 	{
 		case STATE_TRANSITION:
-			//Scene.DrawTransition(0, 0, direction_transition, transition_num);
+			Scene.DrawTransition(direction_transition, transition_num);
+			if (direction_transition == TRANSITION_LEFT || direction_transition == TRANSITION_RIGHT)
+				vertical = false;
+			if (Scene.TransitionFinished(vertical, transition_num)) {
+				Scene.UpdateMap();
+				state = STATE_PLAYING;
+			}
+			else
+				transition_num++;
 			break;
 		default:
 			Scene.Draw(Data.GetID(IMG_BLOCKS));
@@ -143,8 +169,12 @@ void cGame::Render()
 	glutSwapBuffers();
 }
 
-void cGame::StartTransition() {
+bool cGame::StartTransition() {
 	state = STATE_TRANSITION;
 	direction_transition = Player.getDirectionTransition();
-	transition_num = 0;
+	transition_num = 1;
+	bool trans = Scene.InitTransition(direction_transition);
+	if (!trans)
+		state = STATE_PLAYING;
+	return trans;
 }

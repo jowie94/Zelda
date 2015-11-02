@@ -28,7 +28,7 @@ public:
 	//Output
 	void Render();
 
-	void StartTransition();
+	bool StartTransition();
 private:
 	unsigned char keys[256];
 	cScene Scene;
