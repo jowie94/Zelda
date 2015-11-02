@@ -84,7 +84,7 @@ void cPlayer::Draw(int tex_id)
 {	
 	float xo,yo,xf,yf;
 
-	std::list<cWeapon*> weapons;
+	std::set<cWeapon*> weapons;
 	GetActiveWeapons(weapons);
 
 	for (auto w : weapons)
@@ -134,7 +134,7 @@ void cPlayer::Logic(int* map)
 {
 	cBicho::Logic(map);
 	if (!isDead())
-		attacking = !aWeapon->isDead();
+		attacking = aWeapon->LockPlayer();
 }
 
 int cPlayer::getDirectionTransition() {

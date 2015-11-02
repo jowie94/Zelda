@@ -12,6 +12,8 @@ public:
 	void SetTexture(int id);
 	int GetTexture();
 	virtual void Draw();
+
+	virtual bool LockPlayer();
 private:
 	int texture_id;
 };

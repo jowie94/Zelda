@@ -67,10 +67,10 @@ public:
 	void AddWeapon(int id, cWeapon* weapon);
 	cWeapon* GetWeapon(int id);
 	bool GetWeapon(int id, cWeapon& weapon);
-	void GetActiveWeapons(std::list<cWeapon*>& weapons);
+	void GetActiveWeapons(std::set<cWeapon*>& weapons);
 	int  GetState();
 	void SetState(int s);
-	bool isDead();
+	virtual bool isDead();
 
 	void NextFrame(int max);
 	int  GetFrame();
@@ -93,5 +93,5 @@ private:
 	float damage; // Damage that causes the "Bicho" on colision.
 
 	std::map<int, cWeapon*> weapons; // Available weapons for "Bicho"
-	std::list<cWeapon*> active_weapons; // Weapons currently active on screen
+	std::set<cWeapon*> active_weapons; // Weapons currently active on screen
 };

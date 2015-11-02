@@ -299,7 +299,7 @@ bool cBicho::GetWeapon(int id, cWeapon& weapon)
 	return true;
 }
 
-void cBicho::GetActiveWeapons(std::list<cWeapon*>& weapons)
+void cBicho::GetActiveWeapons(std::set<cWeapon*>& weapons)
 {
 	weapons = this->active_weapons;
 }
@@ -339,7 +339,7 @@ int cBicho::GetFramesToDie()
 
 void cBicho::ActivateWeapon(cWeapon* weapon)
 {
-	active_weapons.push_back(weapon);
+	active_weapons.insert(weapon);
 }
 
 int cBicho::GetState()

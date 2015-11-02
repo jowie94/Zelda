@@ -22,3 +22,8 @@ int cWeapon::GetTexture()
 }
 
 void cWeapon::Draw() {}
+
+bool cWeapon::LockPlayer()
+{
+	return false;
+}
