@@ -101,6 +101,7 @@
     <ClInclude Include="cBicho.h" />
     <ClInclude Include="cData.h" />
     <ClInclude Include="cGame.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="cPlayer.h" />
     <ClInclude Include="cScene.h" />
     <ClInclude Include="cTexture.h" />
