@@ -23,28 +23,29 @@ void wSword::Attack(bool special, int orientation)
 			{
 			case STATE_LOOKLEFT:
 				SetWidthHeight(16, 8);
-				x -= 16; y += 4;
+				x -= 15; y += 2;
 				break;
 			case STATE_LOOKRIGHT:
 				SetWidthHeight(16, 8);
-				x += 16; y += 4;
+				x += 15; y += 2;
 				break;
 			case STATE_LOOKUP:
 				SetWidthHeight(8, 16);
-				x += 4;
-				y += 16;
+				x += 4; y += 11;
 				break;
 			case STATE_LOOKDOWN:
 				SetWidthHeight(8, 16);
-				x += 4;
-				y -= 16;
+				x += 5; y -= 15;
 				break;
 			}
 
 			SetPosition(x, y);
 			SetState(orientation);
 			SetLife(1);
-			SetFramesToDie(3);
+			if (is_special)
+				SetFramesToDie(2);
+			else
+				SetFramesToDie(3);
 			draw_sword = true;
 		} else
 		{
@@ -66,14 +67,18 @@ void wSword::Draw()
 	if (!isDead()) {
 		float xo, yo, xf, yf;
 
+		int frame = GetFrame();
+
 		bool sp = is_special && GetSpecialState() == MOVE;
+
+		int dy = frame == 2 ? 2 : 1;
 
 		switch (GetState())
 		{
 		case STATE_LOOKLEFT:
 			if (sp)
 			{
-				xo = 0.125; yo = xf = 0.375; yf = 0.25;
+				xo = 0.125f; yo = 0.375f * ((GetFrame() * 2) + 1); xf = 0.375f; yf = yo - 0.125f;
 			} else
 			{
 				xo = yo = 0.125f; xf = 0.375f; yf = 0.0f;
@@ -82,7 +87,7 @@ void wSword::Draw()
 		case STATE_LOOKRIGHT:
 			if (sp)
 			{
-				xo = 0.125; yo = 0.5; xf = yf = 0.375;
+				xo = 0.125f; yo = 0.125f * ((GetFrame() * 2) + 4); xf = 0.375f; yf = yo - 0.125f;
 			} else
 			{
 				xo = 0.125f; yo = 0.25f; xf = 0.375f; yf = 0.125f;
@@ -91,7 +96,7 @@ void wSword::Draw()
 		case STATE_LOOKUP:
 			if (sp)
 			{
-				xo = 0.375f; yo = xf = 0.5f; yf = 0.25f;
+				xo = 0.375f; yo = 0.25f * (GetFrame() + 2); xf = 0.5f; yf = yo - 0.25;
 			} else
 			{
 				xo = 0.375f; yo = 0.25f; xf = 0.5f; yf = 0.0f;
@@ -100,7 +105,7 @@ void wSword::Draw()
 		case STATE_LOOKDOWN:
 			if (sp)
 			{
-				xo = 0.0f; yo = 0.5; xf = 0.125; yf = 0.25f;
+				xo = 0.0f; yo = 0.25f * (GetFrame() + 2); xf = 0.125f; yf = yo - 0.25f;
 			} else
 			{
 				xo = yf = 0.0f; yo = 0.25f; xf = 0.125f;
@@ -109,7 +114,7 @@ void wSword::Draw()
 		}
 
 		if (draw_sword) {
-			NextFrame(GetFramesToDie() + 1);
+			NextFrame(GetFramesToDie());
 			DrawRect(GetTexture(), xo, yo, xf, yf);
 		}
 
@@ -167,7 +172,7 @@ void wSword::Logic(int *map)
 		}
 		else
 		{
-			int x, y, sx, sy, frame;
+			int x, y, frame;
 			frame = GetFrame();
 			GetPosition(&x, &y);
 			bool sp = is_special && GetSpecialState() == MOVE;
@@ -176,32 +181,32 @@ void wSword::Logic(int *map)
 			{
 			case STATE_LOOKLEFT:
 				if (sp)
-					x -= 2;
+					x -= 3;
 				else if (!is_special)
-					x += frame;
+					x += 1; 
 				break;
 			case STATE_LOOKRIGHT:
 				if (sp)
-					x += 2;
+					x += 3;
 				else if (!is_special)
-					x -= frame;
+					x -= 1;
 				break;
 			case STATE_LOOKUP:
 				if (sp)
-					y += 2;
+					y += 3;
 				else if (!is_special)
-					y -= frame;
+					y -= 1;
 				break;
 			case STATE_LOOKDOWN:
 				if (sp)
-					y -= 2;
+					y -= 3;
 				else if (!is_special)
-					y += frame;
+					y += 1;
 				break;
 			}
 			SetPosition(x, y);
 
-			if (GetSpecialState() == INIT && frame == 2)
+			if (GetSpecialState() == INIT && frame == GetFramesToDie() - 1)
 				SetSpecialState(MOVE);
 
 			// Check special position if border
@@ -216,7 +221,7 @@ void wSword::Logic(int *map)
 			if (is_special && GetSpecialState() == COLLIDE && GetFrame() == 4)
 				SetSpecialState(NONE);
 
-			if (!is_special && frame >= 2)
+			if (!is_special && frame >= GetFramesToDie() - 1)
 				draw_sword = false;
 		}
 	}
