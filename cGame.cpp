@@ -114,23 +114,20 @@ bool cGame::Process()
 		int dir = Player.getDirectionTransition();
 		if(Scene.TransitionIsPosible(dir))
 			res = cGame::StartTransition();
-		else {
-			switch (dir)
-			{
-			case TRANSITION_BOTTOM:
-				Player.SetState(STATE_WALKDOWN);
-				break;
-			case TRANSITION_TOP:
-				Player.SetState(STATE_WALKUP);
-				break;
-			case TRANSITION_RIGHT:
-				Player.SetState(STATE_WALKRIGHT );
-				break;
-			case TRANSITION_LEFT:
-				Player.SetState(STATE_WALKLEFT);
-				break;
-			}
-			
+		switch (dir)
+		{
+		case TRANSITION_BOTTOM:
+			Player.SetState(STATE_WALKDOWN);
+			break;
+		case TRANSITION_TOP:
+			Player.SetState(STATE_WALKUP);
+			break;
+		case TRANSITION_RIGHT:
+			Player.SetState(STATE_WALKRIGHT );
+			break;
+		case TRANSITION_LEFT:
+			Player.SetState(STATE_WALKLEFT);
+			break;
 		}
 	}
 			
@@ -145,15 +142,11 @@ void cGame::Render()
 	
 	glLoadIdentity();
 
-	bool vertical = true;
-
 	switch (state)
 	{
 		case STATE_TRANSITION:
 			Scene.DrawTransition(direction_transition, transition_num);
-			if (direction_transition == TRANSITION_LEFT || direction_transition == TRANSITION_RIGHT)
-				vertical = false;
-			if (Scene.TransitionFinished(vertical, transition_num)) {
+			if (Scene.TransitionFinished(direction_transition, transition_num)) {
 				Scene.UpdateMap();
 				state = STATE_PLAYING;
 			}
@@ -165,6 +158,9 @@ void cGame::Render()
 			Player.Draw(Data.GetID(IMG_PLAYER));
 			break;
 	}
+
+	Scene.Draw(Data.GetID(IMG_BLOCKS));
+	Player.Draw(Data.GetID(IMG_PLAYER));
 
 	glutSwapBuffers();
 }

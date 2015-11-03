@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cBicho.h"
+#include "Constants.h"
 
 #define PLAYER_START_CX		3
 #define PLAYER_START_CY		2
@@ -8,12 +9,6 @@
 #define INITIAL_LIFE		3.f
 
 #define PLAYER_DOOR			4
-
-#define TRANSITION_RIGHT    1
-#define TRANSITION_LEFT		2
-#define TRANSITION_TOP		3
-#define TRANSITION_BOTTOM   4
-#define TRANSITION_INSIDE   5
 
 
 enum Weapon

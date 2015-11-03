@@ -107,6 +107,7 @@ void cPlayer::Draw(int tex_id)
 		//1..3
 		case STATE_WALKLEFT:	xo = 0.25f;	yo = 0.25f + (GetFrame()*0.25f);
 								NextFrame(2);
+					
 								break;
 		//4..6
 		case STATE_WALKRIGHT:	xo = 0.75f; yo = 0.25f + (GetFrame()*0.25f);

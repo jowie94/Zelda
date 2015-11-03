@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cTexture.h"
+#include "Constants.h"
 
 #define SCENE_Xo		0
 #define SCENE_Yo		0
@@ -25,9 +26,12 @@ public:
 	void Draw(int tex_id);
 	bool InitTransition(int direction_transition);
 	bool TransitionIsPosible(int direction_transition);
-	bool TransitionFinished(bool vertical, int transition_num);
+	bool TransitionFinished(int direction_transition, int transition_num);
 	void UpdateMap(void);
 	void DrawTransition(int direction_transition, int transition_num);
+	void DrawTransitionLeft(int transition_num);
+	void DrawTransitionRight(int transition_num);
+	int GetNumForTransition(int direction_transition, int transition_num, int i, int j);
 	int *GetMap();
 
 private:
