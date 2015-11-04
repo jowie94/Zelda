@@ -133,33 +133,31 @@ void cPlayer::Draw(int tex_id)
 
 
 void cPlayer::UpdateTransitionPos(int transition_num) {
-	if (transition_num % 2 == 0) {
-		int x, y;
-		GetPosition(&x, &y);
+	int x, y;
+	GetPosition(&x, &y);
 
-		switch (getDirectionTransition())
-		{
-		case TRANSITION_BOTTOM:
-			if(transition_num!=SCENE_HEIGHT * 2)
-				y += TILE_SIZE;
-			break;
-		case TRANSITION_INSIDE:
-			break;
-		case TRANSITION_TOP:
-			if (transition_num != SCENE_HEIGHT * 2)
-				y -= TILE_SIZE;
-			break;
-		case TRANSITION_LEFT:
-			if (transition_num != SCENE_WIDTH * 2)
-				x += TILE_SIZE;
-			break;
-		case TRANSITION_RIGHT:
-			if (transition_num != SCENE_WIDTH * 2)
-				x -= TILE_SIZE;
-			break;
-		}
-		SetPosition(x, y);
+	switch (getDirectionTransition())
+	{
+	case TRANSITION_BOTTOM:
+		if(transition_num < SCENE_HEIGHT*2 - 1)
+			y += TILE_SIZE/2;
+		break;
+	case TRANSITION_INSIDE:
+		break;
+	case TRANSITION_TOP:
+		if (transition_num < SCENE_HEIGHT*2 - 1)
+			y -= TILE_SIZE/2;
+		break;
+	case TRANSITION_LEFT:
+		if (transition_num < SCENE_WIDTH*2 - 1)
+			x += TILE_SIZE/2;
+		break;
+	case TRANSITION_RIGHT:
+		if (transition_num < SCENE_WIDTH*2 - 1)
+			x -= TILE_SIZE/2;
+		break;
 	}
+	SetPosition(x, y);
 	
 }
 
