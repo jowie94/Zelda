@@ -99,11 +99,11 @@ bool cScene::TransitionIsPosible(int direction_transition) {
 }
 
 bool cScene::TransitionFinished(int direction_transition, int transition_num) {
-	if (transition_num == SCENE_HEIGHT) {
+	if (transition_num == SCENE_HEIGHT*2) {
 		if (direction_transition == TRANSITION_BOTTOM || direction_transition == TRANSITION_TOP)
 			return true;
 	}
-	if (transition_num == SCENE_WIDTH) {
+	if (transition_num == SCENE_WIDTH*2) {
 		if (direction_transition == TRANSITION_RIGHT || direction_transition == TRANSITION_LEFT)
 			return true;
 	}
@@ -158,51 +158,54 @@ bool cScene::InitTransition(int direction_transition) {
 }
 
 void cScene::DrawTransition(int direction_transition, int transition_num) {
-	char str[128];
-	int px, py;
-	float coordx_tile, coordy_tile;
+	if (transition_num % 2 == 0) {
+		transition_num /= 2;
+		char str[128];
+		int px, py;
+		float coordx_tile, coordy_tile;
 
-	id_DL = glGenLists(1);
-	glNewList(id_DL, GL_COMPILE);
-	glBegin(GL_QUADS);
+		id_DL = glGenLists(1);
+		glNewList(id_DL, GL_COMPILE);
+		glBegin(GL_QUADS);
 
-	for (int j = SCENE_HEIGHT - 1;j >= 0;j--)
-	{
-		px = SCENE_Xo;
-		py = SCENE_Yo + (j*TILE_SIZE);
-	
-		for (int i = 0;i<SCENE_WIDTH;i++)
+		for (int j = SCENE_HEIGHT - 1;j >= 0;j--)
 		{
-	
-			int num = GetNumForTransition(direction_transition, transition_num, i, j);
-			
-			if (num < 10)OutputDebugString(" ");
-			sprintf(str, "%d ", num);
-			OutputDebugString(str);
-	
-			int columna = (num - 1) % 12;
-			int fila = (num - 1) / 12;
-	
-			int num_pixel_x = columna*TILE_SIZE;
-			int num_pixel_y = fila*TILE_SIZE;
-	
-			coordx_tile = float(num_pixel_x) / WORLD_TILE_MAP_SIZE;
-			coordy_tile = float(num_pixel_y) / WORLD_TILE_MAP_SIZE;
-	
-			//BLOCK_SIZE = 16, FILE_SIZE = 256
-			// 16 / 256 = 0.0625
-			glTexCoord2f(coordx_tile, coordy_tile + 0.0625f);	glVertex2i(px, py);
-			glTexCoord2f(coordx_tile + 0.0625f, coordy_tile + 0.0625f);	glVertex2i(px + BLOCK_SIZE, py);
-			glTexCoord2f(coordx_tile + 0.0625f, coordy_tile);	glVertex2i(px + BLOCK_SIZE, py + BLOCK_SIZE);
-			glTexCoord2f(coordx_tile, coordy_tile);	glVertex2i(px, py + BLOCK_SIZE);
-	
-			px += TILE_SIZE;
+			px = SCENE_Xo;
+			py = SCENE_Yo + (j*TILE_SIZE);
+
+			for (int i = 0;i < SCENE_WIDTH;i++)
+			{
+
+				int num = GetNumForTransition(direction_transition, transition_num, i, j);
+
+				if (num < 10)OutputDebugString(" ");
+				sprintf(str, "%d ", num);
+				OutputDebugString(str);
+
+				int columna = (num - 1) % 12;
+				int fila = (num - 1) / 12;
+
+				int num_pixel_x = columna*TILE_SIZE;
+				int num_pixel_y = fila*TILE_SIZE;
+
+				coordx_tile = float(num_pixel_x) / WORLD_TILE_MAP_SIZE;
+				coordy_tile = float(num_pixel_y) / WORLD_TILE_MAP_SIZE;
+
+				//BLOCK_SIZE = 16, FILE_SIZE = 256
+				// 16 / 256 = 0.0625
+				glTexCoord2f(coordx_tile, coordy_tile + 0.0625f);	glVertex2i(px, py);
+				glTexCoord2f(coordx_tile + 0.0625f, coordy_tile + 0.0625f);	glVertex2i(px + BLOCK_SIZE, py);
+				glTexCoord2f(coordx_tile + 0.0625f, coordy_tile);	glVertex2i(px + BLOCK_SIZE, py + BLOCK_SIZE);
+				glTexCoord2f(coordx_tile, coordy_tile);	glVertex2i(px, py + BLOCK_SIZE);
+
+				px += TILE_SIZE;
+			}
+			OutputDebugString("\n");
+
 		}
-		OutputDebugString("\n");
-	
+		glEnd();
+		glEndList();
 	}
-	glEnd();
-	glEndList();
 }
 
 int cScene::GetNumForTransition(int direction_transition, int transition_num, int i, int j) {
@@ -212,8 +215,16 @@ int cScene::GetNumForTransition(int direction_transition, int transition_num, in
 	switch (direction_transition)
 	{
 	case TRANSITION_BOTTOM:
+		if (j < transition_num)
+			num = map_transition[((lim_j + j)*SCENE_WIDTH) + i];
+		else
+			num = map[((j - transition_num)*SCENE_WIDTH) + i];
 		break;
 	case TRANSITION_TOP:
+		if (j < lim_j)
+			num = map[((j + transition_num)*SCENE_WIDTH) + i];
+		else
+			num = map_transition[((j - lim_j)*SCENE_WIDTH) + i];
 		break;
 	case TRANSITION_RIGHT:
 		if (i < lim_i)

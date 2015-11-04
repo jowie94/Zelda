@@ -8,7 +8,6 @@
 #define GAME_HEIGHT 480
 
 #define STATE_PLAYING	 2
-#define STATE_TRANSITION 3
 
 class cGame
 {

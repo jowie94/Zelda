@@ -25,6 +25,7 @@ public:
 	void AAttack();
 
 	void SetAWeapon(Weapon weapon); // Set weapon assigned to button A
+	void UpdateTransitionPos(int transition_num);
 
 	void Draw(int tex_id);
 
@@ -35,6 +36,7 @@ public:
 
 	void Logic(int* map) override;
 	int getDirectionTransition();
+	void SetStateAfterTransition(void);
 
 private:
 	cWeapon* aWeapon; // Weapon assigned to button A

@@ -1,5 +1,6 @@
 #include "cPlayer.h"
 #include "cWeapon.h"
+#include "cScene.h"
 
 cPlayer::cPlayer()
 {
@@ -130,6 +131,39 @@ void cPlayer::Draw(int tex_id)
 	DrawRect(tex_id,xo,yo,xf,yf);
 }
 
+
+void cPlayer::UpdateTransitionPos(int transition_num) {
+	if (transition_num % 2 == 0) {
+		int x, y;
+		GetPosition(&x, &y);
+
+		switch (getDirectionTransition())
+		{
+		case TRANSITION_BOTTOM:
+			if(transition_num!=SCENE_HEIGHT * 2)
+				y += TILE_SIZE;
+			break;
+		case TRANSITION_INSIDE:
+			break;
+		case TRANSITION_TOP:
+			if (transition_num != SCENE_HEIGHT * 2)
+				y -= TILE_SIZE;
+			break;
+		case TRANSITION_LEFT:
+			if (transition_num != SCENE_WIDTH * 2)
+				x += TILE_SIZE;
+			break;
+		case TRANSITION_RIGHT:
+			if (transition_num != SCENE_WIDTH * 2)
+				x -= TILE_SIZE;
+			break;
+		}
+		SetPosition(x, y);
+	}
+	
+}
+
+
 void cPlayer::Logic(int* map)
 {
 	cBicho::Logic(map);
@@ -139,4 +173,23 @@ void cPlayer::Logic(int* map)
 
 int cPlayer::getDirectionTransition() {
 	return direction_transition;
+}
+
+void cPlayer::SetStateAfterTransition(void) {
+	int dir = getDirectionTransition();
+	switch (dir)
+	{
+	case TRANSITION_BOTTOM:
+		SetState(STATE_LOOKDOWN);
+		break;
+	case TRANSITION_TOP:
+		SetState(STATE_LOOKUP);
+		break;
+	case TRANSITION_LEFT:
+		SetState(STATE_LOOKLEFT);
+		break;
+	case TRANSITION_RIGHT:
+		SetState(STATE_LOOKRIGHT);
+		break;
+	}
 }
