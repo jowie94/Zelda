@@ -66,6 +66,10 @@ void cPlayer::MoveUp(int* map)
 		SetState(STATE_DOOR);
 		direction_transition = TRANSITION_TOP;
 	}
+	if (IsDoor(map, y_aux)) {
+		SetState(STATE_DOOR);
+		direction_transition = TRANSITION_INSIDE;
+	}
 }
 
 void cPlayer::MoveDown(int* map)
@@ -128,21 +132,29 @@ void cPlayer::Draw(int tex_id)
 	xf = xo + 0.25f;
 	yf = yo - 0.25f;
 
+	if (transition)
+		yo -= (0.25f/16)*transition_num;
+
 	DrawRect(tex_id,xo,yo,xf,yf);
 }
 
 
 void cPlayer::UpdateTransitionPos(int transition_num) {
-	int x, y;
+	this->transition_num = transition_num;
+	int x, y, w, h;
 	GetPosition(&x, &y);
+	GetWidthHeight(&w, &h);
 
-	switch (getDirectionTransition())
+	switch (GetDirectionTransition())
 	{
 	case TRANSITION_BOTTOM:
 		if(transition_num < SCENE_HEIGHT*2 - 1)
 			y += TILE_SIZE/2;
 		break;
 	case TRANSITION_INSIDE:
+		--h;
+		break;
+	case TRANSITION_OUTSIDE:
 		break;
 	case TRANSITION_TOP:
 		if (transition_num < SCENE_HEIGHT*2 - 1)
@@ -158,7 +170,7 @@ void cPlayer::UpdateTransitionPos(int transition_num) {
 		break;
 	}
 	SetPosition(x, y);
-	
+	SetWidthHeight(w, h);
 }
 
 
@@ -169,12 +181,20 @@ void cPlayer::Logic(int* map)
 		attacking = aWeapon->LockPlayer();
 }
 
-int cPlayer::getDirectionTransition() {
+int cPlayer::GetDirectionTransition(void) {
 	return direction_transition;
 }
 
+void cPlayer::SetDirectionTransition(int new_direction_transition) {
+	direction_transition = new_direction_transition;
+}
+
 void cPlayer::SetStateAfterTransition(void) {
-	int dir = getDirectionTransition();
+	SetTransition(false);
+	transition_num = 1;
+	SetWidthHeight(16, 16);
+	SetPosition(112, 0);
+	int dir = GetDirectionTransition();
 	switch (dir)
 	{
 	case TRANSITION_BOTTOM:
@@ -190,4 +210,17 @@ void cPlayer::SetStateAfterTransition(void) {
 		SetState(STATE_LOOKRIGHT);
 		break;
 	}
+}
+
+void cPlayer::SetTransition(bool trans) {
+	transition = trans;
+}
+
+bool cPlayer::IsDoor(int* map, int y_coord) {
+	int x_tile;
+	int y_tile;
+	GetTile(&x_tile, &y_tile);
+	if (map[(y_tile * SCENE_WIDTH) + x_tile] == 23 && y_coord%TILE_SIZE == 0)
+		return true;
+	return false;
 }

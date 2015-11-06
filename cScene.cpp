@@ -93,22 +93,27 @@ void cScene::Draw(int tex_id)
 bool cScene::TransitionIsPosible(int direction_transition) {
 	int level = transition_list[direction_transition];
 	if (level == 0) {
+		if (direction_transition == TRANSITION_BOTTOM && transition_list[TRANSITION_OUTSIDE] != 0)
+			return true;
 		return false;
 	}
 	return true;
 }
 
 bool cScene::TransitionFinished(int direction_transition, int transition_num) {
-	if (transition_num == SCENE_HEIGHT*2) {
+	if (transition_num == SCENE_HEIGHT*2)
 		if (direction_transition == TRANSITION_BOTTOM || direction_transition == TRANSITION_TOP)
 			return true;
-	}
-	if (transition_num == SCENE_WIDTH*2) {
+	
+	if (transition_num == SCENE_WIDTH*2)
 		if (direction_transition == TRANSITION_RIGHT || direction_transition == TRANSITION_LEFT)
 			return true;
-	}
-	else
-		return false;
+	
+	if (transition_num == TILE_SIZE) 
+		if (direction_transition == TRANSITION_INSIDE || direction_transition == TRANSITION_OUTSIDE)
+			return true;
+	
+	return false;
 }
 
 void cScene::UpdateMap(void) {
@@ -143,7 +148,7 @@ bool cScene::InitTransition(int direction_transition) {
 		fscanf(fd, "%c", &tile1); //pass enter
 	}
 
-	for (int i = 1; i < 6; ++i) {
+	for (int i = 1; i < 7; ++i) {
 		char num1, num2;
 		fscanf(fd, "%c%c", &num1, &num2);
 
@@ -158,26 +163,34 @@ bool cScene::InitTransition(int direction_transition) {
 }
 
 void cScene::DrawTransition(int direction_transition, int transition_num) {
+	if (direction_transition == TRANSITION_INSIDE || direction_transition == TRANSITION_OUTSIDE) {
+		if (transition_num == TILE_SIZE)
+			DrawTransitionEdge(direction_transition, transition_num);
+	}
+	else 
+		DrawTransitionEdge(direction_transition, transition_num);
+}
+
+void cScene::DrawTransitionEdge(int direction_transition, int transition_num) {
 	int offsetx, offsety;
 	offsetx = offsety = 0;
 	if (transition_num % 2 != 0) {
 		transition_num -= 1;
-		switch (direction_transition) 
+		switch (direction_transition)
 		{
 		case TRANSITION_BOTTOM:
 			offsety = TILE_SIZE / 2;
 			break;
 		case TRANSITION_TOP:
-			offsety = - TILE_SIZE / 2;
+			offsety = -TILE_SIZE / 2;
 			break;
 		case TRANSITION_RIGHT:
-			offsetx = - TILE_SIZE / 2;
+			offsetx = -TILE_SIZE / 2;
 			break;
 		case TRANSITION_LEFT:
 			offsetx = TILE_SIZE / 2;
 			break;
 		}
-
 	}
 	transition_num /= 2;
 	char str[128];
@@ -259,6 +272,9 @@ int cScene::GetNumForTransition(int direction_transition, int transition_num, in
 			num = map_transition[(j*SCENE_WIDTH) + lim_i + i];
 		else
 			num = map[(j*SCENE_WIDTH) + i - transition_num];
+		break;
+	default:
+		num = map_transition[(j*SCENE_WIDTH) + i];
 		break;
 	}
 	return num;

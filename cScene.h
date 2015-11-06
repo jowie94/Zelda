@@ -29,6 +29,8 @@ public:
 	bool TransitionFinished(int direction_transition, int transition_num);
 	void UpdateMap(void);
 	void DrawTransition(int direction_transition, int transition_num);
+	void DrawTransitionEdge(int direction_transition, int transition_num);
+	void DrawTransitionDeep(int direction_transition, int transition_num);
 	void DrawTransitionLeft(int transition_num);
 	void DrawTransitionRight(int transition_num);
 	int GetNumForTransition(int direction_transition, int transition_num, int i, int j);
@@ -37,9 +39,9 @@ public:
 private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene
 	int id_DL;								//actual level display list
-	int transition_list[6];					//The first position(0) will empty.
+	int transition_list[7];					//The first position(0) will empty.
 
 	int map_transition[SCENE_WIDTH * SCENE_HEIGHT];
 	int id_TL;								//transition level
-	int new_transition_list[6];					//The first position(0) will empty.
+	int new_transition_list[7];				//The first position(0) will empty.
 };

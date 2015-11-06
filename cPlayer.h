@@ -35,12 +35,18 @@ public:
 	void MoveDown(int* map);
 
 	void Logic(int* map) override;
-	int getDirectionTransition();
+	int GetDirectionTransition(void);
+	void SetDirectionTransition(int direction_transition);
 	void SetStateAfterTransition(void);
+	void SetTransition(bool trans);
+
+	bool IsDoor(int* map, int y_aux);
 
 private:
 	cWeapon* aWeapon; // Weapon assigned to button A
 
 	bool attacking;
+	bool transition;
 	int direction_transition;
+	int transition_num;
 };

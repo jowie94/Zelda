@@ -111,7 +111,7 @@ bool cGame::Process()
 	int player_state = Player.GetState();
 	
 	if (player_state == STATE_DOOR) {
-		int dir = Player.getDirectionTransition();
+		int dir = Player.GetDirectionTransition();
 		if (Scene.TransitionIsPosible(dir)) {
 			res = cGame::StartTransition();
 		}
@@ -122,6 +122,12 @@ bool cGame::Process()
 			break;
 		case TRANSITION_TOP:
 			Player.SetState(STATE_WALKUP);
+			break;
+		case TRANSITION_INSIDE:
+			Player.SetState(STATE_WALKUP);
+			break;
+		case TRANSITION_OUTSIDE:
+			Player.SetState(STATE_WALKDOWN);
 			break;
 		case TRANSITION_RIGHT:
 			Player.SetState(STATE_WALKRIGHT);
@@ -169,7 +175,12 @@ void cGame::Render()
 
 bool cGame::StartTransition() {
 	state = STATE_TRANSITION;
-	direction_transition = Player.getDirectionTransition();
+	direction_transition = Player.GetDirectionTransition();
+	if (direction_transition == TRANSITION_BOTTOM && Scene.TransitionIsPosible(TRANSITION_OUTSIDE)){
+		Player.SetDirectionTransition(TRANSITION_OUTSIDE);
+		direction_transition = Player.GetDirectionTransition();
+	}
+	Player.SetTransition(true);
 	transition_num = 1;
 	bool trans = Scene.InitTransition(direction_transition);
 	if (!trans)

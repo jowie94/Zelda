@@ -142,12 +142,12 @@ bool cBicho::CollidesMapFloor(int *map, bool up)
 		{
 			int back_tile = map[(tile_x + i) + ((tile_y - 1) * SCENE_WIDTH)];
 			int front_tile = map[(tile_x + i) + ((tile_y + 1) * SCENE_WIDTH)];
-			if(back_tile != 9 && front_tile != 9)
+			if(back_tile != 9 && front_tile != 9 && back_tile != 23 && front_tile != 23)
 				on_base = true;
 		}
 		else
 		{
-			if(map[ (tile_x + i) + (tile_y * SCENE_WIDTH) ] != 9 && (y % TILE_SIZE) > 10)
+			if(map[ (tile_x + i) + (tile_y * SCENE_WIDTH) ] != 9 && map[(tile_x + i) + (tile_y * SCENE_WIDTH)] != 23 && (y % TILE_SIZE) > 10)
 			{
 				on_base = true;
 			}
@@ -234,6 +234,10 @@ void cBicho::MoveUp(int *map)
 	state = STATE_WALKUP;
 	if (CollidesMapFloor(map, true))
 		y = yaux;
+	char str[128];
+	sprintf(str, "x = %d, y = %d \n", x, y);
+	OutputDebugString(str);
+
 }
 
 void cBicho::MoveDown(int *map)
