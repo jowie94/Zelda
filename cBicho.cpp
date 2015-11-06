@@ -331,6 +331,12 @@ int cBicho::GetFrame()
 	return seq;
 }
 
+void cBicho::ResetFrame()
+{
+	this->seq = 0;
+	this->delay = 0;
+}
+
 void cBicho::SetFramesToDie(int frames)
 {
 	frames_to_die = frames;

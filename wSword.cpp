@@ -67,18 +67,14 @@ void wSword::Draw()
 	if (!isDead()) {
 		float xo, yo, xf, yf;
 
-		int frame = GetFrame();
-
 		bool sp = is_special && GetSpecialState() == MOVE;
-
-		int dy = frame == 2 ? 2 : 1;
 
 		switch (GetState())
 		{
 		case STATE_LOOKLEFT:
 			if (sp)
 			{
-				xo = 0.125f; yo = 0.375f * ((GetFrame() * 2) + 1); xf = 0.375f; yf = yo - 0.125f;
+				xo = 0.125f; yo = 0.375f + 0.25f * GetFrame(); xf = 0.375f; yf = yo - 0.125f;
 			} else
 			{
 				xo = yo = 0.125f; xf = 0.375f; yf = 0.0f;
@@ -87,7 +83,7 @@ void wSword::Draw()
 		case STATE_LOOKRIGHT:
 			if (sp)
 			{
-				xo = 0.125f; yo = 0.125f * ((GetFrame() * 2) + 4); xf = 0.375f; yf = yo - 0.125f;
+				xo = 0.125f; yo = 0.5 + 0.25f * GetFrame(); xf = 0.375f; yf = yo - 0.125f;
 			} else
 			{
 				xo = 0.125f; yo = 0.25f; xf = 0.375f; yf = 0.125f;
@@ -167,8 +163,7 @@ void wSword::Logic(int *map)
 		{
 			SetLife(0);
 			draw_sword = false;
-			while (GetFrame() != 0)
-				NextFrame(1);
+			ResetFrame();
 		}
 		else
 		{
@@ -213,8 +208,7 @@ void wSword::Logic(int *map)
 			if (sp && SpecialCollidesWithBorder())
 			{
 				SetSpecialState(COLLIDE);
-				while (GetFrame() != 0) // TODO: Implement reset current frame function
-					NextFrame(1);
+				ResetFrame();
 				SetFramesToDie(5);
 			}
 

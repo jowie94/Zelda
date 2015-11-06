@@ -74,6 +74,7 @@ public:
 
 	void NextFrame(int max);
 	int  GetFrame();
+	void ResetFrame();
 
 	void SetFramesToDie(int frames);
 	int GetFramesToDie();
