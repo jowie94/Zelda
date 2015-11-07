@@ -40,7 +40,11 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_WEAPONS, "res/weapons.png", GL_RGBA);
 	if (!res) return false;
 
+	res = Data.LoadImage(IMG_INTERFACE, "res/link_life.png", GL_RGBA);
+	if (!res) return false;
+
 	////Show player
+	
 	Player.SetWidthHeight(16,16);
 	Player.SetTile(6,5);
 	Player.SetWidthHeight(16,16);
@@ -51,6 +55,8 @@ bool cGame::Init()
 	Player.AddWeapon(SWORD, sw);
 	Player.SetAWeapon(SWORD);
 	
+	Interface = *new cInterface(Player.GetLife());
+
 	return res;
 }
 
@@ -138,6 +144,7 @@ bool cGame::Process()
 		}
 	}
 			
+	Interface.Process(Player.GetLife());
 
 	return res;
 }
@@ -169,7 +176,7 @@ void cGame::Render()
 			Player.Draw(Data.GetID(IMG_PLAYER));
 			break;
 	}
-
+	Interface.Draw(Data.GetID(IMG_INTERFACE));
 	glutSwapBuffers();
 }
 

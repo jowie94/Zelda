@@ -38,6 +38,9 @@
     <ClCompile Include="wSword.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cBicho.h">
@@ -68,6 +71,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

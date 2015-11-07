@@ -2,6 +2,7 @@
 
 #include "cScene.h"
 #include "cPlayer.h"
+#include "cInterface.h"
 #include "cData.h"
 
 #define GAME_WIDTH	640
@@ -33,6 +34,7 @@ private:
 	cScene Scene;
 	cPlayer Player;
 	cData Data;
+	cInterface Interface;
 	int state = STATE_PLAYING;
 	int transition_num;
 	int direction_transition;
