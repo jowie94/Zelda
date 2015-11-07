@@ -34,14 +34,17 @@ public:
 	void DrawTransitionLeft(int transition_num);
 	void DrawTransitionRight(int transition_num);
 	int GetNumForTransition(int direction_transition, int transition_num, int i, int j);
+	int *GetTransitionOutsidePos();
 	int *GetMap();
 
 private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene
 	int id_DL;								//actual level display list
 	int transition_list[7];					//The first position(0) will empty.
+	int outside_pos[2];
 
 	int map_transition[SCENE_WIDTH * SCENE_HEIGHT];
 	int id_TL;								//transition level
 	int new_transition_list[7];				//The first position(0) will empty.
+	int transition_outside_pos[2];
 };

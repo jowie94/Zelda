@@ -36,6 +36,7 @@ public:
 
 	void Logic(int* map) override;
 	int GetDirectionTransition(void);
+	void StartTransition(int* outside_pos);
 	void SetDirectionTransition(int direction_transition);
 	void SetStateAfterTransition(void);
 	void SetTransition(bool trans);

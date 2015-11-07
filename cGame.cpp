@@ -30,7 +30,7 @@ bool cGame::Init()
 	//Scene initialization
 	res = Data.LoadImage(IMG_BLOCKS,"res/WorldTiles.png",GL_RGBA);
 	if(!res) return false;
-	res = Scene.LoadLevel(1);
+	res = Scene.LoadLevel(4);
 	if(!res) return false;
 
 	////Player initialization
@@ -180,7 +180,7 @@ bool cGame::StartTransition() {
 		Player.SetDirectionTransition(TRANSITION_OUTSIDE);
 		direction_transition = Player.GetDirectionTransition();
 	}
-	Player.SetTransition(true);
+	Player.StartTransition(Scene.GetTransitionOutsidePos());
 	transition_num = 1;
 	bool trans = Scene.InitTransition(direction_transition);
 	if (!trans)

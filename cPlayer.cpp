@@ -97,7 +97,9 @@ void cPlayer::Draw(int tex_id)
 		w->Draw();
 	}
 
-	switch(GetState())
+	int state = GetState();
+
+	switch(state)
 	{
 		//1
 		case STATE_LOOKLEFT:    xo = yo = 0.25f;
@@ -132,8 +134,10 @@ void cPlayer::Draw(int tex_id)
 	xf = xo + 0.25f;
 	yf = yo - 0.25f;
 
-	if (transition)
-		yo -= (0.25f/16)*transition_num;
+	if (transition && direction_transition==TRANSITION_INSIDE)
+		yo -= (0.25f/TILE_SIZE)*transition_num;
+	else if(transition && direction_transition == TRANSITION_OUTSIDE)
+		yo = yf + (0.25f/TILE_SIZE)*transition_num;
 
 	DrawRect(tex_id,xo,yo,xf,yf);
 }
@@ -155,6 +159,7 @@ void cPlayer::UpdateTransitionPos(int transition_num) {
 		--h;
 		break;
 	case TRANSITION_OUTSIDE:
+		++h;
 		break;
 	case TRANSITION_TOP:
 		if (transition_num < SCENE_HEIGHT*2 - 1)
@@ -192,8 +197,9 @@ void cPlayer::SetDirectionTransition(int new_direction_transition) {
 void cPlayer::SetStateAfterTransition(void) {
 	SetTransition(false);
 	transition_num = 1;
-	SetWidthHeight(16, 16);
-	SetPosition(112, 0);
+	SetWidthHeight(TILE_SIZE, TILE_SIZE);
+	if(direction_transition==TRANSITION_INSIDE)
+		SetPosition(112, 0);
 	int dir = GetDirectionTransition();
 	switch (dir)
 	{
@@ -209,8 +215,27 @@ void cPlayer::SetStateAfterTransition(void) {
 	case TRANSITION_RIGHT:
 		SetState(STATE_LOOKRIGHT);
 		break;
+	case TRANSITION_INSIDE:
+		SetState(STATE_LOOKUP);
+		break;
+	case TRANSITION_OUTSIDE:
+		SetState(STATE_LOOKDOWN);
+		break;
 	}
 }
+
+
+void cPlayer::StartTransition(int* outside_pos) {
+	transition = true;
+	if (direction_transition == TRANSITION_OUTSIDE) {
+		int w, h;
+		GetWidthHeight(&w, &h);
+		h = 0;
+		SetWidthHeight(w, h);
+		SetPosition(outside_pos[0]*TILE_SIZE, outside_pos[1]*TILE_SIZE);
+	}
+}
+
 
 void cPlayer::SetTransition(bool trans) {
 	transition = trans;

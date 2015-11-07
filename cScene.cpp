@@ -63,13 +63,24 @@ bool cScene::LoadLevel(int level)
 				}
 				fscanf(fd,"%c",&tile1); //pass enter
 			}
-			for (int i = 1; i < 6; ++i) {
+			for (int i = 1; i < 7; ++i) {
 				char num1, num2;
 				fscanf(fd, "%c%c", &num1, &num2);
 
 				int num = (num1 - '0') * 10 + (num2 - '0');
 
 				transition_list[i] = num;
+				if (i == TRANSITION_OUTSIDE && num > 0) {
+					fscanf(fd, "%c", &num1); //pass space
+
+					fscanf(fd, "%c%c", &num1, &num2);
+					outside_pos[0] = (num1 - '0') * 10 + (num2 - '0'); // read x coord outside pos
+
+					fscanf(fd, "%c", &num1); //pass space
+
+					fscanf(fd, "%c%c", &num1, &num2);
+					outside_pos[1] = (num1 - '0') * 10 + (num2 - '0'); // read y coord outside pos
+				}
 
 				fscanf(fd, "%c", &tile1); //pass enter
 			}
@@ -100,6 +111,12 @@ bool cScene::TransitionIsPosible(int direction_transition) {
 	return true;
 }
 
+
+int* cScene::GetTransitionOutsidePos() {
+	return outside_pos;
+}
+
+
 bool cScene::TransitionFinished(int direction_transition, int transition_num) {
 	if (transition_num == SCENE_HEIGHT*2)
 		if (direction_transition == TRANSITION_BOTTOM || direction_transition == TRANSITION_TOP)
@@ -119,6 +136,7 @@ bool cScene::TransitionFinished(int direction_transition, int transition_num) {
 void cScene::UpdateMap(void) {
 	std::copy(std::begin(map_transition), std::end(map_transition), std::begin(map));
 	std::copy(std::begin(new_transition_list), std::end(new_transition_list), std::begin(transition_list));
+	std::copy(std::begin(transition_outside_pos), std::end(transition_outside_pos), std::begin(outside_pos));
 }
 
 bool cScene::InitTransition(int direction_transition) {
@@ -156,7 +174,21 @@ bool cScene::InitTransition(int direction_transition) {
 
 		new_transition_list[i] = num;
 
+		if (i == TRANSITION_OUTSIDE && num > 0) {
+			fscanf(fd, "%c", &num1); //pass space
+
+			fscanf(fd, "%c%c", &num1, &num2);
+			transition_outside_pos[0] = (num1 - '0') * 10 + (num2 - '0'); // read x coord outside pos
+
+			fscanf(fd, "%c", &num1); //pass space
+
+			fscanf(fd, "%c%c", &num1, &num2);
+			transition_outside_pos[1] = (num1 - '0') * 10 + (num2 - '0'); // read y coord outside pos
+		}
+
 		fscanf(fd, "%c", &tile1); //pass enter
+
+
 	}
 	fclose(fd);
 	return true;
@@ -164,7 +196,9 @@ bool cScene::InitTransition(int direction_transition) {
 
 void cScene::DrawTransition(int direction_transition, int transition_num) {
 	if (direction_transition == TRANSITION_INSIDE || direction_transition == TRANSITION_OUTSIDE) {
-		if (transition_num == TILE_SIZE)
+		if (direction_transition == TRANSITION_INSIDE && transition_num == TILE_SIZE)
+			DrawTransitionEdge(direction_transition, transition_num);
+		else if (direction_transition == TRANSITION_OUTSIDE && transition_num == 1)
 			DrawTransitionEdge(direction_transition, transition_num);
 	}
 	else 
