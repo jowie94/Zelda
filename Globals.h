@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <vector>
 #include <set>
 #include <map>
+#include <list>
 #include <gl/glut.h>
+
+typedef std::vector<std::vector<float>> fMatrix;

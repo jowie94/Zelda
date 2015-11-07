@@ -87,6 +87,9 @@ bool cScene::LoadLevel(int level)
 		glEnd();
 	glEndList();
 
+	if (!feof(fd))
+		ReadEnemies(fd);
+
 	fclose(fd);
 
 	return res;
@@ -190,6 +193,10 @@ bool cScene::InitTransition(int direction_transition) {
 
 
 	}
+
+	if (!feof(fd))
+		ReadEnemies(fd);
+
 	fclose(fd);
 	return true;
 }
@@ -317,4 +324,43 @@ int cScene::GetNumForTransition(int direction_transition, int transition_num, in
 int* cScene::GetMap()
 {
 	return map;
+}
+
+void cScene::GetEnemies(fMatrix& enemies) const
+{
+	enemies = this->enemies;
+}
+
+void cScene::ReadEnemies(FILE* fd)
+{
+	char c;
+	fscanf(fd, "%c", &c);
+	if (c == '-')
+	{
+		fscanf(fd, "%c", &c); // Ignore enter
+		while (c != '-')
+		{
+			float id, am, life, damage;
+			char c2;
+
+			fscanf(fd, "%c", &c); // Get enemy ID
+			id = c - '0';
+
+			fscanf(fd, " "); // Ignore space
+			fscanf(fd, "%c%c", &c, &c2); // Get amount of enemies
+			am = (c - '0') * 10 + (c2 - '0');
+
+			fscanf(fd, " "); // Ignore space
+			fscanf(fd, "%c.%c", &c, &c2); // Get life of enemies
+			life = (c - '0') + (c2 - '0') / 10.0f;
+
+			fscanf(fd, " ");
+			fscanf(fd, "%c.%c", &c, &c2); // Get damage of enemies
+			damage = (c - '0') + (c2 - '0') / 10.0f;
+
+			enemies.push_back({ id, am, life, damage });
+			fscanf(fd, "\n");
+			fscanf(fd, "%c", &c);
+		}
+	}
 }

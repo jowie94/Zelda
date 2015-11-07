@@ -38,6 +38,12 @@
     <ClCompile Include="wSword.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cEnemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="eOctorok.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -71,6 +77,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cEnemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="eOctorok.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cInterface.h">

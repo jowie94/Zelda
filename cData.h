@@ -11,6 +11,7 @@
 #define IMG_PLAYER		1
 #define IMG_WEAPONS		2
 #define IMG_INTERFACE	3
+#define IMG_OCTOROK     4
 /*
 #define IMG_ENEMY1	2
 #define IMG_ENEMY2	3

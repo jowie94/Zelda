@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <time.h>
 #include "wSword.h"
+#include "eOctorok.h"
 
 
 cGame::cGame(void)
@@ -43,11 +44,13 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_INTERFACE, "res/link_life.png", GL_RGBA);
 	if (!res) return false;
 
+	res = Data.LoadImage(IMG_OCTOROK, "res/octorok.png", GL_RGBA);
+	if (!res) return false;
+
 	////Show player
 	
 	Player.SetWidthHeight(16,16);
 	Player.SetTile(6,5);
-	Player.SetWidthHeight(16,16);
 	Player.SetState(STATE_LOOKDOWN);
 	wSword* sw = new wSword(1);
 	sw->SetTexture(Data.GetID(IMG_WEAPONS));
@@ -55,6 +58,36 @@ bool cGame::Init()
 	Player.AddWeapon(SWORD, sw);
 	Player.SetAWeapon(SWORD);
 	
+	fMatrix enemies;
+	Scene.GetEnemies(enemies);
+
+	for (auto def : enemies)
+	{
+		for (int i = 0; i < def[1]; ++i)
+		{
+			cEnemy* enemy;
+			switch (int(def[0]))
+			{
+			case 0: // OCTOROK
+				enemy = new eOctorok(Data.GetID(IMG_OCTOROK), def[2], def[3]);
+				break;
+			}
+
+			enemy->SetWidthHeight(16, 16);
+			int st = rand() % 4, x, y;
+			enemy->SetState(st);
+			x = rand() % SCENE_WIDTH;
+			y = rand() % SCENE_HEIGHT;
+			while (Scene.GetMap()[x + y] != 9)
+			{
+				x = rand() % SCENE_WIDTH;
+				y = rand() % SCENE_HEIGHT;
+			}
+			enemy->SetTile(x, y);
+			this->enemies.push_back(enemy);
+		}
+	}
+
 	Interface = *new cInterface(Player.GetLife());
 
 	return res;
@@ -174,6 +207,8 @@ void cGame::Render()
 		default:
 			Scene.Draw(Data.GetID(IMG_BLOCKS));
 			Player.Draw(Data.GetID(IMG_PLAYER));
+			for (cEnemy* e : enemies)
+				e->Draw();
 			break;
 	}
 	Interface.Draw(Data.GetID(IMG_INTERFACE));
@@ -181,6 +216,7 @@ void cGame::Render()
 }
 
 bool cGame::StartTransition() {
+	enemies.clear();
 	state = STATE_TRANSITION;
 	direction_transition = Player.GetDirectionTransition();
 	if (direction_transition == TRANSITION_BOTTOM && Scene.TransitionIsPosible(TRANSITION_OUTSIDE)){

@@ -352,13 +352,34 @@ void cBicho::ActivateWeapon(cWeapon* weapon)
 	active_weapons.insert(weapon);
 }
 
-int cBicho::GetState()
+int cBicho::GetState() const
 {
 	return state;
 }
 void cBicho::SetState(int s)
 {
 	state = s;
+}
+
+int cBicho::GetOrientation() const
+{
+	int ori = GetState();
+	switch (ori)
+	{
+	case STATE_WALKUP:
+		ori = STATE_LOOKUP;
+		break;
+	case STATE_WALKDOWN:
+		ori = STATE_LOOKDOWN;
+		break;
+	case STATE_WALKLEFT:
+		ori = STATE_LOOKLEFT;
+		break;
+	case STATE_WALKRIGHT:
+		ori = STATE_LOOKRIGHT;
+		break;
+	}
+	return ori;
 }
 
 bool cBicho::isDead()

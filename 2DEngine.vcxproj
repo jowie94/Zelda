@@ -89,18 +89,21 @@
   <ItemGroup>
     <ClCompile Include="cBicho.cpp" />
     <ClCompile Include="cData.cpp" />
+    <ClCompile Include="cEnemy.cpp" />
     <ClCompile Include="cGame.cpp" />
     <ClCompile Include="cInterface.cpp" />
     <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="cScene.cpp" />
     <ClCompile Include="cTexture.cpp" />
     <ClCompile Include="cWeapon.cpp" />
+    <ClCompile Include="eOctorok.cpp" />
     <ClCompile Include="GLUTMain.cpp" />
     <ClCompile Include="wSword.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cBicho.h" />
     <ClInclude Include="cData.h" />
+    <ClInclude Include="cEnemy.h" />
     <ClInclude Include="cGame.h" />
     <ClInclude Include="cInterface.h" />
     <ClInclude Include="Constants.h" />
@@ -108,6 +111,7 @@
     <ClInclude Include="cScene.h" />
     <ClInclude Include="cTexture.h" />
     <ClInclude Include="cWeapon.h" />
+    <ClInclude Include="eOctorok.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="wSword.h" />
   </ItemGroup>

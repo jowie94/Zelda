@@ -4,6 +4,7 @@
 #include "cPlayer.h"
 #include "cInterface.h"
 #include "cData.h"
+#include "cEnemy.h"
 
 #define GAME_WIDTH	640
 #define GAME_HEIGHT 480
@@ -35,6 +36,7 @@ private:
 	cPlayer Player;
 	cData Data;
 	cInterface Interface;
+	std::list<cEnemy*> enemies;
 	int state = STATE_PLAYING;
 	int transition_num;
 	int direction_transition;

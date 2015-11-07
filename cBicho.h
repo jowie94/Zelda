@@ -68,8 +68,9 @@ public:
 	cWeapon* GetWeapon(int id);
 	bool GetWeapon(int id, cWeapon& weapon);
 	void GetActiveWeapons(std::set<cWeapon*>& weapons);
-	int  GetState();
+	int  GetState() const;
 	void SetState(int s);
+	int GetOrientation() const;
 	virtual bool isDead();
 
 	void NextFrame(int max);

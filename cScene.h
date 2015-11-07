@@ -37,7 +37,13 @@ public:
 	int *GetTransitionOutsidePos();
 	int *GetMap();
 
+	void GetEnemies(fMatrix& enemies) const;
+
 private:
+	void ReadEnemies(FILE* fd);
+
+	fMatrix enemies;
+
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene
 	int id_DL;								//actual level display list
 	int transition_list[7];					//The first position(0) will empty.
