@@ -76,6 +76,12 @@ public:
 	// Moves the "bicho" to the down by STEP_LENGTH and sets the walking state
 	void MoveDown(int* map);
 	void Stop();
+
+	bool IsHurt() const;
+	void ToggleHurt(bool hurt);
+
+	// Function called by Logic while the player is hurted
+	virtual void Hurt(int *map) = 0;
 	virtual void Logic(int *map);
 
 	void AddWeapon(int id, cWeapon* weapon);
@@ -102,6 +108,7 @@ private:
 	int state;
 	
 	int seq,delay;
+	bool hurt;
 
 	float life; // Current amount of life the "Bicho" has.
 	int frames_to_die;

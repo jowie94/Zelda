@@ -150,7 +150,7 @@ void eOctorok::Logic(int* map, cPlayer& player)
 				{
 					std::set<cWeapon*> weapons;
 					GetActiveWeapons(weapons);
-					SetAttacking(weapons.size());
+					SetAttacking(weapons.size() != 0);
 				}
 			}
 		}
@@ -222,3 +222,5 @@ void eOctorok::Draw()
 		DrawRect(GetTexture(), xo, yo, xf, yf);
 	}
 }
+
+void eOctorok::Hurt(int* map) {}

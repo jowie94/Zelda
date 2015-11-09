@@ -149,6 +149,8 @@ bool wSword::isDead()
 	return !special && cWeapon::isDead();
 }
 
+void wSword::Hurt(int* map) {}
+
 bool wSword::SpecialCollidesWithBorder()
 {
 	int x, y;

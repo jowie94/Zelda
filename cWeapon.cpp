@@ -22,13 +22,6 @@ int cWeapon::GetTexture()
 	return texture_id;
 }
 
-void cWeapon::Draw() {}
-
-bool cWeapon::LockPlayer()
-{
-	return false;
-}
-
 void cWeapon::Collides(const cRect& position, const int status, cRect& collision, float& damage)
 {
 	if (cBicho::Collides(&position))
@@ -37,3 +30,5 @@ void cWeapon::Collides(const cRect& position, const int status, cRect& collision
 		damage = GetDamage();
 	}
 }
+
+void cWeapon::Hurt(int* map) {}

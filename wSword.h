@@ -29,6 +29,8 @@ public:
 	bool LockPlayer() override;
 
 	bool isDead() override;
+
+	void Hurt(int *map) override;
 private:
 	wSword(float damage, bool special);
 

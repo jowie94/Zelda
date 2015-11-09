@@ -12,6 +12,8 @@ public:
 
 	void Draw() override;
 
+
+	void Hurt(int* map) override;
 private:
 	int action, steps;
 };

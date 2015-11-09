@@ -201,14 +201,45 @@ void cPlayer::Collides(const cRect& position, const int status, cRect& collision
 	}
 }
 
+void cPlayer::Hurt(int *map)
+{
+	--hurt;
+	ToggleHurt(hurt != 0);
+	int xoff = 0, yoff = 0, x, y, nx, ny;
+	if (lock)
+	{
+		GetPosition(&x, &y);
+		switch (hurt_direction)
+		{
+		case STATE_LOOKUP:
+			yoff -= 3;
+			break;
+		case STATE_LOOKDOWN:
+			yoff += 3;
+			break;
+		case STATE_LOOKLEFT:
+			xoff += 3;
+			break;
+		case STATE_LOOKRIGHT:
+			xoff -= 3;
+			break;
+		}
+		Move(xoff, yoff, map);
+		GetPosition(&nx, &ny);
+
+		if (!hurt || x == nx && y == ny)
+			lock = false;
+	}
+}
+
 void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 {
 	cBicho::Logic(map);
 	if (!isDead())
 	{
 		attacking = aWeapon->LockPlayer();
-		lock = attacking || hurt;
-		if (!hurt)
+		lock = attacking || IsHurt();
+		if (!IsHurt())
 		{
 			cRect coll, area;
 			float damage = 0;
@@ -228,6 +259,7 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 				DecrementLife(damage);
 				lock = true;
 				hurt = 4 * 8;
+				ToggleHurt(true);
 				Stop();
 				if (x < coll.right && x + w > coll.right)
 				{
@@ -259,34 +291,6 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 					hurt_direction = xd;
 				else
 					hurt_direction = yd;
-			}
-		} else
-		{
-			--hurt;
- 			int xoff = 0, yoff = 0, x, y, nx, ny;
-			if (lock) 
-			{
-				GetPosition(&x, &y);
-				switch (hurt_direction)
-				{
-				case STATE_LOOKUP:
-					yoff -= 3;
-					break;
-				case STATE_LOOKDOWN:
-					yoff += 3;
-					break;
-				case STATE_LOOKLEFT:
-					xoff += 3;
-					break;
-				case STATE_LOOKRIGHT:
-					xoff -= 3;
-					break;
-				}
-				Move(xoff, yoff, map);
-				GetPosition(&nx, &ny);
-
-				if (!hurt || x == nx && y == ny)
-					lock = false;
 			}
 		}
 

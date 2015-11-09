@@ -48,6 +48,11 @@ void wRock::Draw()
 	}
 }
 
+bool wRock::LockPlayer()
+{
+	return false;
+}
+
 void wRock::Attack(bool special, int orientation)
 {
 	SetLife(1);

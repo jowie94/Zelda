@@ -121,8 +121,17 @@ bool cGame::Process()
 	//Game Logic
 	Player.Logic(Scene.GetMap(), enemies);
 
-	for (cEnemy* enemy : enemies)
+	for (auto it = enemies.begin(); it != enemies.end(); ++it)
+	{
+		cEnemy *enemy = *it;
 		enemy->Logic(Scene.GetMap(), Player);
+		if (enemy->isDead())
+		{
+			it = enemies.erase(it);
+			if (it == enemies.end())
+				break;
+		}
+	}
 
 	int player_state = Player.GetState();
 	

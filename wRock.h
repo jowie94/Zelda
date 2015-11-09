@@ -11,5 +11,7 @@ public:
 
 	void Logic(int* map) override;
 	void Draw() override;
+
+	bool LockPlayer() override;
 };
 

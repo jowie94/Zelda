@@ -38,6 +38,7 @@ public:
 	void MoveUp(int* map);
 	void MoveDown(int* map);
 
+	void Hurt(int *map) override;
 	void Logic(int* map, const std::list<cEnemy*> enemies);
 	int GetDirectionTransition(void);
 	void StartTransition(int* outside_pos);

@@ -11,11 +11,13 @@ public:
 
 	void SetTexture(int id);
 	int GetTexture();
-	virtual void Draw();
+	virtual void Draw() = 0;
 
-	virtual bool LockPlayer();
+	virtual bool LockPlayer() = 0;
 
 	virtual void Collides(const cRect& position, const int status, cRect& collision, float& damage);
+
+	void Hurt(int* map) override;
 private:
 	int texture_id;
 };

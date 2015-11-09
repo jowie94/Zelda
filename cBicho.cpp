@@ -9,6 +9,7 @@ cBicho::cBicho(float life)
 	seq = 0;
 	delay = 0;
 	frames_to_die = 8; // Dummy value
+	hurt = false;
 	this->life = life;
 }
 
@@ -269,6 +270,16 @@ void cBicho::MoveDown(int *map)
 	MoveDown(STEP_LENGTH, map);
 }
 
+bool cBicho::IsHurt() const
+{
+	return hurt;
+}
+
+void cBicho::ToggleHurt(bool hurt)
+{
+	this->hurt = hurt;
+}
+
 void cBicho::Stop()
 {
 	switch (state)
@@ -284,6 +295,8 @@ void cBicho::Logic(int *map)
 {
 	if (!isDead())
 	{
+		if (hurt)
+			Hurt(map);
 		// Execute logic for all weapons
 		for (auto it = active_weapons.begin(); it != active_weapons.end(); ++it)
 		{
