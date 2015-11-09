@@ -41,12 +41,12 @@ void cInterface::Process(float player_life) {
 			player_life--;
 		}
 		else if (player_life == 0.5) {
-			coordx_tile = 1;
+			coordx_tile = 0.25f;
 			coordy_tile = 0;
 			player_life = 0;
 		}
 		else {
-			coordx_tile = 2;
+			coordx_tile = 0.5f;
 			coordy_tile = 0;
 		}
 
