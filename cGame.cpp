@@ -119,7 +119,7 @@ bool cGame::Process()
 
 
 	//Game Logic
-	Player.Logic(Scene.GetMap());
+	Player.Logic(Scene.GetMap(), enemies);
 
 	for (cEnemy* enemy : enemies)
 		enemy->Logic(Scene.GetMap(), Player);

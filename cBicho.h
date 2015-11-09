@@ -4,7 +4,7 @@
 #include "cTexture.h"
 
 #define FRAME_DELAY		8
-#define STEP_LENGTH		1
+#define STEP_LENGTH		2
 #define JUMP_HEIGHT		96
 #define JUMP_STEP		4
 
@@ -44,7 +44,7 @@ public:
 	void SetWidthHeight(int w,int h);
 	void GetWidthHeight(int *w,int *h);
 
-	virtual bool Collides(cRect *rc) const;
+	virtual bool Collides(const cRect * rc) const;
 	bool CollidesMapWall(int *map,bool right);
 	bool CollidesMapFloor(int *map, bool up);
 	void GetArea(cRect *rc);
@@ -57,12 +57,25 @@ public:
 	void  SetDamage(float damage);
 	float GetDamage();
 
+	// Moves the "bicho" by adding the corresponding offsets if there's no collision
+	void Move(int xoff, int yoff, int *map);
+	// Moves the "bicho" to the right by the specified step and sets the walking state
+	void MoveRight(int step, int *map);
+	// Moves the "bicho" to the right by STEP_LENGTH and sets the walking state
 	void MoveRight(int *map);
+	// Moves the "bicho" to the left by the specified step and sets the walking state
+	void MoveLeft(int step, int *map);
+	// Moves the "bicho" to the left by STEP_LENGTH and sets the walking state
 	void MoveLeft(int *map);
+	// Moves the "bicho" to the up by the specified step and sets the walking state
+	void MoveUp(int step, int* map);
+	// Moves the "bicho" to the up by STEP_LENGTH and sets the walking state
 	void MoveUp(int* map);
+	// Moves the "bicho" to the down by the specified step and sets the walking state
+	void MoveDown(int step, int* map);
+	// Moves the "bicho" to the down by STEP_LENGTH and sets the walking state
 	void MoveDown(int* map);
 	void Stop();
-	void Die(); // Used for begining the "Bicho" dying process. Once dead animation is finished isDied() will return true.
 	virtual void Logic(int *map);
 
 	void AddWeapon(int id, cWeapon* weapon);

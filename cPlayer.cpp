@@ -1,10 +1,12 @@
 #include "cPlayer.h"
 #include "cWeapon.h"
 #include "cScene.h"
+#include "cEnemy.h"
 
 cPlayer::cPlayer()
 {
-	attacking = false;
+	attacking = lock = false;
+	hurt = 0;
 	SetLife(INITIAL_LIFE);
 }
 cPlayer::~cPlayer(){}
@@ -31,7 +33,7 @@ void cPlayer::SetAWeapon(Weapon weapon)
 
 void cPlayer::MoveRight(int* map)
 {
-	if (!attacking)
+	if (!lock)
 		cBicho::MoveRight(map);
 	int x_aux;
 	int y_aux;
@@ -44,7 +46,7 @@ void cPlayer::MoveRight(int* map)
 
 void cPlayer::MoveLeft(int* map)
 {
-	if (!attacking)
+	if (!lock)
 		cBicho::MoveLeft(map);
 	int x_aux;
 	int y_aux;
@@ -57,7 +59,7 @@ void cPlayer::MoveLeft(int* map)
 
 void cPlayer::MoveUp(int* map)
 {
-	if (!attacking)
+	if (!lock)
 		cBicho::MoveUp(map);
 	int x_aux;
 	int y_aux;
@@ -74,7 +76,7 @@ void cPlayer::MoveUp(int* map)
 
 void cPlayer::MoveDown(int* map)
 {
-	if (!attacking)
+	if (!lock)
 		cBicho::MoveDown(map);
 	int x_aux;
 	int y_aux;
@@ -102,42 +104,50 @@ void cPlayer::Draw(int tex_id)
 	switch(state)
 	{
 		//1
-		case STATE_LOOKLEFT:    xo = yo = 0.25f;
+		case STATE_LOOKLEFT:    xo = yo = 0.125f;
 								break;
 		//4
-		case STATE_LOOKRIGHT:	xo = 0.75f; yo = 0.5f;
+		case STATE_LOOKRIGHT:	xo = 0.375f; yo = 0.25f;
 								break;
-		case STATE_LOOKUP:		xo = 0.5f; yo = 0.25f;
+		case STATE_LOOKUP:		xo = 0.25f; yo = 0.125f;
 								break;
-		case STATE_LOOKDOWN:	xo = 0.0f; yo = 0.25f;
+		case STATE_LOOKDOWN:	xo = 0.0f; yo = 0.125f;
 								break;
 		//1..3
-		case STATE_WALKLEFT:	xo = 0.25f;	yo = 0.25f + (GetFrame()*0.25f);
+		case STATE_WALKLEFT:	xo = 0.125f; yo = 0.125f + (GetFrame()*0.125f);
 								NextFrame(2);
 					
 								break;
 		//4..6
-		case STATE_WALKRIGHT:	xo = 0.75f; yo = 0.25f + (GetFrame()*0.25f);
+		case STATE_WALKRIGHT:	xo = 0.375f; yo = 0.125f + (GetFrame()*0.125f);
 								NextFrame(2);
 								break;
-		case STATE_WALKUP:		xo = 0.5f; yo = 0.25f + (GetFrame()*0.25f);
+		case STATE_WALKUP:		xo = 0.25f; yo = 0.125f + (GetFrame()*0.125f);
 			NextFrame(2);
 			break;
-		case STATE_WALKDOWN:	xo = 0.0f; yo = 0.25f + (GetFrame()*0.25f);
+		case STATE_WALKDOWN:	xo = 0.0f; yo = 0.125f + (GetFrame()*0.125f);
 			NextFrame(2);
 			break;
 	}
 
-	if (attacking)
-		yo = 0.75f;
+	if (hurt)
+	{
+		yo += 0.375f * (hurt % 2);
+	}
 
-	xf = xo + 0.25f;
-	yf = yo - 0.25f;
+	if (attacking)
+	{
+		xo += 0.5f;
+		yo = 0.125f;
+	}
+
+	xf = xo + 0.125f;
+	yf = yo - 0.125f;
 
 	if (transition && direction_transition==TRANSITION_INSIDE)
-		yo -= (0.25f/TILE_SIZE)*transition_num;
+		yo -= (0.125f/TILE_SIZE)*transition_num;
 	else if(transition && direction_transition == TRANSITION_OUTSIDE)
-		yo = yf + (0.25f/TILE_SIZE)*transition_num;
+		yo = yf + (0.125f/TILE_SIZE)*transition_num;
 
 	DrawRect(tex_id,xo,yo,xf,yf);
 }
@@ -178,7 +188,7 @@ void cPlayer::UpdateTransitionPos(int transition_num) {
 	SetWidthHeight(w, h);
 }
 
-void cPlayer::Collides(cRect& position, const int status, cRect& collision, float& damage)
+void cPlayer::Collides(const cRect& position, const int status, cRect& collision, float& damage)
 {
 	std::set<cWeapon*> active_wp;
 	GetActiveWeapons(active_wp);
@@ -191,11 +201,96 @@ void cPlayer::Collides(cRect& position, const int status, cRect& collision, floa
 	}
 }
 
-void cPlayer::Logic(int* map)
+void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 {
 	cBicho::Logic(map);
 	if (!isDead())
+	{
 		attacking = aWeapon->LockPlayer();
+		lock = attacking || hurt;
+		if (!hurt)
+		{
+			cRect coll, area;
+			float damage = 0;
+			GetArea(&area);
+			for (cEnemy* en : enemies)
+			{
+				float tmpd = 0;
+				en->Collides(area, GetState(), coll, tmpd);
+				damage += tmpd;
+			}
+
+			if (damage != 0)
+			{
+				int x, y, w, h, xd, yd, xam = 0, yam = 0;
+				GetPosition(&x, &y);
+				GetWidthHeight(&w, &h);
+				DecrementLife(damage);
+				lock = true;
+				hurt = 4 * 8;
+				Stop();
+				if (x < coll.right && x + w > coll.right)
+				{
+					xd = STATE_LOOKLEFT;
+					xam = coll.right - x;
+				}
+				else if (x < coll.left && x + w > coll.left)
+				{
+					xd = STATE_LOOKRIGHT;
+					xam = coll.left - x;
+				}
+				else
+					hurt_direction = rand() % 4;
+
+				if (y < coll.top && y + h > coll.top)
+				{
+					yd = STATE_LOOKDOWN;
+					yam = coll.top - y;
+				}
+				else if (y < coll.bottom && y + h > coll.bottom)
+				{
+					yd = STATE_LOOKUP;
+					yam = coll.bottom - y;
+				}
+				else
+					yd = hurt_direction = rand() % 4;
+
+				if (xam > yam)
+					hurt_direction = xd;
+				else
+					hurt_direction = yd;
+			}
+		} else
+		{
+			--hurt;
+ 			int xoff = 0, yoff = 0, x, y, nx, ny;
+			if (lock) 
+			{
+				GetPosition(&x, &y);
+				switch (hurt_direction)
+				{
+				case STATE_LOOKUP:
+					yoff -= 3;
+					break;
+				case STATE_LOOKDOWN:
+					yoff += 3;
+					break;
+				case STATE_LOOKLEFT:
+					xoff += 3;
+					break;
+				case STATE_LOOKRIGHT:
+					xoff -= 3;
+					break;
+				}
+				Move(xoff, yoff, map);
+				GetPosition(&nx, &ny);
+
+				if (!hurt || x == nx && y == ny)
+					lock = false;
+			}
+		}
+
+	}
 }
 
 int cPlayer::GetDirectionTransition(void) {

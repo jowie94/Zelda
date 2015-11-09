@@ -11,7 +11,7 @@ public:
 
 	int GetTexture() const;
 
-	virtual void Collides(cRect& position, const int status, cRect& collision, float& damage);
+	virtual void Collides(const cRect& position, const int status, cRect& collision, float& damage);
 
 	virtual void Logic(int *map, cPlayer& player);
 

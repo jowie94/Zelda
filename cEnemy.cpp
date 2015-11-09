@@ -15,7 +15,7 @@ int cEnemy::GetTexture() const
 	return texture;
 }
 
-void cEnemy::Collides(cRect& position, const int orientation, cRect& collision, float& damage)
+void cEnemy::Collides(const cRect& position, const int orientation, cRect& collision, float& damage)
 {
 	if(cBicho::Collides(&position))
 	{

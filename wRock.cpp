@@ -10,22 +10,22 @@ wRock::~wRock()
 
 void wRock::Logic(int* map)
 {
-	int x, y, nx, ny;
+	int x, y, nx, ny, offset = STEP_LENGTH + 1;
 	GetPosition(&x, &y);
 
 	switch (GetState())
 	{
 	case STATE_WALKUP:
-		MoveUp(map);
+		MoveUp(offset, map);
 		break;
 	case STATE_WALKLEFT:
-		MoveLeft(map);
+		MoveLeft(offset, map);
 		break;
 	case STATE_WALKDOWN:
-		MoveDown(map);
+		MoveDown(offset, map);
 		break;
 	case STATE_WALKRIGHT:
-		MoveRight(map);
+		MoveRight(offset, map);
 		break;
 	}
 

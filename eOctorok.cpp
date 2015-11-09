@@ -10,26 +10,35 @@ eOctorok::eOctorok(int texture, float life, float damage) : cEnemy(texture, life
 
 eOctorok::~eOctorok() {}
 
-void eOctorok::Collides(cRect& position, const int orientation, cRect& collision, float& damage)
+void eOctorok::Collides(const cRect& position, const int orientation, cRect& collision, float& damage)
 {
 	std::set<cWeapon*> active_wp;
 	GetActiveWeapons(active_wp);
 
 	bool collides = false;
 
-	if (GetOrientation() != orientation)
-		for (cWeapon* wp : active_wp)
+	int diff = abs(orientation - GetOrientation()), cori = GetOrientation();
+	bool coll = (orientation < 1 && cori > 1) || (orientation > 1 && cori < 1) || diff != 1;
+
+	for (cWeapon* wp : active_wp)
+	{
+		wp->Collides(position, orientation, collision, damage);
+		collides = damage > 0;
+		if (collides)
 		{
-			wp->Collides(position, orientation, collision, damage);
-			collides = damage > 0;
-			if (collides)
+			if (coll)
 			{
 				wp->GetArea(&collision);
 				damage = wp->GetDamage();
-				break;
 			}
-
+			else
+				damage = 0;
+			wp->SetLife(0);
+			wp->SetFramesToDie(0);
+			break;
 		}
+
+	}
 
 	if (!collides)
 	{
@@ -60,8 +69,9 @@ void eOctorok::Logic(int* map, cPlayer& player)
 			if (!steps)
 			{
 				action = rand() % 4;
-				//bool attacking = rand() % 1;
-				bool attacking = true;
+				bool attacking = rand() % 2;
+				int offset = STEP_LENGTH - 1;
+				//bool attacking = true;
 				SetAttacking(attacking);
 				switch (action)
 				{
@@ -71,7 +81,7 @@ void eOctorok::Logic(int* map, cPlayer& player)
 						SetState(STATE_LOOKUP);
 					}
 					else
-						MoveUp(map);
+						MoveUp(STEP_LENGTH - 1, map);
 					break;
 				case 1:
 					if (attacking)
@@ -79,7 +89,7 @@ void eOctorok::Logic(int* map, cPlayer& player)
 						SetState(STATE_LOOKLEFT);
 					}
 					else
-						MoveLeft(map);
+						MoveLeft(STEP_LENGTH - 1, map);
 					break;
 				case 2:
 					if (attacking)
@@ -87,7 +97,7 @@ void eOctorok::Logic(int* map, cPlayer& player)
 						SetState(STATE_LOOKDOWN);
 					}
 					else
-						MoveDown(map);
+						MoveDown(STEP_LENGTH - 1, map);
 					break;
 				case 3:
 					if (attacking)
@@ -95,7 +105,7 @@ void eOctorok::Logic(int* map, cPlayer& player)
 						SetState(STATE_LOOKRIGHT);
 					}
 					else
-						MoveRight(map);
+						MoveRight(STEP_LENGTH - 1, map);
 					break;
 				}
 
@@ -118,16 +128,16 @@ void eOctorok::Logic(int* map, cPlayer& player)
 					switch (action)
 					{
 					case 0:
-						MoveUp(map);
+						MoveUp(STEP_LENGTH - 1, map);
 						break;
 					case 1:
-						MoveLeft(map);
+						MoveLeft(STEP_LENGTH - 1, map);
 						break;
 					case 2:
-						MoveDown(map);
+						MoveDown(STEP_LENGTH - 1, map);
 						break;
 					case 3:
-						MoveRight(map);
+						MoveRight(STEP_LENGTH - 1, map);
 						break;
 					}
 					--steps;

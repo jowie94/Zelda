@@ -29,7 +29,7 @@ bool cWeapon::LockPlayer()
 	return false;
 }
 
-void cWeapon::Collides(cRect& position, const int status, cRect& collision, float& damage)
+void cWeapon::Collides(const cRect& position, const int status, cRect& collision, float& damage)
 {
 	if (cBicho::Collides(&position))
 	{

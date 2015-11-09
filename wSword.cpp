@@ -10,7 +10,7 @@ wSword::wSword(float damage, bool special) : cWeapon(damage)
 
 wSword::~wSword() {}
 
-void wSword::Collides(cRect& position, const int status, cRect& collision, float& damage)
+void wSword::Collides(const cRect& position, const int status, cRect& collision, float& damage)
 {
 	if (special)
 		special->Collides(position, status, collision, damage);

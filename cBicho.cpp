@@ -51,7 +51,7 @@ void cBicho::GetWidthHeight(int *width,int *height)
 	*width = w;
 	*height = h;
 }
-bool cBicho::Collides(cRect *rc) const
+bool cBicho::Collides(const cRect * rc) const
 {
 	return (((y >= rc->bottom) && (y + h <= rc->top)) || ((y<rc->top) && (y + h>rc->top)) || ((y<rc->bottom) && (y + h>rc->bottom))) &&
 		   (((x >= rc->left) && (x + w <= rc->right)) || ((x<rc->right) && (x + w>rc->right)) || ((x<rc->left) && (x + w>rc->left)));
@@ -173,7 +173,7 @@ void cBicho::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 	screen_y = y + SCENE_Yo + (BLOCK_SIZE - TILE_SIZE);
 
 	glEnable(GL_TEXTURE_2D);
-	
+
 	glBindTexture(GL_TEXTURE_2D,tex_id);
 	glBegin(GL_QUADS);	
 		glTexCoord2f(xo,yo);	glVertex2i(screen_x  ,screen_y);
@@ -210,44 +210,63 @@ float cBicho::GetDamage()
 	return this->damage;
 }
 
-void cBicho::MoveLeft(int *map)
+void cBicho::Move(int xoff, int yoff, int* map)
 {
 	int xaux = x;
-	x -= STEP_LENGTH;
-	state = STATE_WALKLEFT;
-	if (CollidesMapWall(map, false))
+	int yaux = y;
+
+	x += xoff;
+	y += yoff;
+
+	if (map && CollidesMapWall(map, xoff > 0))
 		x = xaux;
+
+	if (map && CollidesMapFloor(map, yoff > 0))
+		y = yaux;
+}
+
+void cBicho::MoveLeft(int step, int* map)
+{
+	state = STATE_WALKLEFT;
+	Move(-step, 0, map);
+}
+
+void cBicho::MoveLeft(int *map)
+{
+	MoveLeft(STEP_LENGTH, map);
+}
+
+void cBicho::MoveRight(int step, int* map)
+{
+	state = STATE_WALKRIGHT;
+	Move(step, 0, map);
 }
 
 void cBicho::MoveRight(int *map)
 {
-	int xaux = x;
-	x += STEP_LENGTH;
-	state = STATE_WALKRIGHT;
-	if (CollidesMapWall(map, true))
-		x = xaux;
+	MoveRight(STEP_LENGTH, map);
+}
+
+void cBicho::MoveUp(int step, int* map)
+{
+	state = STATE_WALKUP;
+	Move(0, step, map);
 }
 
 void cBicho::MoveUp(int *map)
 {
-	int yaux = y;
-	y += STEP_LENGTH;
-	state = STATE_WALKUP;
-	if (CollidesMapFloor(map, true))
-		y = yaux;
-	char str[128];
-	sprintf(str, "x = %d, y = %d \n", x, y);
-	OutputDebugString(str);
+	MoveUp(STEP_LENGTH, map);
+}
 
+void cBicho::MoveDown(int step, int* map)
+{
+	state = STATE_WALKDOWN;
+	Move(0, -step, map);
 }
 
 void cBicho::MoveDown(int *map)
 {
-	int yaux = y;
-	y -= STEP_LENGTH;
-	state = STATE_WALKDOWN;
-	if (CollidesMapFloor(map, false))
-		y = yaux;
+	MoveDown(STEP_LENGTH, map);
 }
 
 void cBicho::Stop()
@@ -261,13 +280,9 @@ void cBicho::Stop()
 	}
 }
 
-void cBicho::Die() {}
-
 void cBicho::Logic(int *map)
 {
-	if (life <= 0 && !isDead())
-		Die();
-	else if (!isDead())
+	if (!isDead())
 	{
 		// Execute logic for all weapons
 		for (auto it = active_weapons.begin(); it != active_weapons.end(); ++it)
