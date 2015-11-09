@@ -27,6 +27,8 @@ public:
 	void SetAWeapon(Weapon weapon); // Set weapon assigned to button A
 	void UpdateTransitionPos(int transition_num);
 
+	void Collides(cRect& position, const int status, cRect& collision, float& damage);
+
 	void Draw(int tex_id);
 
 	void MoveRight(int *map);

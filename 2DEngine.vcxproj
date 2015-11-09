@@ -98,6 +98,7 @@
     <ClCompile Include="cWeapon.cpp" />
     <ClCompile Include="eOctorok.cpp" />
     <ClCompile Include="GLUTMain.cpp" />
+    <ClCompile Include="wRock.cpp" />
     <ClCompile Include="wSword.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +114,7 @@
     <ClInclude Include="cWeapon.h" />
     <ClInclude Include="eOctorok.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="wRock.h" />
     <ClInclude Include="wSword.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

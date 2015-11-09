@@ -51,9 +51,10 @@ void cBicho::GetWidthHeight(int *width,int *height)
 	*width = w;
 	*height = h;
 }
-bool cBicho::Collides(cRect *rc)
+bool cBicho::Collides(cRect *rc) const
 {
-	return ((x>rc->left) && (x+w<rc->right) && (y>rc->bottom) && (y+h<rc->top));
+	return (((y >= rc->bottom) && (y + h <= rc->top)) || ((y<rc->top) && (y + h>rc->top)) || ((y<rc->bottom) && (y + h>rc->bottom))) &&
+		   (((x >= rc->left) && (x + w <= rc->right)) || ((x<rc->right) && (x + w>rc->right)) || ((x<rc->left) && (x + w>rc->left)));
 }
 bool cBicho::CollidesMapWall(int *map,bool right)
 {
@@ -281,10 +282,6 @@ void cBicho::Logic(int *map)
 					break;
 			}
 		}
-	} else
-	{
-		seq = 0;
-		delay = 0;
 	}
 }
 
@@ -384,5 +381,5 @@ int cBicho::GetOrientation() const
 
 bool cBicho::isDead()
 {
-	return (this->life <= 0) && (this->frames_to_die >= seq);
+	return (this->life <= 0) && (this->frames_to_die <= seq);
 }

@@ -40,4 +40,6 @@ private:
 	int state = STATE_PLAYING;
 	int transition_num;
 	int direction_transition;
+
+	void LoadEnemies(const fMatrix& mEnemies);
 };

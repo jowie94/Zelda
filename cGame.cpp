@@ -31,7 +31,7 @@ bool cGame::Init()
 	//Scene initialization
 	res = Data.LoadImage(IMG_BLOCKS,"res/WorldTiles.png",GL_RGBA);
 	if(!res) return false;
-	res = Scene.LoadLevel(4);
+	res = Scene.LoadLevel(1);
 	if(!res) return false;
 
 	////Player initialization
@@ -60,33 +60,7 @@ bool cGame::Init()
 	
 	fMatrix enemies;
 	Scene.GetEnemies(enemies);
-
-	for (auto def : enemies)
-	{
-		for (int i = 0; i < def[1]; ++i)
-		{
-			cEnemy* enemy;
-			switch (int(def[0]))
-			{
-			case 0: // OCTOROK
-				enemy = new eOctorok(Data.GetID(IMG_OCTOROK), def[2], def[3]);
-				break;
-			}
-
-			enemy->SetWidthHeight(16, 16);
-			int st = rand() % 4, x, y;
-			enemy->SetState(st);
-			x = rand() % SCENE_WIDTH;
-			y = rand() % SCENE_HEIGHT;
-			while (Scene.GetMap()[x + y] != 9)
-			{
-				x = rand() % SCENE_WIDTH;
-				y = rand() % SCENE_HEIGHT;
-			}
-			enemy->SetTile(x, y);
-			this->enemies.push_back(enemy);
-		}
-	}
+	LoadEnemies(enemies);
 
 	Interface = *new cInterface(Player.GetLife());
 
@@ -147,6 +121,9 @@ bool cGame::Process()
 	//Game Logic
 	Player.Logic(Scene.GetMap());
 
+	for (cEnemy* enemy : enemies)
+		enemy->Logic(Scene.GetMap(), Player);
+
 	int player_state = Player.GetState();
 	
 	if (player_state == STATE_DOOR) {
@@ -198,6 +175,9 @@ void cGame::Render()
 			Player.Draw(Data.GetID(IMG_PLAYER));
 			if (Scene.TransitionFinished(direction_transition, transition_num)) {
 				Scene.UpdateMap();
+				fMatrix enemies;
+				Scene.GetEnemies(enemies);
+				LoadEnemies(enemies);
 				Player.SetStateAfterTransition();
 				state = STATE_PLAYING;
 			}
@@ -217,6 +197,7 @@ void cGame::Render()
 
 bool cGame::StartTransition() {
 	enemies.clear();
+
 	state = STATE_TRANSITION;
 	direction_transition = Player.GetDirectionTransition();
 	if (direction_transition == TRANSITION_BOTTOM && Scene.TransitionIsPosible(TRANSITION_OUTSIDE)){
@@ -228,5 +209,39 @@ bool cGame::StartTransition() {
 	bool trans = Scene.InitTransition(direction_transition);
 	if (!trans)
 		state = STATE_PLAYING;
+
 	return trans;
+}
+
+void cGame::LoadEnemies(const fMatrix& mEnemies)
+{
+	std::vector<int> usable_positions;
+
+	for (int i = 0; i < SCENE_WIDTH * SCENE_HEIGHT; ++i)
+	{
+		if (Scene.GetMap()[i] == 9)
+			usable_positions.push_back(i);
+	}
+
+	for (auto def : mEnemies)
+	{
+		for (int i = 0; i < def[1]; ++i)
+		{
+			cEnemy* enemy;
+			switch (int(def[0]))
+			{
+			case 0: // OCTOROK
+				enemy = new eOctorok(Data.GetID(IMG_OCTOROK), def[2], def[3]);
+				break;
+			}
+
+			enemy->SetWidthHeight(16, 16);
+			int st = rand() % 4, pos;
+			enemy->SetState(st);
+			pos = rand() % usable_positions.size();
+			pos = usable_positions[pos];
+			enemy->SetTile(pos / SCENE_WIDTH, pos / SCENE_HEIGHT);
+			enemies.push_back(enemy);
+		}
+	}
 }

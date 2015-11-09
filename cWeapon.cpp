@@ -2,6 +2,7 @@
 
 cWeapon::cWeapon(float damage)
 {
+	SetWidthHeight(0, 0);
 	SetLife(0);
 	SetFramesToDie(0);
 	SetDamage(damage);
@@ -26,4 +27,13 @@ void cWeapon::Draw() {}
 bool cWeapon::LockPlayer()
 {
 	return false;
+}
+
+void cWeapon::Collides(cRect& position, const int status, cRect& collision, float& damage)
+{
+	if (cBicho::Collides(&position))
+	{
+		GetArea(&collision);
+		damage = GetDamage();
+	}
 }

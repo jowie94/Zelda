@@ -16,6 +16,8 @@ public:
 	wSword(float damage);
 	~wSword();
 
+
+	void Collides(cRect& position, const int status, cRect& collision, float& damage) override;
 	void Logic(int* map) override;
 	void Attack(bool special, int orientation) override;
 

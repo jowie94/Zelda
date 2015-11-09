@@ -10,6 +10,14 @@ wSword::wSword(float damage, bool special) : cWeapon(damage)
 
 wSword::~wSword() {}
 
+void wSword::Collides(cRect& position, const int status, cRect& collision, float& damage)
+{
+	if (special)
+		special->Collides(position, status, collision, damage);
+	if (!cWeapon::isDead())
+		cWeapon::Collides(position, status, collision, damage);
+}
+
 void wSword::Attack(bool special, int orientation)
 {
 	if (cWeapon::isDead())
@@ -164,6 +172,7 @@ void wSword::Logic(int *map)
 			SetLife(0);
 			draw_sword = false;
 			ResetFrame();
+			SetFramesToDie(0);
 		}
 		else
 		{
@@ -198,13 +207,14 @@ void wSword::Logic(int *map)
 				else if (!is_special)
 					y += 1;
 				break;
+
 			}
 			SetPosition(x, y);
 
 			if (GetSpecialState() == INIT && frame == GetFramesToDie() - 1)
 				SetSpecialState(MOVE);
 
-			// Check special position if border
+			// Check res position if border
 			if (sp && SpecialCollidesWithBorder())
 			{
 				SetSpecialState(COLLIDE);

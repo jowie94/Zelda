@@ -17,6 +17,7 @@
 #define STATE_WALKUP		6
 #define STATE_WALKDOWN		7
 #define STATE_DOOR			8
+#define STATE_DYING         9
 
 
 class cWeapon; // Forward declaration to avoid circular dependency (Weird compiler stuff)
@@ -43,7 +44,7 @@ public:
 	void SetWidthHeight(int w,int h);
 	void GetWidthHeight(int *w,int *h);
 
-	bool Collides(cRect *rc);
+	virtual bool Collides(cRect *rc) const;
 	bool CollidesMapWall(int *map,bool right);
 	bool CollidesMapFloor(int *map, bool up);
 	void GetArea(cRect *rc);

@@ -17,6 +17,12 @@ public:
 
 	virtual void Draw() = 0;
 
+	void SetAttacking(bool attacking);
+
+	bool GetAttacking() const;
+
 private:
 	int texture;
+
+	bool attacking;
 };

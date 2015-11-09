@@ -14,6 +14,8 @@ public:
 	virtual void Draw();
 
 	virtual bool LockPlayer();
+
+	virtual void Collides(cRect& position, const int status, cRect& collision, float& damage);
 private:
 	int texture_id;
 };

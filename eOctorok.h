@@ -11,5 +11,8 @@ public:
 	void Logic(int *map, cPlayer& player) override;
 
 	void Draw() override;
+
+private:
+	int action, steps;
 };
 

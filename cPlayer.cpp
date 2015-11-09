@@ -178,6 +178,18 @@ void cPlayer::UpdateTransitionPos(int transition_num) {
 	SetWidthHeight(w, h);
 }
 
+void cPlayer::Collides(cRect& position, const int status, cRect& collision, float& damage)
+{
+	std::set<cWeapon*> active_wp;
+	GetActiveWeapons(active_wp);
+
+	for (cWeapon* wp : active_wp)
+	{
+		wp->Collides(position, status, collision, damage);
+		if (damage)
+			break;
+	}
+}
 
 void cPlayer::Logic(int* map)
 {

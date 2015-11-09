@@ -24,7 +24,18 @@ void cEnemy::Collides(cRect& position, const int orientation, cRect& collision, 
 	}
 }
 
+void cEnemy::SetAttacking(bool attacking)
+{
+	this->attacking = attacking;
+}
+
+bool cEnemy::GetAttacking() const
+{
+	return attacking;
+}
+
 void cEnemy::Logic(int* map, cPlayer& player)
 {
 	cBicho::Logic(map);
 }
+

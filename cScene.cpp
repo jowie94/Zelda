@@ -333,6 +333,7 @@ void cScene::GetEnemies(fMatrix& enemies) const
 
 void cScene::ReadEnemies(FILE* fd)
 {
+	enemies.clear();
 	char c;
 	fscanf(fd, "%c", &c);
 	if (c == '-')
