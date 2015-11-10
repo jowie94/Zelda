@@ -252,6 +252,7 @@ bool cGame::StartTransition() {
 void cGame::LoadEnemies(const fMatrix& mEnemies)
 {
 	std::vector<int> usable_positions;
+	int pos;
 
 	for (int i = 0; i < SCENE_WIDTH * SCENE_HEIGHT; ++i)
 	{
@@ -259,11 +260,17 @@ void cGame::LoadEnemies(const fMatrix& mEnemies)
 			usable_positions.push_back(i);
 	}
 
+	pos = rand() % usable_positions.size();
+	pos = usable_positions[pos];
+	int x, y;
+	y = pos / SCENE_WIDTH;
+	x = pos % SCENE_WIDTH;
+
 	for (auto def : mEnemies)
 	{
 		for (int i = 0; i < def[1]; ++i)
 		{
-			cEnemy* enemy;
+			cEnemy* enemy = nullptr;
 			switch (int(def[0]))
 			{
 			case 0: // OCTOROK
@@ -271,14 +278,16 @@ void cGame::LoadEnemies(const fMatrix& mEnemies)
 				break;
 			case 1:
 				enemy = new eStalfos(Data.GetID(IMG_STALFOS), def[2], def[3]);
+				break;
 			}
 
+			if (!enemy)
+				break;
+
 			enemy->SetWidthHeight(16, 16);
-			int st = rand() % 4, pos;
+			int st = rand() % 4;
 			enemy->SetState(st);
-			pos = rand() % usable_positions.size();
-			pos = usable_positions[pos];
-			enemy->SetTile(pos / SCENE_WIDTH, pos / SCENE_HEIGHT);
+			enemy->SetTile(x, y);
 			enemies.push_back(enemy);
 		}
 	}

@@ -193,7 +193,8 @@ bool cScene::InitTransition(int direction_transition) {
 
 
 	}
-
+	
+	enemies.clear();
 	if (!feof(fd))
 		ReadEnemies(fd);
 

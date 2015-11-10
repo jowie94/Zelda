@@ -41,7 +41,7 @@ void cPlayer::MoveRight(int* map)
 	char str[128];
 	sprintf(str, "x=%d, y=%d \n", x_aux, y_aux);
 	OutputDebugString(str);
-	if (x_aux == 240) {
+	if (x_aux >= 240) {
 		SetState(STATE_DOOR);
 		direction_transition = TRANSITION_RIGHT;
 	}
@@ -54,7 +54,7 @@ void cPlayer::MoveLeft(int* map)
 	int x_aux;
 	int y_aux;
 	GetPosition(&x_aux, &y_aux);
-	if (x_aux == 0) {
+	if (x_aux <= 0) {
 		SetState(STATE_DOOR);
 		direction_transition = TRANSITION_LEFT;
 	}
@@ -67,7 +67,7 @@ void cPlayer::MoveUp(int* map)
 	int x_aux;
 	int y_aux;
 	GetPosition(&x_aux, &y_aux);
-	if (y_aux == 160) {
+	if (y_aux >= 160) {
 		SetState(STATE_DOOR);
 		direction_transition = TRANSITION_TOP;
 	}
@@ -84,7 +84,7 @@ void cPlayer::MoveDown(int* map)
 	int x_aux;
 	int y_aux;
 	GetPosition(&x_aux, &y_aux);
-	if (y_aux == 0) {
+	if (y_aux <= 0) {
 		SetState(STATE_DOOR);
 		direction_transition = TRANSITION_BOTTOM;
 	}
