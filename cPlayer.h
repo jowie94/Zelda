@@ -46,6 +46,15 @@ public:
 	void SetStateAfterTransition(void);
 	void SetTransition(bool trans);
 
+	void SetHearts(int hearts);
+	int GetHearts();
+
+	void SetRupies(int rupies);
+	int GetRupies();
+
+	bool HasSword();
+	bool HasArc();
+
 	bool IsDoor(int* map, int y_aux);
 
 private:
@@ -57,4 +66,6 @@ private:
 	int direction_transition;
 	int transition_num;
 	int hurt_direction;
+	int hearts;
+	int rupies;
 };

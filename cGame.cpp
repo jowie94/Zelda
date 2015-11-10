@@ -69,7 +69,7 @@ bool cGame::Init()
 	Scene.GetEnemies(enemies);
 	LoadEnemies(enemies);
 
-	Interface = *new cInterface(Player.GetLife());
+	Interface = *new cInterface();
 
 	return res;
 }
@@ -142,6 +142,9 @@ bool cGame::Process()
 	//Game Logic
 	Player.Logic(Scene.GetMap(), enemies);
 
+
+	int transition_direction = 0;
+
 	if (Player.GetState() != STATE_DYING && !Player.isDead())
 	{
 		for (auto it = enemies.begin(); it != enemies.end(); ++it)
@@ -162,6 +165,7 @@ bool cGame::Process()
 			int dir = Player.GetDirectionTransition();
 			if (Scene.TransitionIsPosible(dir)) {
 				res = cGame::StartTransition();
+				transition_direction = Player.GetDirectionTransition();
 			}
 			switch (dir)
 			{
@@ -186,7 +190,7 @@ bool cGame::Process()
 			}
 		}
 	}
-	Interface.Process(Player.GetLife());
+	Interface.Process(Player.GetLife(), Player.GetHearts(), Player.GetRupies(), Player.HasSword(), Player.HasArc(), transition_direction);
 
 	return res;
 }

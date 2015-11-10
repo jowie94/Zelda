@@ -8,6 +8,8 @@ cPlayer::cPlayer()
 	attacking = lock = false;
 	hurt = 0;
 	SetLife(INITIAL_LIFE);
+	SetHearts(INITIAL_LIFE);
+	SetRupies(0);
 }
 cPlayer::~cPlayer(){}
 
@@ -381,5 +383,29 @@ bool cPlayer::IsDoor(int* map, int y_coord) {
 	GetTile(&x_tile, &y_tile);
 	if (map[(y_tile * SCENE_WIDTH) + x_tile] == 23 && y_coord%TILE_SIZE < 2)
 		return true;
+	return false;
+}
+
+void cPlayer::SetHearts(int hearts) {
+	this->hearts = hearts;
+}
+
+int cPlayer::GetHearts() {
+	return hearts;
+}
+
+void cPlayer::SetRupies(int rupies) {
+	this->rupies = rupies;
+}
+
+int cPlayer::GetRupies() {
+	return rupies;
+}
+
+bool cPlayer::HasSword() {
+	return false;
+}
+
+bool cPlayer::HasArc() {
 	return false;
 }

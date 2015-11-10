@@ -6,22 +6,9 @@ cInterface::cInterface()
 {
 }
 
-cInterface::cInterface(int hearts) {
-	SetHearts(hearts);
-}
+cInterface::~cInterface() {}
 
-cInterface::~cInterface()
-{
-}
-
-void cInterface::SetHearts(int hearts) {
-	this->hearts = hearts;
-}
-int cInterface::GetHearts() {
-	return hearts;
-}
-
-void cInterface::Process(float player_life) {
+void cInterface::Process(float player_life, int player_hearts, int player_rupies, bool has_sword, bool has_arc, int transition_direction) {
 	id_DL = glGenLists(1);
 	glNewList(id_DL, GL_COMPILE);
 	glBegin(GL_QUADS);
@@ -32,7 +19,7 @@ void cInterface::Process(float player_life) {
 	px = INTERFACE_Xo;
 	py = INTERFACE_Yo;
 	
-	for (int i = 0; i < hearts; i++) {
+	for (int i = 0; i < player_hearts; i++) {
 		if (player_life >= 1.) {
 			coordx_tile = 0;
 			coordy_tile = 0;

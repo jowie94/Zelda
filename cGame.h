@@ -7,7 +7,7 @@
 #include "cEnemy.h"
 
 #define GAME_WIDTH	640
-#define GAME_HEIGHT 480
+#define GAME_HEIGHT 568
 
 #define STATE_PLAYING	 2
 

@@ -11,20 +11,13 @@ class cInterface
 
 public:
 	cInterface();
-	cInterface(int hearts);
 	~cInterface();
 
-	void SetHearts(int hearts);
-	int GetHearts();
-
-	void Process(float player_life);
+	void Process(float player_life, int player_hearts, int player_rupies, bool has_sword, bool has_arc, int transition_direction);
 	void Draw(int tex_id);
 
 private:
 	int id_DL;								//actual level display list
-	float life;
-
-	int hearts;
-
+	//float life;
 };
 
