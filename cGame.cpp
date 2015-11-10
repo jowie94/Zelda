@@ -215,8 +215,8 @@ void cGame::Render()
 			{
 				Player.Draw(Data.GetID(IMG_PLAYER));
 				if (Player.GetState() != STATE_DYING)
-				for (cEnemy* e : enemies)
-					e->Draw();
+					for (cEnemy* e : enemies)
+						e->Draw();
 			}
 			break;
 	}

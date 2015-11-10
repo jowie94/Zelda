@@ -89,7 +89,8 @@ bool cBicho::CollidesMapWall(int *map,bool right)
 	OutputDebugString("======================================== \n");
 */
 
-	if(right)	tile_x += width_tiles;
+	if(right && tile_x < SCENE_WIDTH - 1)
+		tile_x += width_tiles;
 	
 	for(j=0;j<height_tiles;j++)
 	{

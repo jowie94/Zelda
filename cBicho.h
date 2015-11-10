@@ -80,7 +80,7 @@ public:
 	bool IsHurt() const;
 	void ToggleHurt(bool hurt);
 
-	// Function called by Logic while the player is hurted
+	// Function called by Logic while the player is hurt
 	virtual void Hurt(int *map) = 0;
 	virtual void Logic(int *map);
 
