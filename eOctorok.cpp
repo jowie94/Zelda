@@ -17,7 +17,7 @@ void eOctorok::Collides(const cRect& position, const int orientation, cRect& col
 
 	bool collides = false;
 
-	int diff = abs(orientation - GetOrientation()), cori = GetOrientation();
+	int diff = abs(orientation - GetOrientation()), cori = GetOrientation() % 4;
 	bool coll = (orientation < 1 && cori > 1) || (orientation > 1 && cori < 1) || diff != 1;
 
 	for (cWeapon* wp : active_wp)

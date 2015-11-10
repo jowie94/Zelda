@@ -251,16 +251,17 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 	if (!isDead() && GetState() != STATE_DYING)
 	{
 		attacking = aWeapon->LockPlayer();
-		lock = attacking || IsHurt();
 		if (!IsHurt())
 		{
+			lock = attacking || IsHurt();
 			cRect coll, area;
 			float damage = 0;
+			int state = GetState() % 4;
 			GetArea(&area);
 			for (cEnemy* en : enemies)
 			{
 				float tmpd = 0;
-				en->Collides(area, GetState(), coll, tmpd);
+				en->Collides(area, state, coll, tmpd);
 				damage += tmpd;
 			}
 
@@ -311,6 +312,7 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 		{
 			ResetFrame();
 			SetFramesToDie(11);
+			lock = true;
 			SetState(STATE_DYING);
 		}
 	}
