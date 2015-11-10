@@ -89,7 +89,7 @@ void eStalfos::Draw()
 	if (!isDead())
 	{
 		float xo, yo, xf, yf;
-		xo = 0.25*GetFrame();
+		xo = 0.25*(GetFrame() < 2);
 
 		switch (GetState())
 		{
@@ -99,7 +99,7 @@ void eStalfos::Draw()
 			break;
 		default:
 			yo = 0.25f;
-			NextFrame(2);
+			NextFrame(4);
 			break;
 		}
 
