@@ -91,15 +91,18 @@ void cPlayer::Draw(int tex_id)
 {	
 	float xo,yo,xf,yf;
 
-	std::set<cWeapon*> weapons;
-	GetActiveWeapons(weapons);
-
-	for (auto w : weapons)
-	{
-		w->Draw();
-	}
-
 	int state = GetState();
+
+	if (state != STATE_DYING)
+	{
+		std::set<cWeapon*> weapons;
+		GetActiveWeapons(weapons);
+
+		for (auto w : weapons)
+		{
+			w->Draw();
+		}
+	}
 
 	switch(state)
 	{
@@ -128,11 +131,21 @@ void cPlayer::Draw(int tex_id)
 		case STATE_WALKDOWN:	xo = 0.0f; yo = 0.125f + (GetFrame()*0.125f);
 			NextFrame(2);
 			break;
+
+		case STATE_DYING: xo = 0.125f * (GetFrame() % 4); yo = 0.125f;
+			if (GetFrame() > 7)
+			{
+				xo += 0.5f;
+				yo += 0.125f;
+			}
+
+			NextFrame(GetFramesToDie() + 1);
+			break;
 	}
 
 	if (hurt)
 	{
-		yo += 0.375f * (hurt % 2);
+		yo += 0.25f * (hurt % 2);
 	}
 
 	if (attacking)
@@ -235,7 +248,7 @@ void cPlayer::Hurt(int *map)
 void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 {
 	cBicho::Logic(map);
-	if (!isDead())
+	if (!isDead() && GetState() != STATE_DYING)
 	{
 		attacking = aWeapon->LockPlayer();
 		lock = attacking || IsHurt();
@@ -294,6 +307,12 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 			}
 		}
 
+		if (GetLife() <= 0 && !hurt)
+		{
+			ResetFrame();
+			SetFramesToDie(11);
+			SetState(STATE_DYING);
+		}
 	}
 }
 
@@ -334,7 +353,6 @@ void cPlayer::SetStateAfterTransition(void) {
 		break;
 	}
 }
-
 
 void cPlayer::StartTransition(int* outside_pos) {
 	transition = true;

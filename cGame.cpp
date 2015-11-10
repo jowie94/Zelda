@@ -72,6 +72,20 @@ bool cGame::Loop()
 	time_t start = time(NULL);
 	bool res=true;
 
+	if (Player.isDead())
+	{
+		this->enemies.clear();
+		fMatrix enemies;
+		Scene.GetEnemies(enemies);
+		LoadEnemies(enemies);
+
+		Player.SetLife(INITIAL_LIFE);
+		Player.SetTile(6, 5);
+		Player.SetState(STATE_LOOKDOWN);
+		Player.ResetFrame();
+		Player.SetFramesToDie(5);
+	}
+
 	if(state != STATE_TRANSITION)
 		res = Process();
 	if(res) Render();
@@ -121,48 +135,50 @@ bool cGame::Process()
 	//Game Logic
 	Player.Logic(Scene.GetMap(), enemies);
 
-	for (auto it = enemies.begin(); it != enemies.end(); ++it)
+	if (Player.GetState() != STATE_DYING && !Player.isDead())
 	{
-		cEnemy *enemy = *it;
-		enemy->Logic(Scene.GetMap(), Player);
-		if (enemy->isDead())
+		for (auto it = enemies.begin(); it != enemies.end(); ++it)
 		{
-			it = enemies.erase(it);
-			if (it == enemies.end())
-				break;
+			cEnemy *enemy = *it;
+			enemy->Logic(Scene.GetMap(), Player);
+			if (enemy->isDead())
+			{
+				it = enemies.erase(it);
+				if (it == enemies.end())
+					break;
+			}
 		}
-	}
 
-	int player_state = Player.GetState();
-	
-	if (player_state == STATE_DOOR) {
-		int dir = Player.GetDirectionTransition();
-		if (Scene.TransitionIsPosible(dir)) {
-			res = cGame::StartTransition();
-		}
-		switch (dir)
-		{
-		case TRANSITION_BOTTOM:
-			Player.SetState(STATE_WALKDOWN);
-			break;
-		case TRANSITION_TOP:
-			Player.SetState(STATE_WALKUP);
-			break;
-		case TRANSITION_INSIDE:
-			Player.SetState(STATE_WALKUP);
-			break;
-		case TRANSITION_OUTSIDE:
-			Player.SetState(STATE_WALKDOWN);
-			break;
-		case TRANSITION_RIGHT:
-			Player.SetState(STATE_WALKRIGHT);
-			break;
-		case TRANSITION_LEFT:
-			Player.SetState(STATE_WALKLEFT);
-			break;
+		int player_state = Player.GetState();
+
+		if (player_state == STATE_DOOR) {
+			int dir = Player.GetDirectionTransition();
+			if (Scene.TransitionIsPosible(dir)) {
+				res = cGame::StartTransition();
+			}
+			switch (dir)
+			{
+			case TRANSITION_BOTTOM:
+				Player.SetState(STATE_WALKDOWN);
+				break;
+			case TRANSITION_TOP:
+				Player.SetState(STATE_WALKUP);
+				break;
+			case TRANSITION_INSIDE:
+				Player.SetState(STATE_WALKUP);
+				break;
+			case TRANSITION_OUTSIDE:
+				Player.SetState(STATE_WALKDOWN);
+				break;
+			case TRANSITION_RIGHT:
+				Player.SetState(STATE_WALKRIGHT);
+				break;
+			case TRANSITION_LEFT:
+				Player.SetState(STATE_WALKLEFT);
+				break;
+			}
 		}
 	}
-			
 	Interface.Process(Player.GetLife());
 
 	return res;
@@ -195,9 +211,13 @@ void cGame::Render()
 			break;
 		default:
 			Scene.Draw(Data.GetID(IMG_BLOCKS));
-			Player.Draw(Data.GetID(IMG_PLAYER));
-			for (cEnemy* e : enemies)
-				e->Draw();
+			if (!Player.isDead())
+			{
+				Player.Draw(Data.GetID(IMG_PLAYER));
+				if (Player.GetState() != STATE_DYING)
+				for (cEnemy* e : enemies)
+					e->Draw();
+			}
 			break;
 	}
 	Interface.Draw(Data.GetID(IMG_INTERFACE));
