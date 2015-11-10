@@ -50,6 +50,9 @@
     <ClCompile Include="wRock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="eStalfos.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cBicho.h">
@@ -92,6 +95,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wRock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="eStalfos.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

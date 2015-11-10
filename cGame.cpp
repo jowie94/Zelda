@@ -4,6 +4,7 @@
 #include <time.h>
 #include "wSword.h"
 #include "eOctorok.h"
+#include "eStalfos.h"
 
 
 cGame::cGame(void)
@@ -45,6 +46,12 @@ bool cGame::Init()
 	if (!res) return false;
 
 	res = Data.LoadImage(IMG_OCTOROK, "res/octorok.png", GL_RGBA);
+	if (!res) return false;
+
+	res = Data.LoadImage(IMG_STALFOS, "res/stalfos.png", GL_RGBA);
+	if (!res) return false;
+
+	res = Data.LoadImage(IMG_ROPE, "res/rope.png", GL_RGBA);
 	if (!res) return false;
 
 	////Show player
@@ -262,6 +269,8 @@ void cGame::LoadEnemies(const fMatrix& mEnemies)
 			case 0: // OCTOROK
 				enemy = new eOctorok(Data.GetID(IMG_OCTOROK), def[2], def[3]);
 				break;
+			case 1:
+				enemy = new eStalfos(Data.GetID(IMG_STALFOS), def[2], def[3]);
 			}
 
 			enemy->SetWidthHeight(16, 16);
