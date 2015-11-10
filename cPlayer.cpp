@@ -379,7 +379,7 @@ bool cPlayer::IsDoor(int* map, int y_coord) {
 	int x_tile;
 	int y_tile;
 	GetTile(&x_tile, &y_tile);
-	if (map[(y_tile * SCENE_WIDTH) + x_tile] == 23 && y_coord%TILE_SIZE == 0)
+	if (map[(y_tile * SCENE_WIDTH) + x_tile] == 23 && y_coord%TILE_SIZE < 2)
 		return true;
 	return false;
 }
