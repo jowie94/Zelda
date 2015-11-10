@@ -38,6 +38,9 @@ void cPlayer::MoveRight(int* map)
 	int x_aux;
 	int y_aux;
 	GetPosition(&x_aux, &y_aux);
+	char str[128];
+	sprintf(str, "x=%d, y=%d \n", x_aux, y_aux);
+	OutputDebugString(str);
 	if (x_aux == 240) {
 		SetState(STATE_DOOR);
 		direction_transition = TRANSITION_RIGHT;
