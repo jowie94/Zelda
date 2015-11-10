@@ -65,12 +65,12 @@ void eOctorok::Logic(int* map, cPlayer& player)
 
 			int x, y;
 			GetPosition(&x, &y);
+			int offset = STEP_LENGTH - 1;
 
 			if (!steps)
 			{
 				action = rand() % 4;
 				bool attacking = rand() % 2;
-				int offset = STEP_LENGTH - 1;
 				//bool attacking = true;
 				SetAttacking(attacking);
 				switch (action)
@@ -81,7 +81,7 @@ void eOctorok::Logic(int* map, cPlayer& player)
 						SetState(STATE_LOOKUP);
 					}
 					else
-						MoveUp(STEP_LENGTH - 1, map);
+						MoveUp(offset, map);
 					break;
 				case 1:
 					if (attacking)
@@ -89,7 +89,7 @@ void eOctorok::Logic(int* map, cPlayer& player)
 						SetState(STATE_LOOKLEFT);
 					}
 					else
-						MoveLeft(STEP_LENGTH - 1, map);
+						MoveLeft(offset, map);
 					break;
 				case 2:
 					if (attacking)
@@ -97,7 +97,7 @@ void eOctorok::Logic(int* map, cPlayer& player)
 						SetState(STATE_LOOKDOWN);
 					}
 					else
-						MoveDown(STEP_LENGTH - 1, map);
+						MoveDown(offset, map);
 					break;
 				case 3:
 					if (attacking)
@@ -105,7 +105,7 @@ void eOctorok::Logic(int* map, cPlayer& player)
 						SetState(STATE_LOOKRIGHT);
 					}
 					else
-						MoveRight(STEP_LENGTH - 1, map);
+						MoveRight(offset, map);
 					break;
 				}
 
@@ -128,16 +128,16 @@ void eOctorok::Logic(int* map, cPlayer& player)
 					switch (action)
 					{
 					case 0:
-						MoveUp(STEP_LENGTH - 1, map);
+						MoveUp(offset, map);
 						break;
 					case 1:
-						MoveLeft(STEP_LENGTH - 1, map);
+						MoveLeft(offset, map);
 						break;
 					case 2:
-						MoveDown(STEP_LENGTH - 1, map);
+						MoveDown(offset, map);
 						break;
 					case 3:
-						MoveRight(STEP_LENGTH - 1, map);
+						MoveRight(offset, map);
 						break;
 					}
 					--steps;
