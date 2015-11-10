@@ -17,7 +17,7 @@ int cEnemy::GetTexture() const
 
 void cEnemy::Collides(const cRect& position, const int orientation, cRect& collision, float& damage)
 {
-	if(cBicho::Collides(&position))
+	if(GetState() != STATE_DYING && cBicho::Collides(&position))
 	{
 		GetArea(&collision);
 		damage = GetDamage();

@@ -15,7 +15,15 @@ void wSword::Collides(const cRect& position, const int status, cRect& collision,
 	if (special)
 		special->Collides(position, status, collision, damage);
 	if (!cWeapon::isDead())
+	{
 		cWeapon::Collides(position, status, collision, damage);
+		if (damage)
+		{
+			SetLife(0);
+			ResetFrame();
+			SetFramesToDie(0);
+		}
+	}
 }
 
 void wSword::Attack(bool special, int orientation)

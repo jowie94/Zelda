@@ -13,7 +13,7 @@ cPlayer::~cPlayer(){}
 
 void cPlayer::AAttack()
 {
-	if (!attacking) {
+	if (!attacking && GetState() != STATE_DYING) {
 		Stop();
 		attacking = true;
 		ActivateWeapon(aWeapon);
