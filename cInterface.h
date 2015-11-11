@@ -5,6 +5,7 @@
 #define INTERFACE_Xo	0
 #define INTERFACE_Yo	180
 #define HEART_SIZE		8
+#define GAME_HEIGHT		568
 
 class cInterface
 {

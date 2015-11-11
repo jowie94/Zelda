@@ -43,7 +43,7 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_WEAPONS, "res/weapons.png", GL_RGBA);
 	if (!res) return false;
 
-	res = Data.LoadImage(IMG_INTERFACE, "res/link_life.png", GL_RGBA);
+	res = Data.LoadImage(IMG_INTERFACE, "res/interface_tiles.png", GL_RGBA);
 	if (!res) return false;
 
 	res = Data.LoadImage(IMG_OCTOROK, "res/octorok.png", GL_RGBA);

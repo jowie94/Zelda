@@ -1,4 +1,5 @@
 #include "cInterface.h"
+#include "cScene.h"
 
 
 
@@ -13,6 +14,12 @@ void cInterface::Process(float player_life, int player_hearts, int player_rupies
 	glNewList(id_DL, GL_COMPILE);
 	glBegin(GL_QUADS);
 
+
+	glTexCoord2f(0.5, 0.5 + 0.03125f);				glVertex2i(0., SCENE_HEIGHT*TILE_SIZE);
+	glTexCoord2f(0.5 + 0.03125f, 0.5 + 0.03125f);	glVertex2i(SCENE_WIDTH*TILE_SIZE, SCENE_HEIGHT*TILE_SIZE);
+	glTexCoord2f(0.5 + 0.03125f, 0.5);				glVertex2i(SCENE_WIDTH*TILE_SIZE, GAME_HEIGHT);
+	glTexCoord2f(0.5, 0.5);							glVertex2i(0., GAME_HEIGHT);
+
 	float coordx_tile, coordy_tile;
 	int px, py;
 
@@ -26,18 +33,18 @@ void cInterface::Process(float player_life, int player_hearts, int player_rupies
 			player_life--;
 		}
 		else if (player_life == 0.5) {
-			coordx_tile = 0.25f;
+			coordx_tile = 0.0625f;
 			coordy_tile = 0;
 			player_life = 0;
 		}
 		else {
-			coordx_tile = 0.5f;
+			coordx_tile = 0.125f;
 			coordy_tile = 0;
 		}
 
-		glTexCoord2f(coordx_tile,		   coordy_tile + 0.250f);	glVertex2i(px,				py);
-		glTexCoord2f(coordx_tile + 0.250f, coordy_tile + 0.250f);	glVertex2i(px + HEART_SIZE, py);
-		glTexCoord2f(coordx_tile + 0.250f, coordy_tile);			glVertex2i(px + HEART_SIZE, py + HEART_SIZE);
+		glTexCoord2f(coordx_tile,		   coordy_tile + 0.0625f);	glVertex2i(px,				py);
+		glTexCoord2f(coordx_tile + 0.0625f, coordy_tile + 0.0625f);	glVertex2i(px + HEART_SIZE, py);
+		glTexCoord2f(coordx_tile + 0.0625f, coordy_tile);			glVertex2i(px + HEART_SIZE, py + HEART_SIZE);
 		glTexCoord2f(coordx_tile,		   coordy_tile);			glVertex2i(px,				py + HEART_SIZE);
 		
 		px += HEART_SIZE;
