@@ -96,6 +96,7 @@
     <ClCompile Include="cScene.cpp" />
     <ClCompile Include="cTexture.cpp" />
     <ClCompile Include="cWeapon.cpp" />
+    <ClCompile Include="eAquamentus.cpp" />
     <ClCompile Include="eOctorok.cpp" />
     <ClCompile Include="eRope.cpp" />
     <ClCompile Include="eStalfos.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="cScene.h" />
     <ClInclude Include="cTexture.h" />
     <ClInclude Include="cWeapon.h" />
+    <ClInclude Include="eAquamentus.h" />
     <ClInclude Include="eOctorok.h" />
     <ClInclude Include="eRope.h" />
     <ClInclude Include="eStalfos.h" />

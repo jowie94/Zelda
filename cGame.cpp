@@ -6,6 +6,7 @@
 #include "eOctorok.h"
 #include "eStalfos.h"
 #include "eRope.h"
+#include "eAquamentus.h"
 
 
 cGame::cGame(void)
@@ -53,6 +54,9 @@ bool cGame::Init()
 	if (!res) return false;
 
 	res = Data.LoadImage(IMG_ROPE, "res/rope.png", GL_RGBA);
+	if (!res) return false;
+
+	res = Data.LoadImage(IMG_AQUAMENTUS, "res/aquamentus.png", GL_RGBA);
 	if (!res) return false;
 
 	res = Data.LoadImage(IMG_DUNGEON, "res/dungeon_Tiles.png", GL_RGBA);
@@ -317,6 +321,8 @@ void cGame::LoadEnemies(const fMatrix& mEnemies)
 				break;
 			case 2:
 				enemy = new eRope(Data.GetID(IMG_ROPE), def[2], def[3]);
+			case 3:
+				enemy = new eAquamentus(Data.GetID(IMG_AQUAMENTUS), def[2], def[3]);
 			}
 
 			if (!enemy)
