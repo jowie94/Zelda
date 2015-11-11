@@ -31,6 +31,8 @@ public:
 	bool isDead() override;
 
 	void Hurt(int *map) override;
+
+	void Finalize() override;
 private:
 	wSword(float damage, bool special);
 

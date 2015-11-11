@@ -276,6 +276,7 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 				GetPosition(&x, &y);
 				GetWidthHeight(&w, &h);
 				DecrementLife(damage);
+				aWeapon->Finalize();
 				lock = true;
 				hurt = 4 * 8;
 				ToggleHurt(true);
