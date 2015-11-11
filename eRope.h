@@ -12,7 +12,8 @@ public:
 	void Draw() override;
 
 private:
-	bool PlayerInY(cRect &rect);
-	bool PlayerInX(cRect &rect);
+	int PlayerInDirection(cRect &rect);
+
+	int orientation, steps, action;
 };
 
