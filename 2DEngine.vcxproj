@@ -97,6 +97,7 @@
     <ClCompile Include="cTexture.cpp" />
     <ClCompile Include="cWeapon.cpp" />
     <ClCompile Include="eOctorok.cpp" />
+    <ClCompile Include="eRope.cpp" />
     <ClCompile Include="eStalfos.cpp" />
     <ClCompile Include="GLUTMain.cpp" />
     <ClCompile Include="wRock.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="cTexture.h" />
     <ClInclude Include="cWeapon.h" />
     <ClInclude Include="eOctorok.h" />
+    <ClInclude Include="eRope.h" />
     <ClInclude Include="eStalfos.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="wRock.h" />
