@@ -5,6 +5,7 @@
 #include "wSword.h"
 #include "eOctorok.h"
 #include "eStalfos.h"
+#include "eRope.h"
 
 
 cGame::cGame(void)
@@ -314,6 +315,8 @@ void cGame::LoadEnemies(const fMatrix& mEnemies)
 			case 1:
 				enemy = new eStalfos(Data.GetID(IMG_STALFOS), def[2], def[3]);
 				break;
+			case 2:
+				enemy = new eRope(Data.GetID(IMG_ROPE), def[2], def[3]);
 			}
 
 			if (!enemy)
