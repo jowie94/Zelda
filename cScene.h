@@ -32,7 +32,7 @@ public:
 	void DrawTransition(int direction_transition, int transition_num, bool dungeon);
 	void DrawTransitionEdge(int direction_transition, int transition_num);
 	void DrawTransitionDungeon(int direction_transition, int transition_num);
-	void DrawDungeonMap(int pos_x, int pos_y);
+	void DrawDungeonMap(int pos_x, int pos_y, int *trans_list);;
 	int GetNumForTransition(int direction_transition, int transition_num, int i, int j);
 	int *GetTransitionOutsidePos();
 	int *GetMap();
