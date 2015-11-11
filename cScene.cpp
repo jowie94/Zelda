@@ -324,6 +324,31 @@ void cScene::DrawTransitionDungeon(int direction_transition, int transition_num)
 	glTexCoord2f(0. + 0.5f	, 0.);				glVertex2i(SCENE_Xo + BLOCK_SIZE*SCENE_WIDTH, SCENE_Yo + BLOCK_SIZE*SCENE_HEIGHT);
 	glTexCoord2f(0.			, 0.);				glVertex2i(SCENE_Xo							, SCENE_Yo + BLOCK_SIZE*SCENE_HEIGHT);
 
+	if (new_transition_list[TRANSITION_BOTTOM] != 0 || new_transition_list[TRANSITION_OUTSIDE] != 0) {
+		glTexCoord2f(0.5F, 0.125f);		glVertex2i(SCENE_Xo,							SCENE_Yo);
+		glTexCoord2f(1.0f, 0.125f);		glVertex2i(SCENE_Xo + BLOCK_SIZE*SCENE_WIDTH,	SCENE_Yo);
+		glTexCoord2f(1.0f, 0.0625f);	glVertex2i(SCENE_Xo + BLOCK_SIZE*SCENE_WIDTH,	SCENE_Yo + BLOCK_SIZE*2);
+		glTexCoord2f(0.5F, 0.0625f);	glVertex2i(SCENE_Xo,							SCENE_Yo + BLOCK_SIZE*2);
+	}
+	if (new_transition_list[TRANSITION_RIGHT] != 0) {
+		glTexCoord2f(0.0625f,	0.84375f);	glVertex2i(BLOCK_SIZE*SCENE_WIDTH - BLOCK_SIZE*2,	SCENE_Yo);
+		glTexCoord2f(0.125f,	0.84375f);	glVertex2i(BLOCK_SIZE*SCENE_WIDTH,					SCENE_Yo);
+		glTexCoord2f(0.125f,	0.5f);		glVertex2i(BLOCK_SIZE*SCENE_WIDTH,					BLOCK_SIZE*SCENE_HEIGHT);
+		glTexCoord2f(0.0625f,	0.5f);		glVertex2i(BLOCK_SIZE*SCENE_WIDTH - BLOCK_SIZE*2,	BLOCK_SIZE*SCENE_HEIGHT);
+	}
+	if (new_transition_list[TRANSITION_LEFT] != 0) {
+		glTexCoord2f(0.f,		0.84375f);	glVertex2i(SCENE_Xo,				SCENE_Yo);
+		glTexCoord2f(0.0625f,	0.84375f);	glVertex2i(SCENE_Xo + BLOCK_SIZE*2, SCENE_Yo);
+		glTexCoord2f(0.0625f,	0.5f);		glVertex2i(SCENE_Xo + BLOCK_SIZE*2, BLOCK_SIZE*SCENE_HEIGHT);
+		glTexCoord2f(0.f,		0.5f);		glVertex2i(SCENE_Xo,				BLOCK_SIZE*SCENE_HEIGHT);
+	}
+	if (new_transition_list[TRANSITION_TOP] != 0) {
+		glTexCoord2f(0.5f, 0.0625f);	glVertex2i(SCENE_Xo,							BLOCK_SIZE*SCENE_HEIGHT - BLOCK_SIZE * 2);
+		glTexCoord2f(1.0f, 0.0625f);	glVertex2i(SCENE_Xo + BLOCK_SIZE*SCENE_WIDTH,	BLOCK_SIZE*SCENE_HEIGHT - BLOCK_SIZE * 2);
+		glTexCoord2f(1.0f, 0.f);		glVertex2i(SCENE_Xo + BLOCK_SIZE*SCENE_WIDTH,	BLOCK_SIZE*SCENE_HEIGHT);
+		glTexCoord2f(0.5f, 0.f);		glVertex2i(SCENE_Xo,							BLOCK_SIZE*SCENE_HEIGHT);
+	}
+
 	for (int j = SCENE_HEIGHT - 1;j >= 0;j--)
 	{
 		px = SCENE_Xo;
