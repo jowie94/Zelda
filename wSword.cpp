@@ -47,7 +47,7 @@ void wSword::Attack(bool special, int orientation)
 				break;
 			case STATE_LOOKUP:
 				SetWidthHeight(8, 16);
-				x += 4; y += 11;
+				x += 4; y += 15;
 				break;
 			case STATE_LOOKDOWN:
 				SetWidthHeight(8, 16);
@@ -61,7 +61,7 @@ void wSword::Attack(bool special, int orientation)
 			if (is_special)
 				SetFramesToDie(2);
 			else
-				SetFramesToDie(3);
+				SetFramesToDie(2);
 			draw_sword = true;
 		} else
 		{
@@ -161,8 +161,8 @@ void wSword::Hurt(int* map) {}
 
 void wSword::Finalize()
 {
-	if (special)
-		special->Finalize();
+	/*if (special)
+		special->Finalize();*/
 	cWeapon::Finalize();
 }
 

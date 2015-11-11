@@ -38,7 +38,7 @@ void eRope::Logic(int* map, cPlayer& player)
 			GetPosition(&x, &y);
 			int offset = STEP_LENGTH - 1;
 
-			if (state != -1)
+			if (state != -1 && !player.IsHurt())
 			{
 				if ((state > 1 && x % 16 == 0) || (state < 2 && y % 16 == 0))
 				{

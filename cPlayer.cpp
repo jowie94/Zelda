@@ -230,22 +230,22 @@ void cPlayer::Hurt(int *map)
 		switch (hurt_direction)
 		{
 		case STATE_LOOKUP:
-			yoff -= 3;
+			yoff -= 2;
 			break;
 		case STATE_LOOKDOWN:
-			yoff += 3;
+			yoff += 2;
 			break;
 		case STATE_LOOKLEFT:
-			xoff += 3;
+			xoff += 2;
 			break;
 		case STATE_LOOKRIGHT:
-			xoff -= 3;
+			xoff -= 2;
 			break;
 		}
 		Move(xoff, yoff, map);
 		GetPosition(&nx, &ny);
 
-		if (!hurt || x == nx && y == ny)
+		if (!hurt || x == nx && y == ny || hurt < 6*8)
 			lock = false;
 	}
 }
@@ -278,7 +278,10 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 				DecrementLife(damage);
 				aWeapon->Finalize();
 				lock = true;
-				hurt = 4 * 8;
+				if (GetLife())
+					hurt = 8 * 8;
+				else
+					hurt = 2 * 8;
 				ToggleHurt(true);
 				Stop();
 				if (x < coll.right && x + w > coll.right)
@@ -314,12 +317,19 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 			}
 		}
 
-		if (GetLife() <= 0 && !hurt)
+		if (GetLife() <= 0)
 		{
-			ResetFrame();
-			SetFramesToDie(11);
-			lock = true;
-			SetState(STATE_DYING);
+			if (hurt)
+				lock = true;
+			else
+			{
+				hurt = 0;
+				ToggleHurt(false);
+				ResetFrame();
+				SetFramesToDie(11);
+				lock = true;
+				SetState(STATE_DYING);
+			}
 		}
 	}
 }
