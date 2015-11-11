@@ -32,3 +32,10 @@ void cWeapon::Collides(const cRect& position, const int status, cRect& collision
 }
 
 void cWeapon::Hurt(int* map) {}
+
+void cWeapon::Finalize()
+{
+	SetLife(0);
+	ResetFrame();
+	SetFramesToDie(0);
+}

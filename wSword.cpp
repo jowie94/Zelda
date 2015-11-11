@@ -159,6 +159,13 @@ bool wSword::isDead()
 
 void wSword::Hurt(int* map) {}
 
+void wSword::Finalize()
+{
+	if (special)
+		special->Finalize();
+	cWeapon::Finalize();
+}
+
 bool wSword::SpecialCollidesWithBorder()
 {
 	int x, y;

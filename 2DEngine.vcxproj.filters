@@ -53,6 +53,9 @@
     <ClCompile Include="eStalfos.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="eRope.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cBicho.h">
@@ -98,6 +101,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="eStalfos.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="eRope.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

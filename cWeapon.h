@@ -18,6 +18,8 @@ public:
 	virtual void Collides(const cRect& position, const int status, cRect& collision, float& damage);
 
 	void Hurt(int* map) override;
+
+	virtual void Finalize();
 private:
 	int texture_id;
 };
