@@ -29,6 +29,7 @@ public:
 	//Output
 	void Render();
 
+	void DrawScene();
 	bool StartTransition();
 private:
 	unsigned char keys[256];
@@ -40,6 +41,7 @@ private:
 	int state = STATE_PLAYING;
 	int transition_num;
 	int direction_transition;
+	bool dungeon;
 
 	void LoadEnemies(const fMatrix& mEnemies);
 };

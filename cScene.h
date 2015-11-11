@@ -14,7 +14,8 @@
 #define TILE_SIZE		16 // ==BLOCK_SIZE
 #define BLOCK_SIZE		16 // 16 pixels
 
-#define WORLD_TILE_MAP_SIZE 256
+#define WORLD_TILE_MAP_SIZE		256
+#define DUNGEON_TILE_MAP_SIZE	512
 
 class cScene
 {
@@ -28,11 +29,9 @@ public:
 	bool TransitionIsPosible(int direction_transition);
 	bool TransitionFinished(int direction_transition, int transition_num);
 	void UpdateMap(void);
-	void DrawTransition(int direction_transition, int transition_num);
+	void DrawTransition(int direction_transition, int transition_num, bool dungeon);
 	void DrawTransitionEdge(int direction_transition, int transition_num);
-	void DrawTransitionDeep(int direction_transition, int transition_num);
-	void DrawTransitionLeft(int transition_num);
-	void DrawTransitionRight(int transition_num);
+	void DrawTransitionDungeon(int direction_transition, int transition_num);
 	int GetNumForTransition(int direction_transition, int transition_num, int i, int j);
 	int *GetTransitionOutsidePos();
 	int *GetMap();

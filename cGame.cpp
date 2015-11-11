@@ -54,6 +54,9 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_ROPE, "res/rope.png", GL_RGBA);
 	if (!res) return false;
 
+	res = Data.LoadImage(IMG_DUNGEON, "res/dungeon_Tiles.png", GL_RGBA);
+	if (!res) return false;
+
 	////Show player
 	
 	Player.SetWidthHeight(16,16);
@@ -70,6 +73,7 @@ bool cGame::Init()
 	LoadEnemies(enemies);
 
 	Interface = *new cInterface();
+	dungeon = false;
 
 	return res;
 }
@@ -205,9 +209,10 @@ void cGame::Render()
 	switch (state)
 	{
 		case STATE_TRANSITION:
-			Scene.DrawTransition(direction_transition, transition_num);
+			Scene.DrawTransition(direction_transition, transition_num, dungeon);
 			Player.UpdateTransitionPos(transition_num);
-			Scene.Draw(Data.GetID(IMG_BLOCKS));
+			DrawScene();
+			//Scene.Draw(Data.GetID(IMG_BLOCKS));
 			Player.Draw(Data.GetID(IMG_PLAYER));
 			if (Scene.TransitionFinished(direction_transition, transition_num)) {
 				Scene.UpdateMap();
@@ -221,7 +226,8 @@ void cGame::Render()
 				transition_num++;
 			break;
 		default:
-			Scene.Draw(Data.GetID(IMG_BLOCKS));
+			DrawScene();
+			//Scene.Draw(Data.GetID(IMG_BLOCKS));
 			if (!Player.isDead())
 			{
 				Player.Draw(Data.GetID(IMG_PLAYER));
@@ -233,6 +239,27 @@ void cGame::Render()
 	}
 	Interface.Draw(Data.GetID(IMG_INTERFACE));
 	glutSwapBuffers();
+}
+
+void cGame::DrawScene() {
+	if (state == STATE_TRANSITION && direction_transition == TRANSITION_INSIDE) {
+		if(transition_num == TILE_SIZE)
+			Scene.Draw(Data.GetID(IMG_DUNGEON));
+		else
+			Scene.Draw(Data.GetID(IMG_BLOCKS));
+	}
+	else if (state == STATE_TRANSITION && direction_transition == TRANSITION_OUTSIDE) {
+		if (transition_num == 1)
+			Scene.Draw(Data.GetID(IMG_DUNGEON));
+		else
+			Scene.Draw(Data.GetID(IMG_BLOCKS));
+	}
+	else {
+		if (dungeon)
+			Scene.Draw(Data.GetID(IMG_DUNGEON));
+		else
+			Scene.Draw(Data.GetID(IMG_BLOCKS));
+	}
 }
 
 bool cGame::StartTransition() {
@@ -247,6 +274,10 @@ bool cGame::StartTransition() {
 	Player.StartTransition(Scene.GetTransitionOutsidePos());
 	transition_num = 1;
 	bool trans = Scene.InitTransition(direction_transition);
+	if (direction_transition == TRANSITION_INSIDE)
+		dungeon = true;
+	if (direction_transition == TRANSITION_OUTSIDE)
+		dungeon = false;
 	if (!trans)
 		state = STATE_PLAYING;
 
