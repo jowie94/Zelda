@@ -40,14 +40,13 @@ void eRope::Logic(int* map, cPlayer& player)
 
 			if (state != -1)
 			{
-				if (x % 16 == 0 && y % 16 == 0)
+				if ((state > 1 && x % 16 == 0) || (state < 2 && y % 16 == 0))
 				{
 					SetState(state);
 					action = state;
-					steps = (rand() % 256);
-					steps -= steps % 16;
+					steps = 256;
+					offset = STEP_LENGTH + 1;
 				}
-				offset = STEP_LENGTH;
 			}
 			
 			if (!steps)
