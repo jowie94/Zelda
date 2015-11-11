@@ -322,7 +322,6 @@ void cGame::LoadEnemies(const fMatrix& mEnemies)
 			if (!enemy)
 				break;
 
-			enemy->SetWidthHeight(16, 16);
 			int st = rand() % 4;
 			enemy->SetState(st);
 			enemy->SetTile(x, y);

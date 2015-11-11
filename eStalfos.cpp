@@ -3,6 +3,7 @@
 eStalfos::eStalfos(int texture, float life, float damage) : cEnemy(texture, life, damage)
 {
 	steps = action = 0;
+	SetWidthHeight(16, 16);
 }
 
 eStalfos::~eStalfos()

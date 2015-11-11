@@ -4,6 +4,7 @@ eRope::eRope(int texture, float life, float damage) : cEnemy(texture, life, dama
 {
 	steps = action = 0;
 	orientation = STATE_LOOKLEFT;
+	SetWidthHeight(16, 16);
 }
 
 eRope::~eRope()
