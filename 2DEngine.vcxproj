@@ -96,10 +96,12 @@
     <ClCompile Include="cScene.cpp" />
     <ClCompile Include="cTexture.cpp" />
     <ClCompile Include="cWeapon.cpp" />
+    <ClCompile Include="eAquamentus.cpp" />
     <ClCompile Include="eOctorok.cpp" />
     <ClCompile Include="eRope.cpp" />
     <ClCompile Include="eStalfos.cpp" />
     <ClCompile Include="GLUTMain.cpp" />
+    <ClCompile Include="wEnergyBall.cpp" />
     <ClCompile Include="wRock.cpp" />
     <ClCompile Include="wSword.cpp" />
   </ItemGroup>
@@ -114,10 +116,12 @@
     <ClInclude Include="cScene.h" />
     <ClInclude Include="cTexture.h" />
     <ClInclude Include="cWeapon.h" />
+    <ClInclude Include="eAquamentus.h" />
     <ClInclude Include="eOctorok.h" />
     <ClInclude Include="eRope.h" />
     <ClInclude Include="eStalfos.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="wEnergyBall.h" />
     <ClInclude Include="wRock.h" />
     <ClInclude Include="wSword.h" />
   </ItemGroup>
