@@ -195,7 +195,7 @@ bool cGame::Process()
 			}
 		}
 	}
-	Interface.Process(Player.GetLife(), Player.GetHearts(), Player.GetRupies(), Player.HasSword(), Player.HasArc(), transition_direction);
+	Interface.Process(Player.GetLife(), Player.GetHearts(), Player.GetRupees(), Player.HasSword(), Player.HasArc(), transition_direction);
 
 	return res;
 }

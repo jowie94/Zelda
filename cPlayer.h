@@ -49,8 +49,8 @@ public:
 	void SetHearts(int hearts);
 	int GetHearts();
 
-	void SetRupies(int rupies);
-	int GetRupies();
+	void SetRupees(int rupees);
+	int GetRupees();
 
 	bool HasSword();
 	bool HasArc();
@@ -67,5 +67,5 @@ private:
 	int transition_num;
 	int hurt_direction;
 	int hearts;
-	int rupies;
+	int rupees;
 };

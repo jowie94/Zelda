@@ -9,7 +9,7 @@ cPlayer::cPlayer()
 	hurt = 0;
 	SetLife(INITIAL_LIFE);
 	SetHearts(INITIAL_LIFE);
-	SetRupies(0);
+	SetRupees(0);
 }
 cPlayer::~cPlayer(){}
 
@@ -405,12 +405,14 @@ int cPlayer::GetHearts() {
 	return hearts;
 }
 
-void cPlayer::SetRupies(int rupies) {
-	this->rupies = rupies;
+void cPlayer::SetRupees(int rupees) {
+	if (rupees > 999)
+		rupees = 999;
+	this->rupees = rupees;
 }
 
-int cPlayer::GetRupies() {
-	return rupies;
+int cPlayer::GetRupees() {
+	return rupees;
 }
 
 bool cPlayer::HasSword() {
