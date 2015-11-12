@@ -321,8 +321,10 @@ void cGame::LoadEnemies(const fMatrix& mEnemies)
 				break;
 			case 2:
 				enemy = new eRope(Data.GetID(IMG_ROPE), def[2], def[3]);
+				break;
 			case 3:
 				enemy = new eAquamentus(Data.GetID(IMG_AQUAMENTUS), def[2], def[3]);
+				break;
 			}
 
 			if (!enemy)
