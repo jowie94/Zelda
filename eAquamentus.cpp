@@ -135,6 +135,7 @@ void eAquamentus::Logic(int* map, cPlayer& player)
 
 		if (GetLife() <= 0 && GetState() != STATE_DYING)
 		{
+			SetWidthHeight(32, 32);
 			SetState(STATE_DYING);
 			SetFramesToDie(2);
 			ResetFrame();
@@ -151,9 +152,10 @@ void eAquamentus::Draw()
 	switch(GetState())
 	{
 	case STATE_DYING:
-		xo = 0.375f;
-		yo = 0.5f;
-		xf = xo + 0.25f;
+		xo = 0.375f + 0.125f * GetFrame();
+		yo = 0.375f;
+		xf = xo + 0.125f;
+		yf = yo - 0.125f;
 		NextFrame(3);
 		break;
 	default:
@@ -169,12 +171,10 @@ void eAquamentus::Draw()
 			yo += 0.5f * (hurt % 2);
 
 		xf = xo + 0.1875f;
-
+		yf = yo - 0.25f;
 		NextFrame(4);
 		break;
 	}
-
-	yf = yo - 0.25f;
 
 	DrawRect(GetTexture(), xo, yo, xf, yf);
 }
