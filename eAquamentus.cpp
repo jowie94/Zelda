@@ -1,5 +1,6 @@
 #include "eAquamentus.h"
 #include "cWeapon.h"
+#include "wEnergyBall.h"
 
 eAquamentus::eAquamentus(int texture, float life, float damage) : cEnemy(texture, life, damage)
 {
@@ -57,6 +58,40 @@ void eAquamentus::Logic(int* map, cPlayer& player)
 
 		if (damage && CollidesWithHead(collision)) // Aquamentus only gets damaged if it is hit in the head
 			DecrementLife(damage);
+
+		std::set<cWeapon*> weapons;
+		GetActiveWeapons(weapons);
+
+		if (weapons.empty())
+		{
+			open_mouth = false;
+			if (rect.left % 16 != 0)
+				open_mouth = true;
+			else
+			{
+				int dir[2] = {-1, 1};
+				cWeapon* wp = new wEnergyBall(1.0f, dir);
+				wp->SetTexture(GetTexture());
+				wp->SetWidthHeight(8, 8);
+				wp->SetPosition(rect.left, rect.bottom);
+				wp->Attack(false, 0);
+				ActivateWeapon(wp);
+				dir[1] = 0;
+				wp = new wEnergyBall(1.0f, dir);
+				wp->SetTexture(GetTexture());
+				wp->SetWidthHeight(8, 8);
+				wp->SetPosition(rect.left, rect.bottom);
+				wp->Attack(false, 0);
+				ActivateWeapon(wp);
+				dir[1] = -1;
+				wp = new wEnergyBall(1.0f, dir);
+				wp->SetTexture(GetTexture());
+				wp->SetWidthHeight(8, 8);
+				wp->SetPosition(rect.left, rect.bottom);
+				wp->Attack(false, 0);
+				ActivateWeapon(wp);
+			}
+		}
 		
 		if (!steps)
 		{
@@ -98,8 +133,16 @@ void eAquamentus::Draw()
 {
 	float xo, yo, xf, yf;
 
-	xo = 0.376f * (GetFrame() > 1);
-	yo = 0.5f /*+ (0.5f * float(rand() % 10 == 0))*/; // TODO: Open mouth
+	std::set<cWeapon*> weapons;
+	GetActiveWeapons(weapons);
+
+	for (auto w : weapons)
+	{
+		w->Draw();
+	}
+
+	xo = 0.375f * (GetFrame() > 1);
+	yo = 0.5f + (0.5f * open_mouth); // TODO: Open mouth
 
 	xf = xo + 0.375f;
 	yf = yo - 0.5f;

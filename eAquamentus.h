@@ -14,6 +14,7 @@ public:
 
 private:
 	int action, steps;
+	bool open_mouth;
 
 	// Checks if the collision is in the head
 	bool CollidesWithHead(cRect& rect);

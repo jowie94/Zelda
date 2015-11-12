@@ -59,6 +59,9 @@
     <ClCompile Include="eAquamentus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="wEnergyBall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cBicho.h">
@@ -110,6 +113,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="eAquamentus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wEnergyBall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

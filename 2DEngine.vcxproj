@@ -101,6 +101,7 @@
     <ClCompile Include="eRope.cpp" />
     <ClCompile Include="eStalfos.cpp" />
     <ClCompile Include="GLUTMain.cpp" />
+    <ClCompile Include="wEnergyBall.cpp" />
     <ClCompile Include="wRock.cpp" />
     <ClCompile Include="wSword.cpp" />
   </ItemGroup>
@@ -120,6 +121,7 @@
     <ClInclude Include="eRope.h" />
     <ClInclude Include="eStalfos.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="wEnergyBall.h" />
     <ClInclude Include="wRock.h" />
     <ClInclude Include="wSword.h" />
   </ItemGroup>
