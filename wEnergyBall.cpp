@@ -52,11 +52,11 @@ void wEnergyBall::Draw()
 {
 	float xo, yo, xf, yf;
 
-	xo = 0.75f + 0.125f * (GetFrame() % 2);
-	yo = 0.15625f + 0.15625f * (GetFrame() > 2);
+	xo = 0.375f + 0.0625f * (GetFrame() % 2);
+	yo = 0.078125f + 0.078125f * (GetFrame() > 2);
 
-	xf = xo + 0.125f;
-	yf = yo - 0.15625f;
+	xf = xo + 0.0625f;
+	yf = yo - 0.078125f;
 
 	NextFrame(4);
 

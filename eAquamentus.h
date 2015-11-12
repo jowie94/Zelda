@@ -13,7 +13,7 @@ public:
 	void Draw() override;
 
 private:
-	int action, steps;
+	int action, steps, hurt;
 	bool open_mouth;
 
 	// Checks if the collision is in the head

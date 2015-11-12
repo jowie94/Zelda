@@ -4,7 +4,7 @@
 
 eAquamentus::eAquamentus(int texture, float life, float damage) : cEnemy(texture, life, damage)
 {
-	steps = action = 0;
+	hurt = action = 0;
 	SetWidthHeight(24, 32);
 	steps = 16;
 	SetState(STATE_WALKRIGHT);
@@ -16,6 +16,8 @@ eAquamentus::~eAquamentus()
 
 void eAquamentus::Hurt(int* map)
 {
+	--hurt;
+	ToggleHurt(hurt != 0);
 }
 
 void eAquamentus::Collides(const cRect& position, const int status, cRect& collision, float& damage)
@@ -57,7 +59,11 @@ void eAquamentus::Logic(int* map, cPlayer& player)
 		player.Collides(rect, 0, collision, damage);
 
 		if (damage && CollidesWithHead(collision)) // Aquamentus only gets damaged if it is hit in the head
+		{
 			DecrementLife(damage);
+			ToggleHurt(true);
+			hurt = 4 * 8;
+		}
 
 		std::set<cWeapon*> weapons;
 		GetActiveWeapons(weapons);
@@ -126,28 +132,49 @@ void eAquamentus::Logic(int* map, cPlayer& player)
 				}
 			}
 		}
+
+		if (GetLife() <= 0 && GetState() != STATE_DYING)
+		{
+			SetState(STATE_DYING);
+			SetFramesToDie(2);
+			ResetFrame();
+		}
 	}
 }
 
 void eAquamentus::Draw()
 {
 	float xo, yo, xf, yf;
-
 	std::set<cWeapon*> weapons;
 	GetActiveWeapons(weapons);
 
-	for (auto w : weapons)
+	switch(GetState())
 	{
-		w->Draw();
+	case STATE_DYING:
+		xo = 0.375f;
+		yo = 0.5f;
+		xf = xo + 0.25f;
+		NextFrame(3);
+		break;
+	default:
+		for (auto w : weapons)
+		{
+			w->Draw();
+		}
+
+		xo = 0.1875f * (GetFrame() > 1);
+		yo = 0.25f + (0.25f * open_mouth); // TODO: Open mouth
+
+		if (hurt)
+			yo += 0.5f * (hurt % 2);
+
+		xf = xo + 0.1875f;
+
+		NextFrame(4);
+		break;
 	}
 
-	xo = 0.375f * (GetFrame() > 1);
-	yo = 0.5f + (0.5f * open_mouth); // TODO: Open mouth
-
-	xf = xo + 0.375f;
-	yf = yo - 0.5f;
-
-	NextFrame(4);
+	yf = yo - 0.25f;
 
 	DrawRect(GetTexture(), xo, yo, xf, yf);
 }
