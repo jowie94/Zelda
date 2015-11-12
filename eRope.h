@@ -14,6 +14,6 @@ public:
 private:
 	int PlayerInDirection(cRect &rect);
 
-	int orientation, steps, action;
+	int orientation, steps, action, hurt_direction, hurt;
 };
 

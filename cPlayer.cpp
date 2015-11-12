@@ -272,9 +272,6 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 
 			if (damage != 0)
 			{
-				int x, y, w, h, xd, yd, xam = 0, yam = 0;
-				GetPosition(&x, &y);
-				GetWidthHeight(&w, &h);
 				DecrementLife(damage);
 				aWeapon->Finalize();
 				lock = true;
@@ -284,36 +281,7 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 					hurt = 2 * 8;
 				ToggleHurt(true);
 				Stop();
-				if (x < coll.right && x + w > coll.right)
-				{
-					xd = STATE_LOOKLEFT;
-					xam = coll.right - x;
-				}
-				else if (x < coll.left && x + w > coll.left)
-				{
-					xd = STATE_LOOKRIGHT;
-					xam = coll.left - x;
-				}
-				else
-					hurt_direction = rand() % 4;
-
-				if (y < coll.top && y + h > coll.top)
-				{
-					yd = STATE_LOOKDOWN;
-					yam = coll.top - y;
-				}
-				else if (y < coll.bottom && y + h > coll.bottom)
-				{
-					yd = STATE_LOOKUP;
-					yam = coll.bottom - y;
-				}
-				else
-					yd = hurt_direction = rand() % 4;
-
-				if (xam > yam)
-					hurt_direction = xd;
-				else
-					hurt_direction = yd;
+				CalculateCollisionMovement(coll, hurt_direction);
 			}
 		}
 

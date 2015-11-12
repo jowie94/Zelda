@@ -60,10 +60,15 @@ void eOctorok::Logic(int* map, cPlayer& player)
 		player.Collides(rect, 0, collision, damage);
 
 		if (damage)
-			DecrementLife(damage);
-		else
 		{
-
+			DecrementLife(damage);
+			ToggleHurt(true);
+			hurt = 4 * 8;
+			Stop();
+			CalculateCollisionMovement(collision, hurt_direction);
+		}
+		else if (!IsHurt())
+		{
 			int x, y;
 			GetPosition(&x, &y);
 			int offset = STEP_LENGTH - 1;
@@ -224,4 +229,25 @@ void eOctorok::Draw()
 	}
 }
 
-void eOctorok::Hurt(int* map) {}
+void eOctorok::Hurt(int* map)
+{
+	int xoff = 0, yoff = 0;
+	switch (hurt_direction)
+	{
+	case STATE_LOOKUP:
+		yoff -= 2;
+		break;
+	case STATE_LOOKDOWN:
+		yoff += 2;
+		break;
+	case STATE_LOOKLEFT:
+		xoff += 2;
+		break;
+	case STATE_LOOKRIGHT:
+		xoff -= 2;
+		break;
+	}
+	Move(xoff, yoff, map);
+	--hurt;
+	ToggleHurt(hurt != 0);
+}

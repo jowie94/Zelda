@@ -14,6 +14,6 @@ public:
 	void Hurt(int* map) override;
 
 private:
-	int action, steps;
+	int action, steps, hurt, hurt_direction;
 };
 

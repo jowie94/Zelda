@@ -2,7 +2,7 @@
 
 eStalfos::eStalfos(int texture, float life, float damage) : cEnemy(texture, life, damage)
 {
-	steps = action = 0;
+	steps = hurt = action = 0;
 	SetWidthHeight(16, 16);
 }
 
@@ -23,8 +23,14 @@ void eStalfos::Logic(int* map, cPlayer& player)
 		player.Collides(rect, 0, collision, damage);
 
 		if (damage)
+		{
 			DecrementLife(damage);
-		else
+			ToggleHurt(true);
+			hurt = 4 * 8;
+			Stop();
+			CalculateCollisionMovement(collision, hurt_direction);
+		}
+		else if (!IsHurt())
 		{
 			int x, y;
 			GetPosition(&x, &y);
@@ -78,6 +84,8 @@ void eStalfos::Logic(int* map, cPlayer& player)
 		
 		if (GetLife() <= 0 && GetState() != STATE_DYING)
 		{
+			ToggleHurt(false);
+			hurt = 0;
 			SetState(STATE_DYING);
 			SetFramesToDie(2);
 			ResetFrame();
@@ -95,11 +103,13 @@ void eStalfos::Draw()
 		switch (GetState())
 		{
 		case STATE_DYING:
-			yo = 0.5f;
+			yo = 0.75f;
 			NextFrame(3);
 			break;
 		default:
 			yo = 0.25f;
+			if (IsHurt())
+				yo += 0.25f * (hurt % 2);
 			NextFrame(4);
 			break;
 		}
@@ -113,4 +123,23 @@ void eStalfos::Draw()
 
 void eStalfos::Hurt(int* map)
 {
+	int xoff = 0, yoff = 0;
+	switch (hurt_direction)
+	{
+	case STATE_LOOKUP:
+		yoff -= 2;
+		break;
+	case STATE_LOOKDOWN:
+		yoff += 2;
+		break;
+	case STATE_LOOKLEFT:
+		xoff += 2;
+		break;
+	case STATE_LOOKRIGHT:
+		xoff -= 2;
+		break;
+	}
+	Move(xoff, yoff, map);
+	--hurt;
+	ToggleHurt(hurt != 0);
 }

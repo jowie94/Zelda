@@ -13,6 +13,25 @@ eRope::~eRope()
 
 void eRope::Hurt(int* map)
 {
+	int xoff = 0, yoff = 0;
+	switch (hurt_direction)
+	{
+	case STATE_LOOKUP:
+		yoff -= 2;
+		break;
+	case STATE_LOOKDOWN:
+		yoff += 2;
+		break;
+	case STATE_LOOKLEFT:
+		xoff += 2;
+		break;
+	case STATE_LOOKRIGHT:
+		xoff -= 2;
+		break;
+	}
+	Move(xoff, yoff, map);
+	--hurt;
+	ToggleHurt(hurt != 0);
 }
 
 void eRope::Logic(int* map, cPlayer& player)
@@ -28,8 +47,14 @@ void eRope::Logic(int* map, cPlayer& player)
 		player.Collides(rect, 0, collision, damage);
 
 		if (damage)
+		{
 			DecrementLife(damage);
-		else
+			ToggleHurt(true);
+			hurt = 4 * 8;
+			Stop();
+			CalculateCollisionMovement(collision, hurt_direction);
+		} 
+		else if (!IsHurt())
 		{
 			cRect p;
 			player.GetArea(&p);
@@ -128,6 +153,8 @@ void eRope::Draw()
 		default:
 			xo = 0.25f*orientation;
 			yo = 0.25f + 0.25f * GetFrame();
+			if (IsHurt())
+				xo += 0.55f * (hurt % 2);
 			NextFrame(2);
 			break;
 		}

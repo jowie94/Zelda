@@ -293,6 +293,41 @@ bool cBicho::IsHurt() const
 	return hurt;
 }
 
+void cBicho::CalculateCollisionMovement(const cRect& collision, int& hurt_direction)
+{
+	int xd, yd, xam = 0, yam = 0;
+	if (x < collision.right && x + w > collision.right)
+	{
+		xd = STATE_LOOKLEFT;
+		xam = collision.right - x;
+	}
+	else if (x < collision.left && x + w > collision.left)
+	{
+		xd = STATE_LOOKRIGHT;
+		xam = collision.left - x;
+	}
+	else
+		hurt_direction = rand() % 4;
+
+	if (y < collision.top && y + h > collision.top)
+	{
+		yd = STATE_LOOKDOWN;
+		yam = collision.top - y;
+	}
+	else if (y < collision.bottom && y + h > collision.bottom)
+	{
+		yd = STATE_LOOKUP;
+		yam = collision.bottom - y;
+	}
+	else
+		yd = hurt_direction = rand() % 4;
+
+	if (xam > yam)
+		hurt_direction = xd;
+	else
+		hurt_direction = yd;
+}
+
 void cBicho::ToggleHurt(bool hurt)
 {
 	this->hurt = hurt;

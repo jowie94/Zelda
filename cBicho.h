@@ -78,6 +78,7 @@ public:
 	void Stop();
 
 	bool IsHurt() const;
+	void CalculateCollisionMovement(const cRect& collision, int &hurt_direction);
 	void ToggleHurt(bool hurt);
 
 	// Function called by Logic while the player is hurt
