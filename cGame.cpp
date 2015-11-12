@@ -7,6 +7,7 @@
 #include "eStalfos.h"
 #include "eRope.h"
 #include "eAquamentus.h"
+#include "wBow.h"
 
 
 cGame::cGame(void)
@@ -67,7 +68,7 @@ bool cGame::Init()
 	Player.SetWidthHeight(16,16);
 	Player.SetTile(6,5);
 	Player.SetState(STATE_LOOKDOWN);
-	wSword* sw = new wSword(1);
+	cWeapon* sw = new wBow(1);
 	sw->SetTexture(Data.GetID(IMG_WEAPONS));
 
 	Player.AddWeapon(SWORD, sw);

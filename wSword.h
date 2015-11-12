@@ -40,8 +40,6 @@ private:
 
 	SpecialState special_state;
 
-	bool SpecialCollidesWithBorder();
-
 	wSword *special;
 };
 

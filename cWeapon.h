@@ -16,7 +16,7 @@ public:
 	virtual bool LockPlayer() = 0;
 
 	virtual void Collides(const cRect& position, const int status, cRect& collision, float& damage);
-
+	bool CollidesWithBorder();
 	void Hurt(int* map) override;
 
 	virtual void Finalize();

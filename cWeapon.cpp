@@ -31,6 +31,14 @@ void cWeapon::Collides(const cRect& position, const int status, cRect& collision
 	}
 }
 
+bool cWeapon::CollidesWithBorder()
+{
+	int x, y;
+	GetPosition(&x, &y);
+
+	return x <= 0 || x >= 15 * 16 || y <= 0 || y >= 10 * 16; // TODO: Include Scene.h and use constants
+}
+
 void cWeapon::Hurt(int* map) {}
 
 void cWeapon::Finalize()

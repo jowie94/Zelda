@@ -13,7 +13,8 @@
 
 enum Weapon
 {
-	SWORD
+	SWORD,
+	BOW
 };
 
 class cEnemy;

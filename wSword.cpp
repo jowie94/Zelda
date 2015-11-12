@@ -166,14 +166,6 @@ void wSword::Finalize()
 	cWeapon::Finalize();
 }
 
-bool wSword::SpecialCollidesWithBorder()
-{
-	int x, y;
-	GetPosition(&x, &y);
-
-	return x <= 0 || x >= 15*16 || y <= 0 || y >= 10*16; // TODO: Include Scene.h and use constants
-}
-
 void wSword::Logic(int *map)
 {
 	if (special) {
@@ -232,7 +224,7 @@ void wSword::Logic(int *map)
 				SetSpecialState(MOVE);
 
 			// Check res position if border
-			if (sp && SpecialCollidesWithBorder())
+			if (sp && CollidesWithBorder())
 			{
 				SetSpecialState(COLLIDE);
 				ResetFrame();

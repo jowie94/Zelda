@@ -153,7 +153,7 @@ void cPlayer::Draw(int tex_id)
 		yo += 0.25f * (hurt % 2);
 	}
 
-	if (attacking)
+	if (attacking && lock)
 	{
 		xo += 0.5f;
 		yo = 0.125f;
@@ -255,10 +255,10 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 	cBicho::Logic(map);
 	if (!isDead() && GetState() != STATE_DYING)
 	{
-		attacking = aWeapon->LockPlayer();
+		attacking = !aWeapon->isDead();
 		if (!IsHurt())
 		{
-			lock = attacking || IsHurt();
+			lock = aWeapon->LockPlayer() || IsHurt();
 			cRect coll, area;
 			float damage = 0;
 			int state = GetState() % 4;
