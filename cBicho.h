@@ -103,6 +103,7 @@ public:
 	int GetFramesToDie();
 protected:
 	void ActivateWeapon(cWeapon* weapon);
+	void PlaySound(FMOD::Sound *sound);
 
 private:
 	int x,y;

@@ -63,6 +63,7 @@ void eAquamentus::Logic(int* map, cPlayer& player)
 			DecrementLife(damage);
 			ToggleHurt(true);
 			hurt = 4 * 8;
+			PlaySound(GetHitSound());
 		}
 
 		std::set<cWeapon*> weapons;
@@ -139,6 +140,7 @@ void eAquamentus::Logic(int* map, cPlayer& player)
 			SetState(STATE_DYING);
 			SetFramesToDie(2);
 			ResetFrame();
+			PlaySound(GetKillSound());
 		}
 	}
 }

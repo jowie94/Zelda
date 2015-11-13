@@ -4,8 +4,10 @@
 
 //Delete console
 #pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
+#pragma comment(lib, "fmod")
 
 cGame Game;
+FMOD::System *fmod_system;
 
 void AppRender()
 {
@@ -36,12 +38,32 @@ void AppIdle()
 	if(!Game.Loop()) exit(0);
 }
 
+void InitSound()
+{
+	FMOD_RESULT       result;
+	unsigned int      version;
+	void             *extradriverdata = 0;
+
+	result = FMOD::System_Create(&fmod_system);
+
+	result = fmod_system->getVersion(&version);
+
+	if (version < FMOD_VERSION)
+	{
+		//OutputDebugString("FMOD lib version %08x doesn't match header version %08x", version, FMOD_VERSION);
+	}
+
+	result = fmod_system->init(32, FMOD_INIT_NORMAL, extradriverdata);
+}
+
 void main(int argc, char** argv)
 {
 	int res_x,res_y,pos_x,pos_y;
 
 	//GLUT initialization
 	glutInit(&argc, argv);
+
+	InitSound();
 
 	//RGBA with double buffer
 	glutInitDisplayMode(GLUT_RGBA | GLUT_ALPHA | GLUT_DOUBLE);

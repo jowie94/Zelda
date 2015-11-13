@@ -430,6 +430,12 @@ void cBicho::ActivateWeapon(cWeapon* weapon)
 	active_weapons.insert(weapon);
 }
 
+void cBicho::PlaySound(FMOD::Sound* sound)
+{
+	FMOD::Channel *channel = 0;
+	fmod_system->playSound(sound, 0, false, &channel);
+}
+
 int cBicho::GetState() const
 {
 	return state;

@@ -24,6 +24,7 @@ void eStalfos::Logic(int* map, cPlayer& player)
 
 		if (damage)
 		{
+			PlaySound(GetHitSound());
 			DecrementLife(damage);
 			ToggleHurt(true);
 			hurt = 4 * 8;
@@ -89,6 +90,7 @@ void eStalfos::Logic(int* map, cPlayer& player)
 			SetState(STATE_DYING);
 			SetFramesToDie(2);
 			ResetFrame();
+			PlaySound(GetKillSound());
 		}
 	}
 }

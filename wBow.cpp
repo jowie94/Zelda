@@ -3,6 +3,7 @@
 wBow::wBow(float damage) : cWeapon(damage)
 {
 	init = false;
+	fmod_system->createSound("sounds/arrpw.wav", FMOD_DEFAULT | FMOD_LOOP_OFF, 0, &arrow_sound);
 }
 
 wBow::~wBow()
@@ -13,6 +14,7 @@ void wBow::Attack(bool special, int orientation)
 {
 	if (isDead())
 	{
+		PlaySound(arrow_sound);
 		int x, y;
 		GetPosition(&x, &y);
 		switch (orientation)

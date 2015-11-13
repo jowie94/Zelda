@@ -21,8 +21,11 @@ public:
 
 	bool GetAttacking() const;
 
+	FMOD::Sound* GetKillSound();
+	FMOD::Sound* GetHitSound();
 private:
 	int texture;
 
 	bool attacking;
+	FMOD::Sound* kill_sound, *hit_sound;
 };

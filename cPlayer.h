@@ -72,4 +72,5 @@ private:
 	int hurt_direction;
 	int hearts;
 	int rupees;
+	FMOD::Sound *hurt_sound;
 };

@@ -41,5 +41,7 @@ private:
 	SpecialState special_state;
 
 	wSword *special;
+
+	FMOD::Sound *sword_sound, *special_sound;
 };
 

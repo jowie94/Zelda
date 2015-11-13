@@ -15,5 +15,6 @@ public:
 	void Hurt(int* map) override;
 private:
 	int action, steps, hurt_direction, hurt;
+	FMOD::Sound* shield_sound;
 };
 

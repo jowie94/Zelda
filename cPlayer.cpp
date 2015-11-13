@@ -293,6 +293,9 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 
 			if (damage != 0)
 			{
+				if (!hurt_sound)
+					FMOD_RESULT res = fmod_system->createSound("sounds/link-hurt.wav", FMOD_DEFAULT | FMOD_LOOP_OFF, 0, &hurt_sound);
+				PlaySound(hurt_sound);
 				DecrementLife(damage);
 				weapon_attack->Finalize();
 				lock = true;

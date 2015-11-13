@@ -44,4 +44,8 @@ private:
 	bool dungeon;
 
 	void LoadEnemies(const fMatrix& mEnemies);
+
+private:
+	FMOD::Sound      *overworld_sound, *dungeon_sound, *stairs_sound;
+	FMOD::Channel *audio_channel;
 };

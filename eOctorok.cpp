@@ -7,6 +7,8 @@ eOctorok::eOctorok(int texture, float life, float damage) : cEnemy(texture, life
 {
 	steps = action = 0;
 	SetWidthHeight(16, 16);
+
+	fmod_system->createSound("sounds/shield.wav", FMOD_DEFAULT | FMOD_LOOP_OFF, 0, &shield_sound);
 }
 
 eOctorok::~eOctorok() {}
@@ -33,7 +35,10 @@ void eOctorok::Collides(const cRect& position, const int orientation, cRect& col
 				damage = wp->GetDamage();
 			}
 			else
+			{
+				PlaySound(shield_sound);
 				damage = 0;
+			}
 			wp->SetLife(0);
 			wp->SetFramesToDie(0);
 			break;
@@ -61,6 +66,7 @@ void eOctorok::Logic(int* map, cPlayer& player)
 
 		if (damage)
 		{
+			PlaySound(GetHitSound());
 			DecrementLife(damage);
 			ToggleHurt(true);
 			hurt = 4 * 8;
@@ -168,6 +174,7 @@ void eOctorok::Logic(int* map, cPlayer& player)
 			ToggleHurt(false);
 			SetFramesToDie(2);
 			ResetFrame();
+			PlaySound(GetKillSound());
 		}
 	}
 }

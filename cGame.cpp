@@ -8,6 +8,7 @@
 #include "eRope.h"
 #include "eAquamentus.h"
 #include "wBow.h"
+#include "fmod/fmod.hpp"
 
 
 cGame::cGame(void)
@@ -20,6 +21,9 @@ cGame::~cGame(void)
 
 bool cGame::Init()
 {
+	FMOD_RESULT       result;
+	FMOD::Sound      *sound;
+	int               numsubsounds;
 	bool res=true;
 
 	//Graphics initialization
@@ -63,6 +67,45 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_DUNGEON, "res/dungeon_Tiles.png", GL_RGBA);
 	if (!res) return false;
 
+	result = fmod_system->createStream("sounds/overworld.mp3", FMOD_LOOP_NORMAL | FMOD_2D, 0, &sound);
+	if (result != FMOD_OK) return false;
+	sound->setLoopPoints(7000, FMOD_TIMEUNIT_MS, 40000, FMOD_TIMEUNIT_MS);
+
+	result = sound->getNumSubSounds(&numsubsounds);
+	if (result != FMOD_OK) return false;
+
+	if (numsubsounds)
+	{
+		sound->getSubSound(0, &overworld_sound);
+	}
+	else
+	{
+		overworld_sound = sound;
+	}
+
+	result = fmod_system->createStream("sounds/dungeon.mp3", FMOD_LOOP_NORMAL | FMOD_2D, 0, &sound);
+	if (result != FMOD_OK) return false;
+	sound->setLoopPoints(010, FMOD_TIMEUNIT_MS, 19500, FMOD_TIMEUNIT_MS);
+
+	result = sound->getNumSubSounds(&numsubsounds);
+	if (result != FMOD_OK) return false;
+
+	if (numsubsounds)
+	{
+		sound->getSubSound(0, &dungeon_sound);
+	}
+	else
+	{
+		dungeon_sound = sound;
+	}
+
+	result = fmod_system->createSound("sounds/stairs.wav", FMOD_DEFAULT | FMOD_LOOP_OFF, 0, &stairs_sound);
+	if (result != FMOD_OK) return false;
+
+	// Prepare the channel
+	result = fmod_system->playSound(overworld_sound, 0, true, &audio_channel);
+	if (result != FMOD_OK) return false;
+
 	////Show player
 	
 	Player.SetWidthHeight(16,16);
@@ -93,7 +136,12 @@ bool cGame::Init()
 bool cGame::Loop()
 {
 	time_t start = time(NULL);
-	bool res=true;
+	bool res=true, paused;
+
+	audio_channel->getPaused(&paused);
+	fmod_system->update();
+	if (paused && state != STATE_TRANSITION)
+		audio_channel->setPaused(false);
 
 	if (Player.isDead())
 	{
@@ -241,6 +289,13 @@ void cGame::Render()
 				LoadEnemies(enemies);
 				Player.SetStateAfterTransition();
 				state = STATE_PLAYING;
+				if (direction_transition == TRANSITION_INSIDE || direction_transition == TRANSITION_OUTSIDE)
+				{
+					if (dungeon)
+						fmod_system->playSound(dungeon_sound, 0, true, &audio_channel);
+					else
+						fmod_system->playSound(overworld_sound, 0, true, &audio_channel);
+				}
 			}
 			else
 				transition_num++;
@@ -294,6 +349,14 @@ bool cGame::StartTransition() {
 	Player.StartTransition(Scene.GetTransitionOutsidePos());
 	transition_num = 1;
 	bool trans = Scene.InitTransition(direction_transition);
+
+	if (direction_transition == TRANSITION_INSIDE || direction_transition == TRANSITION_OUTSIDE)
+	{
+		audio_channel->setPaused(true);
+		FMOD::Channel *channel;
+		fmod_system->playSound(stairs_sound, 0, false, &audio_channel);
+	}
+
 	if (direction_transition == TRANSITION_INSIDE)
 		dungeon = true;
 	if (direction_transition == TRANSITION_OUTSIDE)

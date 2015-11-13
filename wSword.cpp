@@ -6,6 +6,9 @@ wSword::wSword(float damage, bool special) : cWeapon(damage)
 {
 	is_special = special;
 	this->special = NULL;
+
+	fmod_system->createSound("sounds/sword.wav", FMOD_DEFAULT | FMOD_LOOP_OFF, 0, &sword_sound);
+	fmod_system->createSound("sounds/sword-shoot.wav", FMOD_DEFAULT | FMOD_LOOP_OFF, 0, &special_sound);
 }
 
 wSword::~wSword() {}
@@ -33,6 +36,8 @@ void wSword::Attack(bool special, int orientation)
 		int x, y;
 		GetPosition(&x, &y);
 		if (!special || (this->special && this->special->GetSpecialState() != INIT)) {
+			PlaySound(sword_sound);
+			
 			SetSpecialState(is_special ? INIT : NONE);
 
 			switch (orientation)
@@ -59,7 +64,10 @@ void wSword::Attack(bool special, int orientation)
 			SetState(orientation);
 			SetLife(1);
 			if (is_special)
+			{
 				SetFramesToDie(2);
+				PlaySound(special_sound);
+			}
 			else
 				SetFramesToDie(2);
 			draw_sword = true;

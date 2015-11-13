@@ -16,5 +16,6 @@ private:
 	int bow_x, bow_y;
 
 	bool init;
+	FMOD::Sound* arrow_sound;
 };
 
