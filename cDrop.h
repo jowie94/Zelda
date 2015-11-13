@@ -14,11 +14,13 @@ public:
 	cDrop(int texture, DROP_TYPE drop, float amount);
 	~cDrop();
 
+	void Hurt(int *map) override;
 
 	bool Collides(const cRect* rc);
 	DROP_TYPE GetType() const;
 
 	float GetAmount() const;
+
 
 	void Draw();
 

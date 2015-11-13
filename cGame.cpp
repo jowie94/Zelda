@@ -215,7 +215,7 @@ bool cGame::Process()
 
 
 	//Game Logic
-	Player.Logic(Scene.GetMap(), enemies);
+	Player.Logic(Scene.GetMap(), enemies, objects_drop);
 
 
 	int transition_direction = 0;
@@ -228,6 +228,18 @@ bool cGame::Process()
 			enemy->Logic(Scene.GetMap(), Player);
 			if (enemy->isDead())
 			{
+				if (rand() % 2) {
+					cDrop *obj_drop;
+					if (rand() % 2)
+						obj_drop = new cDrop(Data.GetID(IMG_TREASURES), RUPEE, rand() % 5);
+					else
+						obj_drop = new cDrop(Data.GetID(IMG_TREASURES), HEART, 1);
+
+					int posx, posy;
+					enemy->GetPosition(&posx, &posy);
+					obj_drop->SetPosition(posx, posy);
+					objects_drop.push_back(obj_drop);
+				}
 				it = enemies.erase(it);
 				if (it == enemies.end())
 					break;
@@ -312,6 +324,8 @@ void cGame::Render()
 				if (Player.GetState() != STATE_DYING)
 					for (cEnemy* e : enemies)
 						e->Draw();
+				for (cDrop* obj : objects_drop)
+					obj->Draw();
 			}
 			break;
 	}
@@ -342,6 +356,7 @@ void cGame::DrawScene() {
 
 bool cGame::StartTransition() {
 	enemies.clear();
+	objects_drop.clear();
 
 	state = STATE_TRANSITION;
 	direction_transition = Player.GetDirectionTransition();

@@ -14,6 +14,8 @@ cDrop::~cDrop()
 {
 }
 
+void cDrop::Hurt(int *map) {};
+
 bool cDrop::Collides(const cRect* rc)
 {
 	bool col = cBicho::Collides(rc);
