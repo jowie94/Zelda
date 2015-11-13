@@ -57,18 +57,10 @@ bool cBicho::Collides(const cRect * rc) const
 	return (((y >= rc->bottom) && (y + h <= rc->top)) || ((y<rc->top) && (y + h>rc->top)) || ((y<rc->bottom) && (y + h>rc->bottom))) &&
 		   (((x >= rc->left) && (x + w <= rc->right)) || ((x<rc->right) && (x + w>rc->right)) || ((x<rc->left) && (x + w>rc->left)));
 }
+
 bool cBicho::CollidesMapWall(int *map,bool right)
 {
-	/*char str[128];
-	sprintf(str, "x = %d \n", x);
-	OutputDebugString(str);
-	sprintf(str, "y = %d \n", y);
-	OutputDebugString(str);
-	sprintf(str, "w = %d \n", w);
-	OutputDebugString(str);
-	sprintf(str, "h = %d \n", h);
-	OutputDebugString(str);
-*/
+	
 	int tile_x,tile_y;
 	int i, j;
 	bool on_base;
@@ -78,17 +70,6 @@ bool cBicho::CollidesMapWall(int *map,bool right)
 	tile_y = y / TILE_SIZE;
 	width_tiles  = w / TILE_SIZE;
 	height_tiles = h / TILE_SIZE;
-/*
-	sprintf(str, "tile_x = %d \n", tile_x);
-	OutputDebugString(str);
-	sprintf(str, "tile_y = %d \n", tile_y);
-	OutputDebugString(str);
-	sprintf(str, "w_tiles = %d \n", width_tiles);
-	OutputDebugString(str);
-	sprintf(str, "h_tiles = %d \n", height_tiles);
-	OutputDebugString(str);
-	OutputDebugString("======================================== \n");
-*/
 
 	if(right && tile_x < SCENE_WIDTH - 1)
 		tile_x += width_tiles;
@@ -119,16 +100,6 @@ bool cBicho::CollidesMapWall(int *map,bool right)
 
 bool cBicho::CollidesMapFloor(int *map, bool up)
 {
-	/*char str[128];
-	sprintf(str, "x = %d \n", x);
-	OutputDebugString(str);
-	sprintf(str, "y = %d \n", y);
-	OutputDebugString(str);
-	sprintf(str, "w = %d \n", w);
-	OutputDebugString(str);
-	sprintf(str, "h = %d \n", h);
-	OutputDebugString(str);
-	*/
 	int tile_x,tile_y;
 	int width_tiles, height_tiles;
 	bool on_base;
@@ -139,16 +110,6 @@ bool cBicho::CollidesMapFloor(int *map, bool up)
 
 	width_tiles = w / TILE_SIZE;
 	height_tiles = h / TILE_SIZE;
-/*
-	sprintf(str, "tile_x = %d \n", tile_x);
-	OutputDebugString(str);
-	sprintf(str, "tile_y = %d \n", tile_y);
-	OutputDebugString(str);
-	sprintf(str, "w_tiles = %d \n", width_tiles);
-	OutputDebugString(str);
-	sprintf(str, "h_tiles = %d \n", height_tiles);
-	OutputDebugString(str);
-	OutputDebugString("======================================== \n");*/
 
 	if( (x % TILE_SIZE) != 0) width_tiles++;
 

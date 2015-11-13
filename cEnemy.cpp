@@ -1,4 +1,6 @@
 #include "cEnemy.h"
+#include "cScene.h"
+
 
 cEnemy::cEnemy(int texture, float life, float damage) : cBicho(life)
 {
@@ -52,3 +54,22 @@ void cEnemy::Logic(int* map, cPlayer& player)
 	cBicho::Logic(map);
 }
 
+
+bool cEnemy::CollidesMapWall(int *map, bool right)
+{
+	int x, y;
+	GetPosition(&x, &y);
+	if (x < TILE_SIZE || x >= TILE_SIZE*(SCENE_WIDTH-1))
+		return true;
+	else
+		return cBicho::CollidesMapWall(map, right);
+}
+
+bool cEnemy::CollidesMapFloor(int *map, bool up)
+{
+	int x, y;
+	GetPosition(&x, &y);
+	if (y < TILE_SIZE || y >= TILE_SIZE*(SCENE_HEIGHT - 1))
+		return true;
+	else cBicho::CollidesMapFloor(map, up);
+}

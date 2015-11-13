@@ -21,6 +21,11 @@ public:
 
 	bool GetAttacking() const;
 
+	bool CollidesMapWall(int *map, bool right) override;
+	bool CollidesMapFloor(int *map, bool up) override;
+
+
+
 	FMOD::Sound* GetKillSound();
 	FMOD::Sound* GetHitSound();
 private:
