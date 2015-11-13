@@ -1,0 +1,57 @@
+#######################################################################
+############################ ZELDA ####################################
+#######################################################################
+
+
+
+***** Integrants del grup *****
+
+- Joel Lopez Agudo
+- Juan José Vázquez Giménez
+
+
+***** Funcionalitats implementades *****
+
+
+1) PART COMUNA 
+
+- Distinció entre overworld i com a mínim un dungeon (l'escena del joc ha de poder
+  transcórrer entre dos mons lligats: el món obert de l'exterior i l'interior a l'entrar en un
+  edifici o cova). Totes dues parts estaran dividides en pantalles tal i com ho estan en el
+  joc original. L’objectiu del dungeon és accedir a la sala on es troba el boss final i
+  derrotar-lo.
+
+- Tres enemics amb comportaments i representacions diferents basats en els que
+  trobareu al joc original.
+
+- El personatge haurà de poder fer servir l’espasa per atacar als enemics.
+
+- Interfície gràfica bàsica que mostri la vida del jugador fent servir la mateixa mecànica
+  de cors plens, semi-plens o buits del Zelda.
+
+
+2) FUNCIONALITATS DEL JOC
+
+- Interfície gràfica avançada amb objectes equipats, vida, mini-mapa.
+
+- So: música de fons i efectes especials
+
+- Si el jugador té la seva vida al màxim els atacs desencadenaran l’atac especial que podeu 
+  veure al longplay (o als emuladors).
+
+
+3) PART CREATIVA
+ 
+- Si el jugador té rupees,pot atacar amb el arc gastant una rupee per cada fletxa que llençi.
+
+
+***** Instruccions del joc *****
+
+
+LEFT ARROW:		Move left
+RIGHT ARROW:	Move right
+UP ARROW: 		Move up
+DOWN ARROW: 	Move down
+
+A: 	Atack with weapon in slot A(Bow)
+B: 	Atack with weapon in slot B(Sword)
