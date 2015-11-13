@@ -2,6 +2,7 @@
 
 #include "cBicho.h"
 #include "Constants.h"
+#include "cDrop.h"
 
 #define PLAYER_START_CX		3
 #define PLAYER_START_CY		2
@@ -35,7 +36,7 @@ public:
 	void MoveDown(int* map);
 
 	void Hurt(int *map) override;
-	void Logic(int* map, const std::list<cEnemy*> enemies);
+	void Logic(int* map, const std::list<cEnemy*> enemies, std::list<cDrop*> treasures);
 	int GetDirectionTransition(void);
 	void StartTransition(int* outside_pos);
 	void SetDirectionTransition(int direction_transition);
@@ -65,5 +66,5 @@ private:
 	int hurt_direction;
 	int hearts;
 	int rupees;
-	FMOD::Sound *hurt_sound;
+	FMOD::Sound *hurt_sound, *rupee_sound, *heart_sound;
 };

@@ -2,6 +2,7 @@
 #include "cWeapon.h"
 #include "cScene.h"
 #include "cEnemy.h"
+#include "cDrop.h"
 
 cPlayer::cPlayer()
 {
@@ -272,7 +273,7 @@ void cPlayer::Hurt(int *map)
 	}
 }
 
-void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
+void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies, const std::list<cDrop*> treasures)
 {
 	cBicho::Logic(map);
 	if (!isDead() && GetState() != STATE_DYING)
@@ -282,6 +283,30 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 		attacking = false;
 		for (cWeapon* w : weapons)
 			attacking = attacking || !w->isDead();
+
+		for (cDrop* d : treasures)
+		{
+			cRect rect;
+			GetArea(&rect);
+			if (d->Collides(&rect))
+			{
+				switch (d->GetType())
+				{
+				case HEART:
+					if (!heart_sound)
+						FMOD_RESULT res = fmod_system->createSound("sounds/heart.wav", FMOD_DEFAULT | FMOD_LOOP_OFF, 0, &heart_sound);
+					DecrementLife(-d->GetAmount());
+					break;
+				case RUPEE:
+					if (!rupee_sound)
+						FMOD_RESULT res = fmod_system->createSound("sounds/item.wav", FMOD_DEFAULT | FMOD_LOOP_OFF, 0, &rupee_sound);
+					int rup = GetRupees();
+					SetRupees(rup + d->GetAmount());
+					break;
+				}
+
+			}
+		}
 
 		if (!IsHurt())
 		{

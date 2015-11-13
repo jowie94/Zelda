@@ -1,0 +1,30 @@
+#pragma once
+#include "cBicho.h"
+
+enum DROP_TYPE
+{
+	HEART,
+	RUPEE
+};
+
+class cDrop :
+	public cBicho
+{
+public:
+	cDrop(int texture, DROP_TYPE drop, float amount);
+	~cDrop();
+
+
+	bool Collides(const cRect* rc);
+	DROP_TYPE GetType() const;
+
+	float GetAmount() const;
+
+	void Draw();
+
+private:
+	int texture;
+	DROP_TYPE drop;
+	float amount;
+};
+

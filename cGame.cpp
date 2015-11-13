@@ -67,6 +67,9 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_DUNGEON, "res/dungeon_Tiles.png", GL_RGBA);
 	if (!res) return false;
 
+	res = Data.LoadImage(IMG_TREASURES, "res/treasures.png", GL_RGBA);
+	if (!res) return false;
+
 	result = fmod_system->createStream("sounds/overworld.mp3", FMOD_LOOP_NORMAL | FMOD_2D, 0, &sound);
 	if (result != FMOD_OK) return false;
 	sound->setLoopPoints(7000, FMOD_TIMEUNIT_MS, 40000, FMOD_TIMEUNIT_MS);
