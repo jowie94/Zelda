@@ -221,7 +221,7 @@ void cPlayer::UpdateTransitionPos(int transition_num) {
 	SetWidthHeight(w, h);
 }
 
-void cPlayer::Collides(const cRect& position, const int status, cRect& collision, float& damage)
+void cPlayer::Collides(const cRect& position, const int status, cRect& collision, float& damage, int &wId)
 {
 	std::set<cWeapon*> active_wp;
 	GetActiveWeapons(active_wp);
@@ -230,7 +230,10 @@ void cPlayer::Collides(const cRect& position, const int status, cRect& collision
 	{
 		wp->Collides(position, status, collision, damage);
 		if (damage)
+		{
+			wId = wp->GetId();
 			break;
+		}
 	}
 }
 

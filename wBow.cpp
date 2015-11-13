@@ -3,6 +3,7 @@
 wBow::wBow(float damage) : cWeapon(damage)
 {
 	init = false;
+	id = BOW;
 	fmod_system->createSound("sounds/arrpw.wav", FMOD_DEFAULT | FMOD_LOOP_OFF, 0, &arrow_sound);
 }
 

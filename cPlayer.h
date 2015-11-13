@@ -10,13 +10,6 @@
 
 #define PLAYER_DOOR			4
 
-
-enum Weapon
-{
-	SWORD,
-	BOW
-};
-
 class cEnemy;
 
 class cPlayer: public cBicho
@@ -32,7 +25,7 @@ public:
 	void SetBWeapon(Weapon weapon); // Set weapon assigned to button B
 	void UpdateTransitionPos(int transition_num);
 
-	void Collides(const cRect& position, const int status, cRect& collision, float& damage);
+	void Collides(const cRect& position, const int status, cRect& collision, float& damage, int &wId);
 
 	void Draw(int tex_id);
 

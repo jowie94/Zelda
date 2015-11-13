@@ -23,6 +23,10 @@ public:
 
 	FMOD::Sound* GetKillSound();
 	FMOD::Sound* GetHitSound();
+
+protected:
+	std::set<int> weapon_ids;
+
 private:
 	int texture;
 
