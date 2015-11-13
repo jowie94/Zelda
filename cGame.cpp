@@ -111,16 +111,16 @@ bool cGame::Init()
 	Player.SetWidthHeight(16,16);
 	Player.SetTile(6,5);
 	Player.SetState(STATE_LOOKDOWN);
-	cWeapon* aw = new wBow(1);
-	aw->SetTexture(Data.GetID(IMG_WEAPONS));
-
-	Player.AddWeapon(BOW, aw);
-	Player.SetAWeapon(BOW);
-
-	cWeapon* bw = new wSword(1);
+	cWeapon* bw = new wBow(1);
 	bw->SetTexture(Data.GetID(IMG_WEAPONS));
 
-	Player.AddWeapon(SWORD, bw);
+	Player.AddWeapon(BOW, bw);
+	Player.SetAWeapon(BOW);
+
+	cWeapon* aw = new wSword(1);
+	aw->SetTexture(Data.GetID(IMG_WEAPONS));
+
+	Player.AddWeapon(SWORD, aw);
 	Player.SetBWeapon(SWORD);
 
 	fMatrix enemies;
