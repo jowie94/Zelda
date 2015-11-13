@@ -32,6 +32,8 @@ void eRope::Hurt(int* map)
 	Move(xoff, yoff, map);
 	--hurt;
 	ToggleHurt(hurt != 0);
+	if (!hurt)
+		weapon_ids.clear();
 }
 
 void eRope::Logic(int* map, cPlayer& player)
@@ -43,11 +45,13 @@ void eRope::Logic(int* map, cPlayer& player)
 		cRect collision;
 		float damage = 0;
 		cRect rect;
+		int wId;
 		GetArea(&rect);
-		player.Collides(rect, 0, collision, damage);
+		player.Collides(rect, 0, collision, damage, wId);
 
-		if (damage)
+		if (damage && weapon_ids.find(wId) == weapon_ids.end())
 		{
+			weapon_ids.insert(wId);
 			PlaySound(GetHitSound());
 			DecrementLife(damage);
 			ToggleHurt(true);

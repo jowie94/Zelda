@@ -20,6 +20,12 @@ public:
 	void Hurt(int* map) override;
 
 	virtual void Finalize();
+
+	int GetId();
+
+protected:
+	int id;
+
 private:
 	int texture_id;
 };

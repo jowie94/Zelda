@@ -20,10 +20,12 @@ void eStalfos::Logic(int* map, cPlayer& player)
 		float damage = 0;
 		cRect rect;
 		GetArea(&rect);
-		player.Collides(rect, 0, collision, damage);
+		int wId;
+		player.Collides(rect, 0, collision, damage, wId);
 
-		if (damage)
+		if (damage && weapon_ids.find(wId) == weapon_ids.end())
 		{
+			weapon_ids.insert(wId);
 			PlaySound(GetHitSound());
 			DecrementLife(damage);
 			ToggleHurt(true);
@@ -144,4 +146,6 @@ void eStalfos::Hurt(int* map)
 	Move(xoff, yoff, map);
 	--hurt;
 	ToggleHurt(hurt != 0);
+	if (!hurt)
+		weapon_ids.clear();
 }

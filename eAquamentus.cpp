@@ -18,6 +18,8 @@ void eAquamentus::Hurt(int* map)
 {
 	--hurt;
 	ToggleHurt(hurt != 0);
+	if (!hurt)
+		weapon_ids.clear();
 }
 
 void eAquamentus::Collides(const cRect& position, const int status, cRect& collision, float& damage)
@@ -55,11 +57,13 @@ void eAquamentus::Logic(int* map, cPlayer& player)
 		cRect collision;
 		float damage = 0;
 		cRect rect;
+		int wId;
 		GetArea(&rect);
-		player.Collides(rect, 0, collision, damage);
+		player.Collides(rect, 0, collision, damage, wId);
 
-		if (damage && CollidesWithHead(collision)) // Aquamentus only gets damaged if it is hit in the head
+		if (damage && CollidesWithHead(collision) && weapon_ids.find(wId) == weapon_ids.end()) // Aquamentus only gets damaged if it is hit in the head
 		{
+			weapon_ids.insert(wId);
 			DecrementLife(damage);
 			ToggleHurt(true);
 			hurt = 4 * 8;

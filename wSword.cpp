@@ -7,6 +7,8 @@ wSword::wSword(float damage, bool special) : cWeapon(damage)
 	is_special = special;
 	this->special = NULL;
 
+	id = SWORD;
+
 	fmod_system->createSound("sounds/sword.wav", FMOD_DEFAULT | FMOD_LOOP_OFF, 0, &sword_sound);
 	fmod_system->createSound("sounds/sword-shoot.wav", FMOD_DEFAULT | FMOD_LOOP_OFF, 0, &special_sound);
 }

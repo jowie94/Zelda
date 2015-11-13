@@ -47,3 +47,8 @@ void cWeapon::Finalize()
 	ResetFrame();
 	SetFramesToDie(0);
 }
+
+int cWeapon::GetId()
+{
+	return id;
+}

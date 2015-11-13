@@ -21,6 +21,12 @@
 #define STATE_INIT          10
 
 
+enum Weapon
+{
+	SWORD,
+	BOW
+};
+
 class cWeapon; // Forward declaration to avoid circular dependency (Weird compiler stuff)
 
 class cRect
