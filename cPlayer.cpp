@@ -293,6 +293,7 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies, const std::list<
 			GetArea(&rect);
 			if (d->Collides(&rect))
 			{
+				int rup = GetRupees();
 				switch (d->GetType())
 				{
 				case HEART:
@@ -304,7 +305,6 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies, const std::list<
 				case RUPEE:
 					if (!rupee_sound)
 						FMOD_RESULT res = fmod_system->createSound("sounds/item.wav", FMOD_DEFAULT | FMOD_LOOP_OFF, 0, &rupee_sound);
-					int rup = GetRupees();
 					SetRupees(rup + d->GetAmount());
 					PlaySound(rupee_sound);
 					break;
@@ -319,7 +319,8 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies, const std::list<
 					d->SetLife(1);
 					break;
 				}
-
+				d->SetFramesToDie(0);
+				d->ResetFrame();
 			}
 		}
 
