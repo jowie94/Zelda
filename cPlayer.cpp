@@ -16,7 +16,7 @@ cPlayer::~cPlayer(){}
 
 void cPlayer::AAttack()
 {
-	if (!attacking && GetState() != STATE_DYING) {
+	if (!attacking && GetState() != STATE_DYING && rupees > 0) {
 		Stop();
 		attacking = true;
 		ActivateWeapon(aWeapon);
@@ -25,6 +25,7 @@ void cPlayer::AAttack()
 		GetWidthHeight(&w, &h);
 		aWeapon->SetPosition(x, y);
 		aWeapon->Attack(GetLife() == INITIAL_LIFE, GetState());
+		--rupees;
 	}
 }
 
@@ -293,13 +294,16 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies, const std::list<
 			GetArea(&rect);
 			if (d->Collides(&rect))
 			{
-				int rup = GetRupees();
+				int rup = GetRupees(), life = GetLife();
 				switch (d->GetType())
 				{
 				case HEART:
 					if (!heart_sound)
 						FMOD_RESULT res = fmod_system->createSound("sounds/heart.wav", FMOD_DEFAULT | FMOD_LOOP_OFF, 0, &heart_sound);
-					DecrementLife(-d->GetAmount());
+					life += d->GetAmount();
+					if (life > INITIAL_LIFE)
+						life = INITIAL_LIFE;
+					SetLife(life);
 					PlaySound(heart_sound);
 					break;
 				case RUPEE:
