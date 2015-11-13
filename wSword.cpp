@@ -20,7 +20,7 @@ void wSword::Collides(const cRect& position, const int status, cRect& collision,
 	if (!cWeapon::isDead())
 	{
 		cWeapon::Collides(position, status, collision, damage);
-		if (damage)
+		if (damage && is_special)
 		{
 			SetLife(0);
 			ResetFrame();

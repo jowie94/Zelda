@@ -241,6 +241,10 @@ void cPlayer::Hurt(int *map)
 	int xoff = 0, yoff = 0, x, y, nx, ny;
 	if (lock)
 	{
+		std::set<cWeapon*> weapons;
+		GetActiveWeapons(weapons);
+		for (cWeapon* w : weapons)
+			w->Finalize();
 		GetPosition(&x, &y);
 		switch (hurt_direction)
 		{
@@ -270,16 +274,17 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 	cBicho::Logic(map);
 	if (!isDead() && GetState() != STATE_DYING)
 	{
-		attacking = !aWeapon->isDead();
-		cWeapon *weapon_attack = aWeapon;
-		if (!attacking) {
-			attacking = !bWeapon->isDead();
-			weapon_attack = bWeapon;
-		}
+		std::set<cWeapon*> weapons;
+		GetActiveWeapons(weapons);
+		attacking = false;
+		for (cWeapon* w : weapons)
+			attacking = attacking || !w->isDead();
 
 		if (!IsHurt())
 		{
-			lock = weapon_attack->LockPlayer() || IsHurt();
+			lock = false;
+			for (cWeapon* w : weapons)
+				lock = lock || w->LockPlayer() || IsHurt();
 			cRect coll, area;
 			float damage = 0;
 			int state = GetState() % 4;
@@ -297,7 +302,8 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 					FMOD_RESULT res = fmod_system->createSound("sounds/link-hurt.wav", FMOD_DEFAULT | FMOD_LOOP_OFF, 0, &hurt_sound);
 				PlaySound(hurt_sound);
 				DecrementLife(damage);
-				weapon_attack->Finalize();
+				for (cWeapon* w : weapons)
+					w->Finalize();
 				lock = true;
 				if (GetLife())
 					hurt = 8 * 8;

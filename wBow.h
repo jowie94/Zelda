@@ -12,6 +12,7 @@ public:
 	void Draw() override;
 	bool LockPlayer() override;
 
+	void Finalize() override;
 private:
 	int bow_x, bow_y;
 

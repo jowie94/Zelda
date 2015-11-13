@@ -73,7 +73,7 @@ void wBow::Logic(int* map)
 			init = false;
 
 		if (CollidesWithBorder())
-			Finalize();
+			cWeapon::Finalize();
 	}
 	cBicho::Logic(map);
 }
@@ -107,4 +107,8 @@ void wBow::Draw()
 bool wBow::LockPlayer()
 {
 	return init;
+}
+
+void wBow::Finalize()
+{
 }
