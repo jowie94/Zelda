@@ -121,19 +121,24 @@ int* cScene::GetTransitionOutsidePos() {
 
 
 bool cScene::TransitionFinished(int direction_transition, int transition_num) {
+	bool finish = false;
 	if (transition_num == SCENE_HEIGHT*2)
 		if (direction_transition == TRANSITION_BOTTOM || direction_transition == TRANSITION_TOP)
-			return true;
+			finish = true;
 	
-	if (transition_num == SCENE_WIDTH*2)
+	if (transition_num == SCENE_WIDTH*2 && !finish)
 		if (direction_transition == TRANSITION_RIGHT || direction_transition == TRANSITION_LEFT)
-			return true;
+			finish = true;
 	
-	if (transition_num == TILE_SIZE) 
+	if (transition_num == TILE_SIZE && !finish) 
 		if (direction_transition == TRANSITION_INSIDE || direction_transition == TRANSITION_OUTSIDE)
-			return true;
-	
-	return false;
+			finish = true;
+
+	return finish;
+}
+
+int cScene::GetNewLevel() {
+	return new_level;
 }
 
 void cScene::UpdateMap(void) {
@@ -144,12 +149,12 @@ void cScene::UpdateMap(void) {
 
 bool cScene::InitTransition(int direction_transition) {
 	char tile1, tile2;
-	int level = transition_list[direction_transition];
+	new_level = transition_list[direction_transition];
 	char file[16];
 	FILE *fd;
 
-	if (level<10) sprintf(file, "%s0%d%s", (char *)FILENAME, level, (char *)FILENAME_EXT);
-	else		  sprintf(file, "%s%d%s", (char *)FILENAME, level, (char *)FILENAME_EXT);
+	if (new_level<10) sprintf(file, "%s0%d%s", (char *)FILENAME, new_level, (char *)FILENAME_EXT);
+	else		  sprintf(file, "%s%d%s", (char *)FILENAME, new_level, (char *)FILENAME_EXT);
 
 	fd = fopen(file, "r");
 	if (fd == NULL){
@@ -328,45 +333,6 @@ void cScene::DrawTransitionDungeon(int direction_transition, int transition_num)
 
 	//Printed new map
 	DrawDungeonMap(new_scene_posx, new_scene_posy, new_transition_list);
-
-	//if (new_transition_list[TRANSITION_BOTTOM] != 0 || new_transition_list[TRANSITION_OUTSIDE] != 0) {
-	//	glTexCoord2f(0.5F, 0.125f);		glVertex2i(SCENE_Xo,							SCENE_Yo);
-	//	glTexCoord2f(1.0f, 0.125f);		glVertex2i(SCENE_Xo + BLOCK_SIZE*SCENE_WIDTH,	SCENE_Yo);
-	//	glTexCoord2f(1.0f, 0.0625f);	glVertex2i(SCENE_Xo + BLOCK_SIZE*SCENE_WIDTH,	SCENE_Yo + BLOCK_SIZE*2);
-	//	glTexCoord2f(0.5F, 0.0625f);	glVertex2i(SCENE_Xo,							SCENE_Yo + BLOCK_SIZE*2);
-	//}
-
-	//if (new_transition_list[TRANSITION_RIGHT] != 0) {
-	//	glTexCoord2f(0.0625f,	0.84375f);	glVertex2i(BLOCK_SIZE*SCENE_WIDTH - BLOCK_SIZE*2,	SCENE_Yo);
-	//	glTexCoord2f(0.125f,	0.84375f);	glVertex2i(BLOCK_SIZE*SCENE_WIDTH,					SCENE_Yo);
-	//	glTexCoord2f(0.125f,	0.5f);		glVertex2i(BLOCK_SIZE*SCENE_WIDTH,					BLOCK_SIZE*SCENE_HEIGHT);
-	//	glTexCoord2f(0.0625f,	0.5f);		glVertex2i(BLOCK_SIZE*SCENE_WIDTH - BLOCK_SIZE*2,	BLOCK_SIZE*SCENE_HEIGHT);
-	//}
-	//if (new_transition_list[TRANSITION_LEFT] != 0) {
-	//	glTexCoord2f(0.f,		0.84375f);	glVertex2i(SCENE_Xo,				SCENE_Yo);
-	//	glTexCoord2f(0.0625f,	0.84375f);	glVertex2i(SCENE_Xo + BLOCK_SIZE*2, SCENE_Yo);
-	//	glTexCoord2f(0.0625f,	0.5f);		glVertex2i(SCENE_Xo + BLOCK_SIZE*2, BLOCK_SIZE*SCENE_HEIGHT);
-	//	glTexCoord2f(0.f,		0.5f);		glVertex2i(SCENE_Xo,				BLOCK_SIZE*SCENE_HEIGHT);
-	//}
-	//if (transition_list[TRANSITION_TOP] != 0) {
-	//	glTexCoord2f(0.5f, 0.0625f);	glVertex2i(old_scene_posx, old_scene_posy + BLOCK_SIZE*SCENE_HEIGHT - BLOCK_SIZE * 2);
-	//	glTexCoord2f(1.0f, 0.0625f);	glVertex2i(old_scene_posx + BLOCK_SIZE*SCENE_WIDTH, old_scene_posy + BLOCK_SIZE*SCENE_HEIGHT - BLOCK_SIZE * 2);
-	//	glTexCoord2f(1.0f, 0.f);		glVertex2i(old_scene_posx + BLOCK_SIZE*SCENE_WIDTH, old_scene_posy + BLOCK_SIZE*SCENE_HEIGHT);
-	//	glTexCoord2f(0.5f, 0.f);		glVertex2i(old_scene_posx, old_scene_posy + BLOCK_SIZE*SCENE_HEIGHT);
-	//}
-	//if (new_transition_list[TRANSITION_TOP] != 0) {
-	//	glTexCoord2f(0.5f, 0.0625f);	glVertex2i(new_scene_posx, new_scene_posy + BLOCK_SIZE*SCENE_HEIGHT - BLOCK_SIZE * 2);
-	//	glTexCoord2f(1.0f, 0.0625f);	glVertex2i(new_scene_posx + BLOCK_SIZE*SCENE_WIDTH, new_scene_posy + BLOCK_SIZE*SCENE_HEIGHT - BLOCK_SIZE * 2);
-	//	glTexCoord2f(1.0f, 0.f);		glVertex2i(new_scene_posx + BLOCK_SIZE*SCENE_WIDTH, new_scene_posy + BLOCK_SIZE*SCENE_HEIGHT);
-	//	glTexCoord2f(0.5f, 0.f);		glVertex2i(new_scene_posx, new_scene_posy + BLOCK_SIZE*SCENE_HEIGHT);
-	//}
-	//if (new_transition_list[TRANSITION_TOP] != 0) {
-	//	glTexCoord2f(0.5f, 0.0625f);	glVertex2i(SCENE_Xo, BLOCK_SIZE*SCENE_HEIGHT - BLOCK_SIZE * 2);
-	//	glTexCoord2f(1.0f, 0.0625f);	glVertex2i(SCENE_Xo + BLOCK_SIZE*SCENE_WIDTH, BLOCK_SIZE*SCENE_HEIGHT - BLOCK_SIZE * 2);
-	//	glTexCoord2f(1.0f, 0.f);		glVertex2i(SCENE_Xo + BLOCK_SIZE*SCENE_WIDTH, BLOCK_SIZE*SCENE_HEIGHT);
-	//	glTexCoord2f(0.5f, 0.f);		glVertex2i(SCENE_Xo, BLOCK_SIZE*SCENE_HEIGHT);
-	//}
-
 	for (int j = SCENE_HEIGHT - 1;j >= 0;j--)
 	{
 		px = SCENE_Xo;

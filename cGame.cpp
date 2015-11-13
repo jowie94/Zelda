@@ -299,6 +299,10 @@ void cGame::Render()
 			Player.Draw(Data.GetID(IMG_PLAYER));
 			if (Scene.TransitionFinished(direction_transition, transition_num)) {
 				Scene.UpdateMap();
+				if (Scene.GetNewLevel() == 8) {
+					cDrop* tf = new cDrop(Data.GetID(IMG_TREASURES), TRIFORCE, 0);
+					tf->SetPosition(8, 5);
+				}
 				fMatrix enemies;
 				Scene.GetEnemies(enemies);
 				LoadEnemies(enemies);

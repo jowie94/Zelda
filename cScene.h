@@ -38,7 +38,7 @@ public:
 	int *GetMap();
 
 	void GetEnemies(fMatrix& enemies) const;
-
+	int GetNewLevel();
 private:
 	void ReadEnemies(FILE* fd);
 
@@ -49,6 +49,7 @@ private:
 	int transition_list[7];					//The first position(0) will empty.
 	int outside_pos[2];
 
+	int new_level;
 	int map_transition[SCENE_WIDTH * SCENE_HEIGHT];
 	int id_TL;								//transition level
 	int new_transition_list[7];				//The first position(0) will empty.
