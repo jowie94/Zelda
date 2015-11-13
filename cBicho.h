@@ -96,6 +96,7 @@ public:
 	cWeapon* GetWeapon(int id);
 	bool GetWeapon(int id, cWeapon& weapon);
 	void GetActiveWeapons(std::set<cWeapon*>& weapons);
+	void ClearActiveWeapons();
 	int  GetState() const;
 	void SetState(int s);
 	int GetOrientation() const;

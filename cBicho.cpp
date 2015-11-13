@@ -347,6 +347,10 @@ void cBicho::GetActiveWeapons(std::set<cWeapon*>& weapons)
 	weapons = this->active_weapons;
 }
 
+void cBicho::ClearActiveWeapons() {
+	active_weapons.clear();
+}
+
 cWeapon* cBicho::GetWeapon(int id)
 {
 	auto it = weapons.find(id);

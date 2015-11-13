@@ -375,6 +375,7 @@ void cPlayer::SetStateAfterTransition(void) {
 
 void cPlayer::StartTransition(int* outside_pos) {
 	transition = true;
+	ClearActiveWeapons();
 	if (direction_transition == TRANSITION_OUTSIDE) {
 		int w, h;
 		GetWidthHeight(&w, &h);
