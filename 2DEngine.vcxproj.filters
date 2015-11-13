@@ -65,6 +65,9 @@
     <ClCompile Include="wBow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cDrop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cBicho.h">
@@ -122,6 +125,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wBow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cDrop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
