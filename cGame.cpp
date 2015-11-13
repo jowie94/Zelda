@@ -301,7 +301,8 @@ void cGame::Render()
 				Scene.UpdateMap();
 				if (Scene.GetNewLevel() == 8) {
 					cDrop* tf = new cDrop(Data.GetID(IMG_TREASURES), TRIFORCE, 0);
-					tf->SetPosition(8, 5);
+					tf->SetTile(8, 5);
+					objects_drop.push_back(tf);
 				}
 				fMatrix enemies;
 				Scene.GetEnemies(enemies);

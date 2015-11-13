@@ -324,7 +324,7 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies, const std::list<
 			}
 		}
 
-		if (!IsHurt())
+		if (!IsHurt() && GetState() != STATE_TRIFORCE)
 		{
 			lock = false;
 			for (cWeapon* w : weapons)
