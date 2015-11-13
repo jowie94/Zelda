@@ -130,6 +130,8 @@ void eRope::Logic(int* map, cPlayer& player)
 
 		if (GetLife() <= 0 && GetState() != STATE_DYING)
 		{
+			hurt = 0;
+			ToggleHurt(false);
 			SetState(STATE_DYING);
 			SetFramesToDie(2);
 			ResetFrame();

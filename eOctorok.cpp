@@ -164,6 +164,8 @@ void eOctorok::Logic(int* map, cPlayer& player)
 		if (GetLife() <= 0 && GetState() != STATE_DYING)
 		{
 			SetState(STATE_DYING);
+			hurt = 0;
+			ToggleHurt(false);
 			SetFramesToDie(2);
 			ResetFrame();
 		}
