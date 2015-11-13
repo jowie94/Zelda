@@ -11,7 +11,7 @@ cInterface::cInterface()
 
 cInterface::~cInterface() {}
 
-void cInterface::Process(float player_life, int player_hearts, int player_rupees, bool has_sword, bool has_arc, int transition_direction) {
+void cInterface::Process(float player_life, int player_hearts, int player_rupees, bool has_sword, bool has_bow, int transition_direction) {
 	id_DL = glGenLists(1);
 	glNewList(id_DL, GL_COMPILE);
 	glBegin(GL_QUADS);
@@ -24,7 +24,7 @@ void cInterface::Process(float player_life, int player_hearts, int player_rupees
 	UpdateMiniMap(transition_direction);
 	DrawMiniMap();
 	DrawRupees(player_rupees);
-	DrawWeapons(has_sword, has_arc);
+	DrawWeapons(has_sword, has_bow);
 	DrawLife(player_life, player_hearts);
 
 	glEnd();

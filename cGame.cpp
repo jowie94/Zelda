@@ -68,12 +68,18 @@ bool cGame::Init()
 	Player.SetWidthHeight(16,16);
 	Player.SetTile(6,5);
 	Player.SetState(STATE_LOOKDOWN);
-	cWeapon* sw = new wBow(1);
-	sw->SetTexture(Data.GetID(IMG_WEAPONS));
+	cWeapon* aw = new wBow(1);
+	aw->SetTexture(Data.GetID(IMG_WEAPONS));
 
-	Player.AddWeapon(SWORD, sw);
-	Player.SetAWeapon(SWORD);
-	
+	Player.AddWeapon(BOW, aw);
+	Player.SetAWeapon(BOW);
+
+	cWeapon* bw = new wSword(1);
+	bw->SetTexture(Data.GetID(IMG_WEAPONS));
+
+	Player.AddWeapon(SWORD, bw);
+	Player.SetBWeapon(SWORD);
+
 	fMatrix enemies;
 	Scene.GetEnemies(enemies);
 	LoadEnemies(enemies);
@@ -117,6 +123,7 @@ void cGame::Finalize()
 }
 
 bool pressed_a = false;
+bool pressed_s = false;
 
 //Input
 void cGame::ReadKeyboard(unsigned char key, int x, int y, bool press)
@@ -124,6 +131,8 @@ void cGame::ReadKeyboard(unsigned char key, int x, int y, bool press)
 	keys[key] = press;
 	if (key == 'a' && !press)
 		pressed_a = false;
+	if (key == 's' && !press)
+		pressed_s = false;
 }
 
 void cGame::ReadMouse(int button, int state, int x, int y)
@@ -141,6 +150,11 @@ bool cGame::Process()
 	{
 		pressed_a = true;
 		Player.AAttack();
+	}
+	if (keys['s'] && !pressed_s)
+	{
+		pressed_s = true;
+		Player.BAttack();
 	}
 	else if (keys[GLUT_KEY_UP])		Player.MoveUp(Scene.GetMap());
 	else if (keys[GLUT_KEY_DOWN])	Player.MoveDown(Scene.GetMap());
@@ -200,7 +214,7 @@ bool cGame::Process()
 			}
 		}
 	}
-	Interface.Process(Player.GetLife(), Player.GetHearts(), Player.GetRupees(), Player.HasSword(), Player.HasArc(), transition_direction);
+	Interface.Process(Player.GetLife(), Player.GetHearts(), Player.GetRupees(), Player.HasSword(), Player.HasBow(), transition_direction);
 
 	return res;
 }
@@ -292,23 +306,12 @@ bool cGame::StartTransition() {
 
 void cGame::LoadEnemies(const fMatrix& mEnemies)
 {
-	std::vector<int> usable_positions;
-	int pos;
-
-	for (int i = 0; i < SCENE_WIDTH * SCENE_HEIGHT; ++i)
-	{
-		if (Scene.GetMap()[i] == 9)
-			usable_positions.push_back(i);
-	}
-
-	pos = rand() % usable_positions.size();
-	pos = usable_positions[pos];
-	int x, y;
-	y = pos / SCENE_WIDTH;
-	x = pos % SCENE_WIDTH;
-
+	
 	for (auto def : mEnemies)
 	{
+
+		int x = def[4];
+		int y = def[5];
 		for (int i = 0; i < def[1]; ++i)
 		{
 			cEnemy* enemy = nullptr;

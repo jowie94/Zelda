@@ -27,11 +27,29 @@ void cPlayer::AAttack()
 	}
 }
 
+void cPlayer::BAttack()
+{
+	if (!attacking && GetState() != STATE_DYING) {
+		Stop();
+		attacking = true;
+		ActivateWeapon(bWeapon);
+		int x, y, w, h;
+		GetPosition(&x, &y);
+		GetWidthHeight(&w, &h);
+		bWeapon->SetPosition(x, y);
+		bWeapon->Attack(GetLife() == INITIAL_LIFE, GetState());
+	}
+}
+
 void cPlayer::SetAWeapon(Weapon weapon)
 {
 	aWeapon = GetWeapon(weapon);
 }
 
+void cPlayer::SetBWeapon(Weapon weapon)
+{
+	bWeapon = GetWeapon(weapon);
+}
 
 void cPlayer::MoveRight(int* map)
 {
@@ -40,9 +58,6 @@ void cPlayer::MoveRight(int* map)
 	int x_aux;
 	int y_aux;
 	GetPosition(&x_aux, &y_aux);
-	char str[128];
-	sprintf(str, "x=%d, y=%d \n", x_aux, y_aux);
-	OutputDebugString(str);
 	if (x_aux >= 240) {
 		SetState(STATE_DOOR);
 		direction_transition = TRANSITION_RIGHT;
@@ -256,9 +271,15 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 	if (!isDead() && GetState() != STATE_DYING)
 	{
 		attacking = !aWeapon->isDead();
+		cWeapon *weapon_attack = aWeapon;
+		if (!attacking) {
+			attacking = !bWeapon->isDead();
+			weapon_attack = bWeapon;
+		}
+
 		if (!IsHurt())
 		{
-			lock = aWeapon->LockPlayer() || IsHurt();
+			lock = weapon_attack->LockPlayer() || IsHurt();
 			cRect coll, area;
 			float damage = 0;
 			int state = GetState() % 4;
@@ -273,7 +294,7 @@ void cPlayer::Logic(int* map, const std::list<cEnemy*> enemies)
 			if (damage != 0)
 			{
 				DecrementLife(damage);
-				aWeapon->Finalize();
+				weapon_attack->Finalize();
 				lock = true;
 				if (GetLife())
 					hurt = 8 * 8;
@@ -384,9 +405,9 @@ int cPlayer::GetRupees() {
 }
 
 bool cPlayer::HasSword() {
-	return false;
+	return bWeapon;
 }
 
-bool cPlayer::HasArc() {
-	return false;
+bool cPlayer::HasBow() {
+	return aWeapon;
 }

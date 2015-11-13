@@ -26,8 +26,10 @@ public:
 	~cPlayer();
 
 	void AAttack();
+	void BAttack();
 
 	void SetAWeapon(Weapon weapon); // Set weapon assigned to button A
+	void SetBWeapon(Weapon weapon); // Set weapon assigned to button B
 	void UpdateTransitionPos(int transition_num);
 
 	void Collides(const cRect& position, const int status, cRect& collision, float& damage);
@@ -54,12 +56,13 @@ public:
 	int GetRupees();
 
 	bool HasSword();
-	bool HasArc();
+	bool HasBow();
 
 	bool IsDoor(int* map, int y_aux);
 
 private:
 	cWeapon* aWeapon; // Weapon assigned to button A
+	cWeapon* bWeapon; // Weapon assigned to button B
 
 	bool attacking, lock;
 	int hurt;

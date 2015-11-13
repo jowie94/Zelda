@@ -257,10 +257,6 @@ void cScene::DrawTransitionEdge(int direction_transition, int transition_num) {
 
 			int num = GetNumForTransition(direction_transition, transition_num, i, j);
 
-			if (num < 10)OutputDebugString(" ");
-			sprintf(str, "%d ", num);
-			OutputDebugString(str);
-
 			int columna = (num - 1) % 12;
 			int fila = (num - 1) / 12;
 
@@ -282,7 +278,6 @@ void cScene::DrawTransitionEdge(int direction_transition, int transition_num) {
 
 			px += TILE_SIZE;
 		}
-		OutputDebugString("\n");
 
 	}
 	glEnd();
@@ -382,9 +377,6 @@ void cScene::DrawTransitionDungeon(int direction_transition, int transition_num)
 
 			int num = GetNumForTransition(direction_transition, transition_num, i, j);
 
-			if (num < 10)OutputDebugString(" ");
-			sprintf(str, "%d ", num);
-			OutputDebugString(str);
 			if (num != 0 && num != 9) {
 				int columna = (num - 1) % 4;
 				int fila = (num - 1) / 4;
@@ -407,7 +399,6 @@ void cScene::DrawTransitionDungeon(int direction_transition, int transition_num)
 			}
 			px += TILE_SIZE;
 		}
-		OutputDebugString("\n");
 
 	}
 	glEnd();
@@ -508,12 +499,12 @@ void cScene::ReadEnemies(FILE* fd)
 	if (c == '-')
 	{
 		fscanf(fd, "%c", &c); // Ignore enter
+		fscanf(fd, "%c", &c); // Get enemy ID or '-'
 		while (c != '-')
 		{
-			float id, am, life, damage;
+			float id, am, life, damage, posx, posy;
 			char c2;
 
-			fscanf(fd, "%c", &c); // Get enemy ID
 			id = c - '0';
 
 			fscanf(fd, " "); // Ignore space
@@ -528,7 +519,16 @@ void cScene::ReadEnemies(FILE* fd)
 			fscanf(fd, "%c.%c", &c, &c2); // Get damage of enemies
 			damage = (c - '0') + (c2 - '0') / 10.0f;
 
-			enemies.push_back({ id, am, life, damage });
+			fscanf(fd, " ");
+			fscanf(fd, "%c%c", &c, &c2); // Get pos x
+			posx = (c - '0') * 10 + (c2 - '0');
+
+			fscanf(fd, " ");
+			fscanf(fd, "%c%c", &c, &c2); // Get pos y
+			posy = (c - '0') * 10 + (c2 - '0');
+
+			enemies.push_back({ id, am, life, damage, posx, posy });
+
 			fscanf(fd, "\n");
 			fscanf(fd, "%c", &c);
 		}

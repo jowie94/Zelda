@@ -14,11 +14,11 @@ public:
 	cInterface();
 	~cInterface();
 
-	void Process(float player_life, int player_hearts, int player_rupees, bool has_sword, bool has_arc, int transition_direction);
+	void Process(float player_life, int player_hearts, int player_rupees, bool has_sword, bool has_bow, int transition_direction);
 	void Draw(int tex_id);
 
 	void DrawMiniMap();
-	void DrawWeapons(bool has_sword, bool has_arc);
+	void DrawWeapons(bool has_sword, bool has_bow);
 	void DrawRupees(int player_rupees);
 	void DrawLife(float player_life, int player_hearts);
 
