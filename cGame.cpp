@@ -231,7 +231,7 @@ bool cGame::Process()
 				if (rand() % 2) {
 					cDrop *obj_drop;
 					if (rand() % 2)
-						obj_drop = new cDrop(Data.GetID(IMG_TREASURES), RUPEE, rand() % 5);
+						obj_drop = new cDrop(Data.GetID(IMG_TREASURES), RUPEE, (rand() % 5)+1);
 					else
 						obj_drop = new cDrop(Data.GetID(IMG_TREASURES), HEART, 1);
 
