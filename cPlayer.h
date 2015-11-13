@@ -66,5 +66,5 @@ private:
 	int hurt_direction;
 	int hearts;
 	int rupees;
-	FMOD::Sound *hurt_sound, *rupee_sound, *heart_sound;
+	FMOD::Sound *hurt_sound, *rupee_sound, *heart_sound, *triforce_sound;
 };

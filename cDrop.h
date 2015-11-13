@@ -4,7 +4,8 @@
 enum DROP_TYPE
 {
 	HEART,
-	RUPEE
+	RUPEE,
+	TRIFORCE
 };
 
 class cDrop :
@@ -19,7 +20,7 @@ public:
 	bool Collides(const cRect* rc);
 	DROP_TYPE GetType() const;
 
-	float GetAmount() const;
+	float GetAmount();
 
 
 	void Draw();

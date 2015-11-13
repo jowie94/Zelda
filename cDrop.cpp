@@ -32,20 +32,27 @@ DROP_TYPE cDrop::GetType() const
 	return drop;
 }
 
-float cDrop::GetAmount() const
+float cDrop::GetAmount()
 {
-	return amount;
+	if (!isDead())
+		return amount;
+	return 0;
 }
 
 void cDrop::Draw()
 {
-	float xo, yo, xf, yf;
+	if (!isDead())
+	{
+		float xo, yo, xf, yf;
 
-	xo = 0.25 * GetType();
-	yo = 0.25 + 0.25 * GetFrame();
+		xo = 0.25 * GetType();
+		yo = 0.25 + 0.25 * GetFrame();
 
-	xf = xo + 0.25;
-	yf = yo - 0.25;
+		xf = xo + 0.25;
+		yf = yo - 0.25;
 
-	DrawRect(texture, xo, yo, xf, yf);
+		NextFrame(2);
+
+		DrawRect(texture, xo, yo, xf, yf);
+	}
 }

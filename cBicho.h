@@ -19,6 +19,7 @@
 #define STATE_DOOR			8
 #define STATE_DYING         9
 #define STATE_INIT          10
+#define STATE_TRIFORCE      11
 
 
 enum Weapon
